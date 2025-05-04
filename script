@@ -7,13 +7,14 @@
  Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
 ]=]
 
--- Instances: 194 | Scripts: 38 | Modules: 3 | Tags: 0
+-- Instances: 193 | Scripts: 37 | Modules: 3 | Tags: 0
 local G2L = {};
 
 -- StarterGui.VEXGUI
 G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
 G2L["1"]["Name"] = [[VEXGUI]];
 G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+G2L["1"]["ResetOnSpawn"] = false;
 
 
 -- StarterGui.VEXGUI.Main
@@ -1971,27 +1972,22 @@ G2L["c0"]["Name"] = [[MessageSent]];
 G2L["c0"]["Position"] = UDim2.new(0.86067, 0, 0.24149, 0);
 
 
--- StarterGui.VEXGUI.ReExecute
-G2L["c1"] = Instance.new("LocalScript", G2L["1"]);
-G2L["c1"]["Name"] = [[ReExecute]];
-
-
 -- StarterGui.VEXGUI.DeathText
-G2L["c2"] = Instance.new("TextLabel", G2L["1"]);
-G2L["c2"]["TextWrapped"] = true;
-G2L["c2"]["BorderSizePixel"] = 0;
-G2L["c2"]["TextSize"] = 14;
-G2L["c2"]["TextScaled"] = true;
-G2L["c2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["c2"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["c2"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
-G2L["c2"]["BackgroundTransparency"] = 1;
-G2L["c2"]["Size"] = UDim2.new(0.69845, 0, 0.25668, 0);
-G2L["c2"]["Visible"] = false;
-G2L["c2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["c2"]["Text"] = [[PLEASE STAND BY AS WE RE-EXECUTE]];
-G2L["c2"]["Name"] = [[DeathText]];
-G2L["c2"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
+G2L["c1"] = Instance.new("TextLabel", G2L["1"]);
+G2L["c1"]["TextWrapped"] = true;
+G2L["c1"]["BorderSizePixel"] = 0;
+G2L["c1"]["TextSize"] = 14;
+G2L["c1"]["TextScaled"] = true;
+G2L["c1"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["c1"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["c1"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["c1"]["BackgroundTransparency"] = 1;
+G2L["c1"]["Size"] = UDim2.new(0.69845, 0, 0.25668, 0);
+G2L["c1"]["Visible"] = false;
+G2L["c1"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["c1"]["Text"] = [[PLEASE STAND BY AS WE RE-EXECUTE]];
+G2L["c1"]["Name"] = [[DeathText]];
+G2L["c1"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
 
 
 -- Require G2L wrapper
@@ -2419,7 +2415,7 @@ local script = G2L["39"];
 			cam.CFrame = player.Character.HumanoidRootPart.CFrame
 		end
 	end)
-
+	
 end;
 task.spawn(C_39);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Teleport.teleportenter.TeleportScript
@@ -4466,30 +4462,5 @@ local function C_bd()
 
 end;
 task.spawn(C_bd);
--- StarterGui.VEXGUI.ReExecute
-local function C_c1()
-	local script = G2L["c1"];
-	local GUI = script.Parent
-	local deathtext = script.Parent.DeathText
-
-	local plr = game:GetService("Players").LocalPlayer
-
-
-	local function onCharacterAdded(character)
-		local humanoid = character:WaitForChild("Humanoid")
-		humanoid.Died:Connect(function()
-			deathtext.Visible = true
-			GUI:Clone().Parent = GUI.Parent
-		end)
-	end
-
-	if plr.Character then
-		onCharacterAdded(plr.Character)
-	end
-
-	plr.CharacterAdded:Connect(onCharacterAdded)
-
-end;
-task.spawn(C_c1);
 
 return G2L["1"], require;
