@@ -2613,7 +2613,6 @@ local function C_54()
 			humrootpart.AssemblyAngularVelocity = Vector3.zero
 			humrootpart.RotVelocity = Vector3.zero -- ← this stops unwanted spin/momentum
 			buttonmodule.ColorOff(script.Parent)
-
 		end
 	end)
 
@@ -2629,10 +2628,17 @@ local function C_58()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
 
-	local humrootpart = char:WaitForChild("HumanoidRootPart")
+	-- Function to get the character and ensure it has HumanoidRootPart
+	local function getCharacter()
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		while not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
 
+	local humrootpart = getCharacter():WaitForChild("HumanoidRootPart")
 	local seizureCoroutine = nil
 
 	button.MouseButton1Up:Connect(function()
@@ -2640,7 +2646,6 @@ local function C_58()
 
 		if toggle then
 			buttonmodule.ColorOn(button)
-
 
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
@@ -2685,15 +2690,17 @@ local function C_5b()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+	local char = plr.Character or plr.CharacterAdded:Wait()  -- Ensure the character is loaded
 
 	local humrootpart = char:FindFirstChild("HumanoidRootPart")
 
 	button.MouseButton1Up:Connect(function()
+		-- Ensure HumanoidRootPart exists before toggling
 		if humrootpart then
 			humrootpart.Anchored = not humrootpart.Anchored
 		end
 
+		-- Handle the toggle logic for the button color and notification
 		if toggle == false then
 			buttonmodule.ColorOn(button)
 			notifmodule.Notification("Warning", "May break w/ Fake Lag ⚠️!", 3)
@@ -2708,6 +2715,16 @@ task.spawn(C_5b);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.XRayButton.XRayScript
 local function C_5e()
 	local script = G2L["5e"];
+	local player = game.Players.LocalPlayer
+
+	local function getCharacter()
+		local char = player.Character or player.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
 	local button = script.Parent
 	local toggle = false
 	local allowedName = "Map"
@@ -2725,12 +2742,17 @@ local function C_5e()
 			buttonmodule.ColorOff(script.Parent)
 		end
 
+		local character = getCharacter()
+
 		for _, v in pairs(game.Workspace:GetDescendants()) do
 			if v:IsA("Model") then
 				for _, part in pairs(v:GetChildren()) do
 					if part:IsA("BasePart") then
 						part.Transparency = toggle and 0.5 or 0
-						game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Transparency = 1
+						-- Set the transparency of the player's HumanoidRootPart
+						if character:FindFirstChild("HumanoidRootPart") then
+							character.HumanoidRootPart.Transparency = 1
+						end
 					end
 				end
 			elseif v:IsA("BasePart") then
@@ -2744,7 +2766,10 @@ local function C_5e()
 						end
 					end
 				end
-				game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Transparency = 1
+				-- Set the transparency of the player's HumanoidRootPart
+				if character:FindFirstChild("HumanoidRootPart") then
+					character.HumanoidRootPart.Transparency = 1
+				end
 			end
 		end
 	end)
@@ -2757,6 +2782,9 @@ local function C_61()
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 
+	-- Wait for necessary parts
+	local humanoid = character:WaitForChild("Humanoid")
+	local humRootPart = character:WaitForChild("HumanoidRootPart")
 
 	local toggle = false
 
@@ -2766,19 +2794,27 @@ local function C_61()
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
-
 	btn.MouseButton1Up:Connect(function()
-		local humanoid = character:FindFirstChild("Humanoid")
 		humanoid.UseJumpPower = true
 		textboxmodule.IntSetProperty(humanoid, "JumpPower")
 	end)
+
 end;
 task.spawn(C_61);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.WalkSpeedButton.WalkspeedScript
 local function C_64()
 	local script = G2L["64"];
 	local player = game.Players.LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
+
+	local function getCharacter()
+		local char = player.Character or player.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
+	local character = getCharacter()
 	local toggle = false
 
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
@@ -2787,12 +2823,12 @@ local function C_64()
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
-
 	btn.MouseButton1Up:Connect(function()
 		local humanoid = character:WaitForChild("Humanoid")
 
 		textboxmodule.IntSetProperty(humanoid, "WalkSpeed")
 	end)
+
 end;
 task.spawn(C_64);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ToggleTexturesButton.TexturesButton
@@ -2845,7 +2881,9 @@ local function C_6a()
 
 	-- Function to handle the jump logic
 	local function onJumpRequest(input)
-		if toggle and input.KeyCode == Enum.KeyCode.Space then
+		-- Ensure the character is properly loaded before attempting to access Humanoid
+		local humanoid = character:FindFirstChild("Humanoid")
+		if toggle and input.KeyCode == Enum.KeyCode.Space and humanoid then
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
 	end
@@ -2864,6 +2902,7 @@ local function C_6a()
 			end
 		end
 	end)
+
 end;
 task.spawn(C_6a);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SwimInAirButton.SwimInAirScript
@@ -2967,11 +3006,22 @@ task.spawn(C_70);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SitButton.SitScript
 local function C_73()
 	local script = G2L["73"];
+	local plr = game:GetService("Players").LocalPlayer
+
+	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
+	local function getCharacter()
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
 
 	script.Parent.MouseButton1Up:Connect(function()
-		local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+		local hum = getCharacter():WaitForChild("Humanoid")
 		hum.Sit = not hum.Sit
 	end)
+
 end;
 task.spawn(C_73);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ParalyzeButton.ParalyzeScript
@@ -2984,12 +3034,21 @@ local function C_76()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
 
-	local hum = char:FindFirstChild("Humanoid")
-	local humrootpart = char:FindFirstChild("HumanoidRootPart")
+	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
+	local function getCharacter()
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
+	local char = getCharacter()
 
 	button.MouseButton1Up:Connect(function()
+		local hum = char:FindFirstChild("Humanoid")
+		local humrootpart = char:FindFirstChild("HumanoidRootPart")
 		if toggle == false then
 			buttonmodule.ColorOn(button)
 
@@ -3037,6 +3096,7 @@ local function C_79()
 
 	local spinConnection
 
+	-- Function to handle button click and toggle the spin effect
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
 
@@ -3046,31 +3106,36 @@ local function C_79()
 
 			local spinAngle = 0
 
+			-- Connect to Heartbeat to handle continuous spin and upward movement
 			spinConnection = game:GetService("RunService").Heartbeat:Connect(function(dt)
 				spinAngle += math.rad(720) * dt -- Fast spin
 
 				local pos = humrootpart.Position
 				local newY = pos.Y + 15 * dt -- Move upward
 
+				-- Set the new position and spin angle
 				humrootpart.CFrame = CFrame.new(pos.X, newY, pos.Z)
-					* CFrame.Angles(math.rad(-90), 0, 0) -- Lie face down
-					* CFrame.Angles(0, 0, spinAngle)    -- Spin like rotor
+					* CFrame.Angles(math.rad(-90), 0, 0)  -- Lie face down
+					* CFrame.Angles(0, 0, spinAngle)     -- Spin like rotor
 			end)
 
+			-- Add helicopter sound effect
 			local helicopteraudio = Instance.new("Sound", humrootpart)
 			helicopteraudio.SoundId = "rbxassetid://686885384"
 			helicopteraudio.Looped = true
-
 			helicopteraudio:Play()
 			helicopteraudio.Name = "helicopteraudio"
 		else
-
+			-- Reset button color and stop effect
 			buttonmodule.ColorOff(button)
 
-			if humrootpart:FindFirstChild("helicopteraudio") then
-				humrootpart:FindFirstChild("helicopteraudio"):Destroy()
+			-- Destroy the sound when toggled off
+			local helicopteraudio = humrootpart:FindFirstChild("helicopteraudio")
+			if helicopteraudio then
+				helicopteraudio:Destroy()
 			end
 
+			-- Disconnect spin connection and reset Anchored state
 			if spinConnection then
 				spinConnection:Disconnect()
 				spinConnection = nil
@@ -3078,6 +3143,12 @@ local function C_79()
 
 			humrootpart.Anchored = false
 		end
+	end)
+
+	-- Reattach the connection if the character respawns
+	plr.CharacterAdded:Connect(function()
+		char = plr.Character or plr.CharacterAdded:Wait()
+		humrootpart = char:WaitForChild("HumanoidRootPart")
 	end)
 
 end;
@@ -3092,7 +3163,17 @@ local function C_7c()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
+
+	-- Ensure the character is properly loaded
+	local function getCharacter()
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
+	local char = getCharacter()
 
 	button.MouseButton1Up:Connect(function()
 		local hum = char:WaitForChild("Humanoid")
@@ -3124,7 +3205,17 @@ local function C_7f()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
+
+	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
+	local function getCharacter()
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
+	local char = getCharacter()
 
 	local seizureCoroutine = nil
 
@@ -3138,7 +3229,7 @@ local function C_7f()
 			buttonmodule.ColorOn(button)
 			hum.PlatformStand = true
 
-
+			-- Create and resume the seizure coroutine
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
 					-- Random jitter
@@ -3179,7 +3270,17 @@ local function C_82()
 	-- Noclip script
 	local textButton = script.Parent
 	local player = game.Players.LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
+
+	-- Ensure the character is properly loaded
+	local function getCharacter()
+		local char = player.Character or player.CharacterAdded:Wait()
+		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
+			char.ChildAdded:Wait()
+		end
+		return char
+	end
+
+	local character = getCharacter()
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
 	local isNoclipping = false
@@ -3643,7 +3744,10 @@ local function C_94()
 			local dashDirection = camera.CFrame.LookVector
 			local dashPosition = character.HumanoidRootPart.Position + dashDirection * dashDistance
 
-			character:SetPrimaryPartCFrame(CFrame.new(dashPosition))
+			-- Ensure HumanoidRootPart exists before setting CFrame
+			if character:FindFirstChild("HumanoidRootPart") then
+				character:SetPrimaryPartCFrame(CFrame.new(dashPosition))
+			end
 		end
 	end
 
@@ -3983,10 +4087,13 @@ local function C_9e()
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
-
 	btn.MouseButton1Up:Connect(function()
-		textboxmodule.IntSetProperty(workspace.Camera, "FieldOfView")
+		-- Ensure the Camera exists before trying to modify its properties
+		if workspace:FindFirstChild("Camera") then
+			textboxmodule.IntSetProperty(workspace.Camera, "FieldOfView")
+		end
 	end)
+
 end;
 task.spawn(C_9e);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.AntiFlingButton.AntiFlingScript
@@ -4026,6 +4133,8 @@ local function C_a1()
 	local function applyToCurrentCharacter()
 		local char = plr.Character
 		if char then
+			-- Wait for the HumanoidRootPart to be available
+			local humanoidRootPart = char:WaitForChild("HumanoidRootPart")
 			if toggleAntiFling then
 				enableAntiFling(char)
 			else
