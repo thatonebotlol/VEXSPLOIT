@@ -28,14 +28,6 @@ G2L["2"]["Name"] = [[Main]];
 
 
 -- StarterGui.VEXGUI.Main.Close
-G2L["3"] = Instance.new("TextButton", G2L["2"]);
-G2L["3"]["TextWrapped"] = true;
-G2L["3"]["BorderSizePixel"] = 0;
-G2L["3"]["TextSize"] = 18;
-G2L["3"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["3"]["BackgroundColor3"] = Color3.fromRGB(85, 6, 6);
-G2L["3"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["3"]["Size"] = UDim2.new(0.0439, 0, 1, 0);
 G2L["3"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
 G2L["3"]["Text"] = [[X]];
 G2L["3"]["Name"] = [[Close]];
@@ -1692,7 +1684,6 @@ G2L["a4"]["BackgroundTransparency"] = 1;
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Notes.TextBox
 G2L["a5"] = Instance.new("TextBox", G2L["a4"]);
-G2L["a5"]["CursorPosition"] = -1;
 G2L["a5"]["TextXAlignment"] = Enum.TextXAlignment.Left;
 G2L["a5"]["BorderSizePixel"] = 0;
 G2L["a5"]["TextWrapped"] = true;
@@ -2235,7 +2226,8 @@ G2L["d9"]["TextSize"] = 14;
 G2L["d9"]["TextScaled"] = true;
 G2L["d9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["d9"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["d9"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["d9"]["TextColor3"] = Color3.fromRGB(255, 255, 255)
+;
 G2L["d9"]["BackgroundTransparency"] = 1;
 G2L["d9"]["Size"] = UDim2.new(0.10535, 0, 0.97373, 0);
 G2L["d9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
@@ -2753,6 +2745,12 @@ local function C_1d()
 		for _ ,button3 in pairs(script.Parent.Parent.Parent.Settings.Buttons:GetChildren()) do
 			if button3:IsA("TextButton") then
 				button3.BackgroundColor3 = darkerColor2
+			end
+		end
+
+		for _ ,button4 in pairs(script.Parent.Parent.Parent.Client:GetChildren()) do
+			if button4:IsA("TextButton") then
+				button4.BackgroundColor3 = darkerColor2
 			end
 		end
 
