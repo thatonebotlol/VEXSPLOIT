@@ -7,7 +7,7 @@
  Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
 ]=]
 
--- Instances: 193 | Scripts: 37 | Modules: 3 | Tags: 0
+-- Instances: 194 | Scripts: 38 | Modules: 3 | Tags: 0
 local G2L = {};
 
 -- StarterGui.VEXGUI
@@ -1990,6 +1990,11 @@ G2L["c1"]["Name"] = [[DeathText]];
 G2L["c1"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
 
 
+-- StarterGui.VEXGUI.ReExecute
+G2L["c2"] = Instance.new("LocalScript", G2L["1"]);
+G2L["c2"]["Name"] = [[ReExecute]];
+
+
 -- Require G2L wrapper
 local G2L_REQUIRE = require;
 local G2L_MODULES = {};
@@ -2415,7 +2420,7 @@ local script = G2L["39"];
 			cam.CFrame = player.Character.HumanoidRootPart.CFrame
 		end
 	end)
-	
+
 end;
 task.spawn(C_39);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Teleport.teleportenter.TeleportScript
@@ -4462,5 +4467,39 @@ local function C_bd()
 
 end;
 task.spawn(C_bd);
+-- StarterGui.VEXGUI.ReExecute
+local function C_c2()
+	local script = G2L["c2"];
+	local GUI = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local deathtext = GUI:WaitForChild("DeathText")
+
+	local function onCharacterAdded(character)
+		local humanoid = character:WaitForChild("Humanoid")
+		humanoid.Died:Connect(function()
+			deathtext.Visible = true
+
+			wait(3)
+			deathtext.Text = "Wait.."
+			wait(7)
+
+			deathtext.Text = "Successful"
+			game.Debris:AddItem(deathtext, 1)
+
+			local newGUI = GUI:Clone()
+			newGUI.Parent = GUI.Parent
+
+			GUI:Destroy() -- destroy after cloning to re-execute script
+		end)
+	end
+
+	if plr.Character then
+		onCharacterAdded(plr.Character)
+	end
+
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+end;
+task.spawn(C_c2);
 
 return G2L["1"], require;
