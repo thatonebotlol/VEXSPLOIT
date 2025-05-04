@@ -779,9 +779,9 @@ G2L["47"]["BorderSizePixel"] = 0;
 G2L["47"]["BackgroundColor3"] = Color3.fromRGB(89, 89, 89);
 -- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
 G2L["47"]["Image"] = [[rbxasset://textures/ui/GuiImagePlaceholder.png]];
-G2L["47"]["Size"] = UDim2.new(0.176, 0, 0.40158, 0);
+G2L["47"]["Size"] = UDim2.new(0.19684, 0, 0.40158, 0);
 G2L["47"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["47"]["Position"] = UDim2.new(0.39252, 0, 0.07343, 0);
+G2L["47"]["Position"] = UDim2.new(0.38326, 0, 0.07343, 0);
 
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Teleport.TextBox
@@ -905,6 +905,7 @@ G2L["51"]["Position"] = UDim2.new(0.02345, 0, 0.5417, 0);
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General
 G2L["52"] = Instance.new("ScrollingFrame", G2L["6"]);
+G2L["52"]["Visible"] = false;
 G2L["52"]["Active"] = true;
 G2L["52"]["BorderSizePixel"] = 0;
 G2L["52"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16);
@@ -2408,18 +2409,18 @@ local script = G2L["45"];
 		local warningMessage = string.format("<font color='#FF0000'>⚠️ %s ⚠️</font>", msg)
 		TextChatService.TextChannels.RBXGeneral:DisplaySystemMessage(prefix .. " " .. warningMessage)
 	end
-	
+
 	-- Find model by partial name in Workspace
 	local function findMatchingTarget(partialName)
 		local matches = {}
 		local lowerInput = string.lower(partialName)
-	
+
 		for _, obj in pairs(workspace:GetChildren()) do
 			if obj:IsA("Model") and string.sub(string.lower(obj.Name), 1, #lowerInput) == lowerInput then
 				table.insert(matches, obj)
 			end
 		end
-	
+
 		if #matches == 1 then
 			return matches[1]
 		elseif #matches > 1 then
@@ -2427,42 +2428,42 @@ local script = G2L["45"];
 		elseif #matches == 0 then
 			sendSystemMessage("Error: No target found")
 		end
-	
+
 		return nil
 	end
-	
+
 	-- Try to find a player by partial name (case-insensitive)
 	local function findPlayerByName(partialName)
 		local lowerInput = string.lower(partialName)
-	
+
 		for _, plr in pairs(Players:GetPlayers()) do
 			if string.sub(string.lower(plr.Name), 1, #lowerInput) == lowerInput then
 				return plr
 			end
 		end
-	
+
 		return nil
 	end
-	
+
 	-- Teleport and display thumbnail
 	button.MouseButton1Up:Connect(function()
 		local targetName = textbox.Text
-	
+
 		if not targetName or targetName:match("^%s*$") then
 			sendSystemMessage("Error: No target entered")
 			return
 		end
-	
+
 		local target = findMatchingTarget(targetName)
 		if not target then return end
-	
+
 		local char = player.Character or player.CharacterAdded:Wait()
 		local root = char:FindFirstChild("HumanoidRootPart")
 		local targetRoot = target:FindFirstChild("HumanoidRootPart")
-	
+
 		if root and targetRoot then
 			root.CFrame = targetRoot.CFrame + Vector3.new(0, 5, 0)
-	
+
 			-- Update image if it's a player
 			local targetPlayer = findPlayerByName(target.Name)
 			if targetPlayer then
@@ -2483,29 +2484,29 @@ local script = G2L["45"];
 			end
 		end
 	end)
-	
+
 end;
 task.spawn(C_45);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FlingButton.FlingScript
 local function C_54()
-local script = G2L["54"];
+	local script = G2L["54"];
 	local plr = game.Players.LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
 	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local NotificationModule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local spinSpeed = 10000 -- Be careful with high values
 	local spinningCoroutine = nil
-	
+
 	-- Fling logic
 	local function onPartTouched(otherPart)
 		if not toggle then return end -- Only fling if toggle is on
-	
+
 		local otherChar = otherPart.Parent
 		if otherChar:IsA("Model") and otherChar:FindFirstChild("Humanoid") and otherChar ~= char then
 			local otherHumRoot = otherChar:FindFirstChild("HumanoidRootPart")
@@ -2518,7 +2519,7 @@ local script = G2L["54"];
 			end
 		end
 	end
-	
+
 	-- R6 and R15 support
 	local function getBodyParts(character)
 		local bodyParts = {}
@@ -2540,13 +2541,13 @@ local script = G2L["54"];
 		end
 		return bodyParts
 	end
-	
+
 	-- Connect touch fling
 	local bodyParts = getBodyParts(char)
 	for _, part in pairs(bodyParts) do
 		part.Touched:Connect(onPartTouched)
 	end
-	
+
 	-- Spin logic
 	local function spinCharacter()
 		while toggle do
@@ -2561,54 +2562,54 @@ local script = G2L["54"];
 			humrootpart.RotVelocity = Vector3.zero -- Prevent leftover rotation
 		end
 	end
-	
+
 	-- Button toggle
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			humrootpart.CanCollide = true
 			spinningCoroutine = coroutine.create(spinCharacter)
 			humrootpart.CFrame = humrootpart.CFrame * CFrame.new(0,0.5,0)
 			coroutine.resume(spinningCoroutine)
 			buttonmodule.ColorOn(script.Parent)
-	
+
 			NotificationModule.Notification("Fling", "DONT USE SHIFTLOCK OR SIT!!!", 3) -- Title, Text, Duration
-	
+
 		else
 			humrootpart.CanCollide = false
 			humrootpart.AssemblyAngularVelocity = Vector3.zero
 			humrootpart.RotVelocity = Vector3.zero -- ← this stops unwanted spin/momentum
 			buttonmodule.ColorOff(script.Parent)
-	
+
 		end
 	end)
-	
+
 end;
 task.spawn(C_54);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SpazButton.SpazScript
 local function C_58()
-local script = G2L["58"];
+	local script = G2L["58"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
 	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
-	
+
 	local seizureCoroutine = nil
-	
+
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			buttonmodule.ColorOn(button)
-	
-	
+
+
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
 					-- Random jitter
@@ -2617,50 +2618,50 @@ local script = G2L["58"];
 						math.random(-1, 1),
 						math.random(-1, 1)
 					) * 0.2
-	
+
 					-- Random rotation
 					local rotation = CFrame.Angles(
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15))
 					)
-	
+
 					-- Apply movement
 					humrootpart.CFrame = humrootpart.CFrame + jitter
 					humrootpart.CFrame = humrootpart.CFrame * rotation
-	
+
 					task.wait(0.05)
 				end
 			end)
-	
+
 			coroutine.resume(seizureCoroutine)
-	
+
 		else
 			buttonmodule.ColorOff(button)
 		end
 	end)
-	
+
 end;
 task.spawn(C_58);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FreezeButton.FreezeScript
 local function C_5b()
-local script = G2L["5b"];
+	local script = G2L["5b"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded
-	
+
 	local humrootpart = char:FindFirstChild("HumanoidRootPart")
-	
+
 	button.MouseButton1Up:Connect(function()
 		if humrootpart then
 			humrootpart.Anchored = not humrootpart.Anchored
 		end
-		
+
 		if toggle == false then
 			buttonmodule.ColorOn(button)
 			notifmodule.Notification("Warning", "May break w/ Fake Lag ⚠️!", 3)
@@ -2669,29 +2670,29 @@ local script = G2L["5b"];
 		end
 		toggle = not toggle
 	end)
-	
+
 end;
 task.spawn(C_5b);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.XRayButton.XRayScript
 local function C_5e()
-local script = G2L["5e"];
+	local script = G2L["5e"];
 	local button = script.Parent
 	local toggle = false
 	local allowedName = "Map"
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	button.MouseButton1Up:Connect(function()
 		-- Toggle the state
 		toggle = not toggle
-	
+
 		-- Fix button color logic
 		if toggle then
 			buttonmodule.ColorOn(script.Parent)
 		else
 			buttonmodule.ColorOff(script.Parent)
 		end
-	
+
 		for _, v in pairs(game.Workspace:GetDescendants()) do
 			if v:IsA("Model") then
 				for _, part in pairs(v:GetChildren()) do
@@ -2715,25 +2716,25 @@ local script = G2L["5e"];
 			end
 		end
 	end)
-	
+
 end;
 task.spawn(C_5e);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.JumpPowerButton.JumpPowerScript
 local function C_61()
-local script = G2L["61"];
+	local script = G2L["61"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
-	
+
 	local toggle = false
-	
+
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
-	
-	
+
+
 	btn.MouseButton1Up:Connect(function()
 		humanoid.UseJumpPower = true
 		textboxmodule.IntSetProperty(humanoid, "JumpPower")
@@ -2742,20 +2743,20 @@ end;
 task.spawn(C_61);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.WalkSpeedButton.WalkspeedScript
 local function C_64()
-local script = G2L["64"];
+	local script = G2L["64"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
-	
+
 	local toggle = false
-	
+
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
-	
-	
+
+
 	btn.MouseButton1Up:Connect(function()
 		textboxmodule.IntSetProperty(humanoid, "WalkSpeed")
 	end)
@@ -2763,15 +2764,15 @@ end;
 task.spawn(C_64);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ToggleTexturesButton.TexturesButton
 local function C_67()
-local script = G2L["67"];
+	local script = G2L["67"];
 	local Button = script.Parent
 	local toggleState = false -- false = visible, true = hidden
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Store original transparency so we can restore it
 	local cachedAssets = {}
-	
+
 	local function setDecalsAndTexturesVisibility(visible)
 		for _, obj in ipairs(workspace:GetDescendants()) do
 			if obj:IsA("Decal") or obj:IsA("Texture") then
@@ -2779,29 +2780,29 @@ local script = G2L["67"];
 				if cachedAssets[obj] == nil then
 					cachedAssets[obj] = obj.Transparency
 				end
-	
+
 				-- Set transparency: 0 = visible, 1 = invisible
 				obj.Transparency = visible and cachedAssets[obj] or 1
 			end
 		end
 	end
-	
+
 	Button.MouseButton1Click:Connect(function()
 		toggleState = not toggleState
 		setDecalsAndTexturesVisibility(not toggleState) -- true = show, false = hide
-	
+
 		if toggleState then
 			buttonmodule.ColorOn(Button)
 		else
 			buttonmodule.ColorOff(Button)
 		end
 	end)
-	
+
 end;
 task.spawn(C_67);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.InfJump.InfJumpScript
 local function C_6a()
-local script = G2L["6a"];
+	local script = G2L["6a"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
@@ -2809,14 +2810,14 @@ local script = G2L["6a"];
 	local toggle = false
 	local jumpConnection -- Variable to store the connection
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Function to handle the jump logic
 	local function onJumpRequest(input)
 		if toggle and input.KeyCode == Enum.KeyCode.Space then
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
 	end
-	
+
 	-- Handles toggling the button color and the toggle state
 	script.Parent.MouseButton1Up:Connect(function()
 		if toggle == false then
@@ -2835,22 +2836,22 @@ end;
 task.spawn(C_6a);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SwimInAirButton.SwimInAirScript
 local function C_6d()
-local script = G2L["6d"];
+	local script = G2L["6d"];
 	local button = script.Parent
 	local RunService = game:GetService("RunService")
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
 	local terrain = workspace.Terrain
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notification = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local toggled = false
 	local updateConnection
 	local waterSize = Vector3.new(4,7,10)
 	local waterLifetime = 1.5 -- seconds
 	local activeWaterCFrames = {}
-	
+
 	-- Function to clear all tracked water blocks
 	local function clearAllWater()
 		for _, cframe in ipairs(activeWaterCFrames) do
@@ -2858,11 +2859,11 @@ local script = G2L["6d"];
 		end
 		activeWaterCFrames = {}
 	end
-	
+
 	button.MouseButton1Click:Connect(function()
 		toggled = not toggled
-		
-	
+
+
 		if toggled then
 			updateConnection = RunService.RenderStepped:Connect(function()
 				local character = player.Character or player.CharacterAdded:Wait()
@@ -2870,17 +2871,17 @@ local script = G2L["6d"];
 				buttonmodule.ColorOn(script.Parent)
 				game.Workspace.Terrain.WaterReflectance = 0
 				game.Workspace.Terrain.WaterTransparency = 1
-				
-				
+
+
 				if hrp then
 					local cframe = hrp.CFrame
 					terrain:FillBlock(cframe, waterSize, Enum.Material.Water)
 					table.insert(activeWaterCFrames, cframe)
-	
+
 					-- Schedule this block to be removed after waterLifetime
 					task.delay(waterLifetime, function()
 						terrain:FillBlock(cframe, waterSize, Enum.Material.Air)
-	
+
 						-- Clean up from the list
 						for i, cf in ipairs(activeWaterCFrames) do
 							if cf == cframe then
@@ -2897,13 +2898,13 @@ local script = G2L["6d"];
 				updateConnection = nil
 			end
 			clearAllWater()
-			
+
 			game.Workspace.Terrain.WaterReflectance = 1
 			game.Workspace.Terrain.WaterTransparency = 0
 			buttonmodule.ColorOff(script.Parent)
 		end
 	end)
-	
+
 	script.Parent.MouseButton1Up:Connect(function()
 		if toggled == true then
 			notification.Notification("AirSwim", "sorry about how it looks :(", 3)
@@ -2913,20 +2914,20 @@ end;
 task.spawn(C_6d);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.GravityButton.GravityScript
 local function C_70()
-local script = G2L["70"];
+	local script = G2L["70"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
-	
+
 	local toggle = false
-	
+
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
-	
-	
+
+
 	btn.MouseButton1Up:Connect(function()
 		textboxmodule.IntSetProperty(workspace, "Gravity")
 	end)
@@ -2934,9 +2935,9 @@ end;
 task.spawn(C_70);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SitButton.SitScript
 local function C_73()
-local script = G2L["73"];
+	local script = G2L["73"];
 	local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
-	
+
 	script.Parent.MouseButton1Up:Connect(function()
 		hum.Sit = not hum.Sit
 	end)
@@ -2944,39 +2945,39 @@ end;
 task.spawn(C_73);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ParalyzeButton.ParalyzeScript
 local function C_76()
-local script = G2L["76"];
+	local script = G2L["76"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	
+
 	local hum = char:FindFirstChild("Humanoid")
 	local humrootpart = char:FindFirstChild("HumanoidRootPart")
-	
+
 	button.MouseButton1Up:Connect(function()
 		if toggle == false then
 			buttonmodule.ColorOn(button)
-	
+
 			if hum and humrootpart then
 				-- Create a BodyVelocity object to apply an upward force
 				local bodyVelocity = Instance.new("BodyVelocity")
 				bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000) -- High force to ensure movement
 				bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Apply upward velocity
 				bodyVelocity.Parent = humrootpart
-	
+
 				-- Wait for the player to reach 5 studs above their starting position
 				local initialHeight = humrootpart.Position.Y
 				while humrootpart.Position.Y - initialHeight < 5 do
 					wait(0.1)
 				end
-	
+
 				-- Once the player reaches the target height, stop them by enabling PlatformStand
 				hum.PlatformStand = true
-	
+
 				-- Remove the BodyVelocity to stop any further motion
 				bodyVelocity:Destroy()
 			end
@@ -2984,89 +2985,89 @@ local script = G2L["76"];
 			hum.PlatformStand = false
 			buttonmodule.ColorOff(button)
 		end
-		
+
 		toggle = not toggle
 	end)
-	
+
 end;
 task.spawn(C_76);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.HelicopterButton.HelicopterScript
 local function C_79()
-local script = G2L["79"];
+	local script = G2L["79"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
 	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
-	
+
 	local spinConnection
-	
+
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			buttonmodule.ColorOn(button)
 			humrootpart.Anchored = true
-	
+
 			local spinAngle = 0
-	
+
 			spinConnection = game:GetService("RunService").Heartbeat:Connect(function(dt)
 				spinAngle += math.rad(720) * dt -- Fast spin
-	
+
 				local pos = humrootpart.Position
 				local newY = pos.Y + 15 * dt -- Move upward
-	
+
 				humrootpart.CFrame = CFrame.new(pos.X, newY, pos.Z)
 					* CFrame.Angles(math.rad(-90), 0, 0) -- Lie face down
 					* CFrame.Angles(0, 0, spinAngle)    -- Spin like rotor
 			end)
-			
+
 			local helicopteraudio = Instance.new("Sound", humrootpart)
 			helicopteraudio.SoundId = "rbxassetid://686885384"
 			helicopteraudio.Looped = true
-			
+
 			helicopteraudio:Play()
 			helicopteraudio.Name = "helicopteraudio"
 		else
-			
+
 			buttonmodule.ColorOff(button)
-			
+
 			if humrootpart:FindFirstChild("helicopteraudio") then
 				humrootpart:FindFirstChild("helicopteraudio"):Destroy()
 			end
-	
+
 			if spinConnection then
 				spinConnection:Disconnect()
 				spinConnection = nil
 			end
-	
+
 			humrootpart.Anchored = false
 		end
 	end)
-	
+
 end;
 task.spawn(C_79);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.MoonwalkButton.MoonwalkScript
 local function C_7c()
-local script = G2L["7c"];
+	local script = G2L["7c"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
 	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
-	
+
 	button.MouseButton1Up:Connect(function()
-	
+
 		if toggle == false then
 			if hum then
 				buttonmodule.ColorOn(button)
@@ -3079,36 +3080,36 @@ local script = G2L["7c"];
 				buttonmodule.ColorOff(button)
 			end
 		end
-		
+
 		toggle = not toggle
 	end)
-	
+
 end;
 task.spawn(C_7c);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SeizureButton.SeizureScript
 local function C_7f()
-local script = G2L["7f"];
+	local script = G2L["7f"];
 	local button = script.Parent
 	local toggle = false
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
 	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
-	
+
 	local seizureCoroutine = nil
-	
+
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			buttonmodule.ColorOn(button)
 			hum.PlatformStand = true
-			
-	
+
+
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
 					-- Random jitter
@@ -3117,47 +3118,47 @@ local script = G2L["7f"];
 						math.random(-1, 1),
 						math.random(-1, 1)
 					) * 0.3
-	
+
 					-- Random rotation
 					local rotation = CFrame.Angles(
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15))
 					)
-	
+
 					-- Apply movement
 					humrootpart.CFrame = humrootpart.CFrame + jitter
 					humrootpart.CFrame = humrootpart.CFrame * rotation
-	
+
 					task.wait(0.05)
 				end
 			end)
-	
+
 			coroutine.resume(seizureCoroutine)
-	
+
 		else
 			buttonmodule.ColorOff(button)
 			hum.PlatformStand = false
 		end
 	end)
-	
+
 end;
 task.spawn(C_7f);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.NoclipButton.NoclipScript
 local function C_82()
-local script = G2L["82"];
+	local script = G2L["82"];
 	-- Noclip script
 	local textButton = script.Parent
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local isNoclipping = false
 	local previousCollisionState = {}
-	
+
 	textButton.MouseButton1Click:Connect(function()
 		isNoclipping = not isNoclipping
-	
+
 		if isNoclipping then
 			buttonmodule.ColorOn(textButton)
 			-- Save the previous collision states and disable collision
@@ -3178,45 +3179,45 @@ local script = G2L["82"];
 			previousCollisionState = {}  -- Reset the stored states
 		end
 	end)
-	
+
 end;
 task.spawn(C_82);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FlyButton.FlyScript
 local function C_85()
-local script = G2L["85"];
+	local script = G2L["85"];
 	function Fly()
 		local plr = game.Players.LocalPlayer
 		local mouse = plr:GetMouse()
 		local localplayer = plr
-	
+
 		if workspace:FindFirstChild("Core") then
 			workspace.Core:Destroy()
 		end
-	
+
 		local Core = Instance.new("Part")
 		Core.CanCollide = false
 		Core.Name = "Core"
 		Core.Size = Vector3.new(0.05, 0.05, 0.05)
-	
+
 		spawn(function()
 			Core.Parent = workspace
 			local Weld = Instance.new("Weld", Core)
 			Weld.Part0 = Core
-	
+
 			-- Dynamically check if the player is R6 or R15
 			local torsoPart = localplayer.Character:FindFirstChild("UpperTorso") or localplayer.Character:FindFirstChild("Torso")
 			Weld.Part1 = torsoPart
 			Weld.C0 = CFrame.new(0, 0, 0)
 		end)
-	
+
 		workspace:WaitForChild("Core")
-	
+
 		local torso = workspace.Core
 		local flying = true
 		local speed = 10
 		local keys = {a = false, d = false, w = false, s = false}
 		local e1, e2
-	
+
 		local function start()
 			local pos = Instance.new("BodyPosition", torso)
 			local gyro = Instance.new("BodyGyro", torso)
@@ -3225,42 +3226,42 @@ local script = G2L["85"];
 			pos.position = torso.Position
 			gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
 			gyro.cframe = torso.CFrame
-	
+
 			repeat
 				wait()
 				localplayer.Character.Humanoid.PlatformStand = true
 				local new = gyro.cframe - gyro.cframe.p + pos.position
-	
+
 				if not keys.w and not keys.s and not keys.a and not keys.d then
 					speed = 5
 				end
-	
+
 				if keys.w then
 					new = new + workspace.CurrentCamera.CFrame.LookVector * speed
 					speed = speed + 0
 				end
-	
+
 				if keys.s then
 					new = new - workspace.CurrentCamera.CFrame.LookVector * speed
 					speed = speed + 0
 				end
-	
+
 				if keys.d then
 					new = new * CFrame.new(speed, 0, 0)
 					speed = speed + 0
 				end
-	
+
 				if keys.a then
 					new = new * CFrame.new(-speed, 0, 0)
 					speed = speed + 0
 				end
-	
+
 				if speed > 10 then
 					speed = 5
 				end
-	
+
 				pos.position = new.p
-	
+
 				if keys.w then
 					gyro.cframe = workspace.CurrentCamera.CFrame * CFrame.Angles(-math.rad(speed * 0), 0, 0)
 				elseif keys.s then
@@ -3269,14 +3270,14 @@ local script = G2L["85"];
 					gyro.cframe = workspace.CurrentCamera.CFrame
 				end
 			until flying == false
-	
+
 			if gyro then gyro:Destroy() end
 			if pos then pos:Destroy() end
 			flying = false
 			localplayer.Character.Humanoid.PlatformStand = false
 			speed = 10
 		end
-	
+
 		e1 = mouse.KeyDown:Connect(function(key)
 			if not torso or not torso.Parent then 
 				flying = false 
@@ -3284,7 +3285,7 @@ local script = G2L["85"];
 				e2:Disconnect() 
 				return 
 			end
-	
+
 			if key == "w" then
 				keys.w = true
 			elseif key == "s" then
@@ -3302,7 +3303,7 @@ local script = G2L["85"];
 				end
 			end
 		end)
-	
+
 		e2 = mouse.KeyUp:Connect(function(key)
 			if key == "w" then
 				keys.w = false
@@ -3314,7 +3315,7 @@ local script = G2L["85"];
 				keys.d = false
 			end
 		end)
-	
+
 		start()
 	end
 	local debounce = false
@@ -3324,35 +3325,35 @@ local script = G2L["85"];
 			debounce = true
 		end
 	end)
-	
+
 end;
 task.spawn(C_85);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.AntiVoidButton.AntivoidScript
 local function C_88()
-local script = G2L["88"];
+	local script = G2L["88"];
 	local button = script.Parent
 	local Players = game:GetService("Players")
 	local RunService = game:GetService("RunService")
 	local TweenService = game:GetService("TweenService")
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local player = Players.LocalPlayer
 	local lastSafeCFrame = nil
 	local fallThresholdY = -50
 	local antiVoidEnabled = false
 	local connection = nil
-	
+
 	local debounceTime = 2 -- Time in seconds between showing warnings
 	local canShowWarning = true -- Flag for controlling the warning debounce
-	
+
 	-- UI Setup
 	local function createUI()
 		local screenGui = Instance.new("ScreenGui")
 		screenGui.Name = "AntiVoidUI"
 		screenGui.ResetOnSpawn = false
 		screenGui.Parent = player:WaitForChild("PlayerGui")
-	
+
 		local warning = Instance.new("TextLabel")
 		warning.Name = "VoidWarning"
 		warning.Size = UDim2.new(0.5, 0, 0.1, 0)
@@ -3365,64 +3366,64 @@ local script = G2L["88"];
 		warning.Text = "Void Detected! Returning to Safe Ground..."
 		warning.Visible = false
 		warning.Parent = screenGui
-	
+
 		return warning
 	end
-	
+
 	local warningLabel = createUI()
-	
+
 	local function showWarning()
 		if not canShowWarning then return end
-	
+
 		canShowWarning = false
 		warningLabel.Visible = true
 		warningLabel.TextTransparency = 1
 		warningLabel.TextStrokeTransparency = 1
-	
+
 		local tweenIn = TweenService:Create(warningLabel, TweenInfo.new(0.3), {
 			TextTransparency = 0,
 			TextStrokeTransparency = 0.3
 		})
-	
+
 		local tweenOut = TweenService:Create(warningLabel, TweenInfo.new(0.5), {
 			TextTransparency = 1,
 			TextStrokeTransparency = 1
 		})
-	
+
 		tweenIn:Play()
 		tweenIn.Completed:Wait()
 		wait(1)
 		tweenOut:Play()
 		tweenOut.Completed:Wait()
 		warningLabel.Visible = false
-	
+
 		-- Reset debounce after a delay
 		wait(debounceTime)
 		canShowWarning = true
 	end
-	
+
 	local function enableAntiVoid(character)
 		local humanoid = character:WaitForChild("Humanoid", 5)
 		local rootPart = character:WaitForChild("HumanoidRootPart", 5)
-	
+
 		if not humanoid or not rootPart then return end
-	
+
 		local raycastParams = RaycastParams.new()
 		raycastParams.FilterDescendantsInstances = {character}
 		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-	
+
 		connection = RunService.RenderStepped:Connect(function()
 			if not antiVoidEnabled then return end
-	
+
 			-- Raycast downward to check if feet are over ground
 			local rayOrigin = rootPart.Position
 			local rayDirection = Vector3.new(0, -4, 0)
-	
+
 			local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
 			if result and humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
 				lastSafeCFrame = rootPart.CFrame
 			end
-	
+
 			-- Void detection and recovery
 			if humanoid:GetState() == Enum.HumanoidStateType.Freefall and rootPart.Position.Y < fallThresholdY then
 				if lastSafeCFrame then
@@ -3433,25 +3434,25 @@ local script = G2L["88"];
 			end
 		end)
 	end
-	
+
 	local function onCharacterAdded(char)
 		if antiVoidEnabled then
 			enableAntiVoid(char)
 		end
 	end
-	
+
 	if player.Character then
 		onCharacterAdded(player.Character)
 	end
-	
+
 	player.CharacterAdded:Connect(onCharacterAdded)
 	local notificationmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
-	
+
 	-- Toggle system
 	button.MouseButton1Click:Connect(function()
 		antiVoidEnabled = not antiVoidEnabled
-		
-	
+
+
 		if antiVoidEnabled then
 			warn("Anti-Void Enabled")
 			notificationmodule.Notification("WARNING ⚠️", "FLASH WARNING (Use fly incase‼️)", 3)
@@ -3468,44 +3469,44 @@ local script = G2L["88"];
 			end
 		end
 	end)
-	
+
 end;
 task.spawn(C_88);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ChatSpam.ChatSpamScript
 local function C_8b()
-local script = G2L["8b"];
+	local script = G2L["8b"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
-	
+
 	local toggle = false
-	
+
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
-	
+
 	local TextChatService = game:GetService("TextChatService")
 	local chatChannel = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
-	
+
 	-- Toggle on button click
 	btn.MouseButton1Up:Connect(function()
 		toggle = not toggle
 		btn.Text = toggle and "Stop Spamming" or "Chat Spam"
 		buttonmodule.ColorOff(btn)
-	
+
 		if toggle then
-	
+
 			textboxmodule.SetProperty(textbox, "Text")
 			textbox.Text = ""
 			buttonmodule.ColorOn(btn)
 		end
 	end)
-	
+
 	-- Use TextBoxModule to allow editing the textbox
-	
-	
+
+
 	-- Repeating task to send messages
 	task.spawn(function()
 		while true do
@@ -3518,58 +3519,58 @@ local script = G2L["8b"];
 			task.wait(0.4) -- adjust for spam rate
 		end
 	end)
-	
+
 end;
 task.spawn(C_8b);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ChatlogButton.ChatlogScriptToggle
 local function C_8e()
-local script = G2L["8e"];
+	local script = G2L["8e"];
 	local Players = game:GetService("Players")
 	local RunService = game:GetService("RunService")
 	local player = Players.LocalPlayer
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local btn = script.Parent
-	
+
 	local toggled = false
-	
+
 	local chatlogframe = script.Parent.Parent.Parent.Parent.Parent.Parent.ChatLog
-	
+
 	btn.MouseButton1Up:Connect(function()
 		chatlogframe.Visible = not chatlogframe.Visible
-	
+
 		if chatlogframe.Visible then
 			buttonmodule.ColorOn(script.Parent)
 		else
 			buttonmodule.ColorOff(script.Parent)
 		end
 	end)
-	
+
 end;
 task.spawn(C_8e);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ClickToMove.ClickScript
 local function C_91()
-local script = G2L["91"];
+	local script = G2L["91"];
 	local player = game.Players.LocalPlayer
 	local mouse = player:GetMouse()
 	local button = script.Parent
 	local toggle = false
-	
+
 	local module = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Set initial color
 	module.ColorOff(button)
-	
+
 	-- Toggle the teleport mode on button click
 	button.MouseButton1Click:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			module.ColorOn(button)
 		else
 			module.ColorOff(button)
 		end
 	end)
-	
+
 	-- Listen for mouse click to teleport while toggle is active
 	mouse.Button1Down:Connect(function()
 		if toggle then
@@ -3579,73 +3580,73 @@ local script = G2L["91"];
 			end
 		end
 	end)
-	
+
 end;
 task.spawn(C_91);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.DashButton.DashScript
 local function C_94()
-local script = G2L["94"];
+	local script = G2L["94"];
 	-- LocalScript in your TextButton
-	
+
 	local button = script.Parent
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
 	local toggle = false
 	local dashDistance = 10
-	
+
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Toggle system for enabling and disabling dash
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
-	
+
 		if toggle then
 			buttonmodule.ColorOn(button)
 		else
 			buttonmodule.ColorOff(button)
 		end
 	end)
-	
+
 	-- Dash function
 	local function dash()
 		if toggle then
 			local camera = game.Workspace.CurrentCamera
 			local dashDirection = camera.CFrame.LookVector
 			local dashPosition = character.HumanoidRootPart.Position + dashDirection * dashDistance
-	
+
 			character:SetPrimaryPartCFrame(CFrame.new(dashPosition))
 		end
 	end
-	
+
 	-- Detect Q key
 	local UserInputService = game:GetService("UserInputService")
-	
+
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
 		if input.KeyCode == Enum.KeyCode.Q then
 			dash()
 		end
 	end)
-	
+
 end;
 task.spawn(C_94);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.ESP.ESPscriptnew
 local function C_97()
-local script = G2L["97"];
+	local script = G2L["97"];
 	-- Fancy ESP Toggle Button Script with Username, Distance, and Toggle GUI
 	-- Must be a LocalScript inside a TextButton
-	
+
 	local button = script.Parent
 	local Players = game:GetService("Players")
 	local RunService = game:GetService("RunService")
 	local localPlayer = Players.LocalPlayer
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Global ESP API
 	_G.FancyESP = _G.FancyESP or {}
 	local ESP = _G.FancyESP
-	
+
 	ESP.settings = setmetatable({
 		enabled = false,
 		boxColor = Color3.fromRGB(255, 0, 0),
@@ -3655,18 +3656,18 @@ local script = G2L["97"];
 		__index = function(t, k) return rawget(t, k) end,
 		__newindex = function(t, k, v) rawset(t, k, v) end
 	})
-	
+
 	local espTargets = {}
 	local lastUpdated = 0
 	local connection
-	
+
 	local function isTargetModel(model)
 		return model:IsA("Model") and model:FindFirstChild("Humanoid") and model:FindFirstChild("HumanoidRootPart")
 	end
-	
+
 	local function createESP(model)
 		if espTargets[model] then return end
-	
+
 		local root = model:FindFirstChild("HumanoidRootPart")
 		if not root then
 			model.ChildAdded:Once(function(child)
@@ -3676,7 +3677,7 @@ local script = G2L["97"];
 			end)
 			return
 		end
-	
+
 		local box = Instance.new("BoxHandleAdornment")
 		box.Name = "FancyESPBox"
 		box.Adornee = root
@@ -3686,7 +3687,7 @@ local script = G2L["97"];
 		box.ZIndex = 5
 		box.Transparency = 0.5
 		box.Parent = workspace
-	
+
 		local billboard = Instance.new("BillboardGui")
 		billboard.Name = "FancyESPLabel"
 		billboard.Adornee = root
@@ -3694,7 +3695,7 @@ local script = G2L["97"];
 		billboard.StudsOffset = Vector3.new(0, 5, 0)
 		billboard.AlwaysOnTop = true
 		billboard.Parent = workspace
-	
+
 		local nameLabel = Instance.new("TextLabel")
 		nameLabel.Name = "Name"
 		nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
@@ -3706,7 +3707,7 @@ local script = G2L["97"];
 		nameLabel.TextStrokeTransparency = 0.5
 		nameLabel.Text = model.Name
 		nameLabel.Parent = billboard
-	
+
 		local distanceLabel = Instance.new("TextLabel")
 		distanceLabel.Name = "Distance"
 		distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
@@ -3718,7 +3719,7 @@ local script = G2L["97"];
 		distanceLabel.TextStrokeTransparency = 0.7
 		distanceLabel.Text = ""
 		distanceLabel.Parent = billboard
-	
+
 		local humanoid = model:FindFirstChild("Humanoid")
 		if humanoid then
 			humanoid.Died:Connect(function()
@@ -3728,7 +3729,7 @@ local script = G2L["97"];
 					espTargets[model] = nil
 				end
 			end)
-	
+
 			model:WaitForChild("HumanoidRootPart").AncestryChanged:Connect(function(_, parent)
 				if not parent and espTargets[model] then
 					espTargets[model].box:Destroy()
@@ -3737,7 +3738,7 @@ local script = G2L["97"];
 				end
 			end)
 		end
-	
+
 		espTargets[model] = {
 			box = box,
 			label = billboard,
@@ -3747,7 +3748,7 @@ local script = G2L["97"];
 			nameLabel = nameLabel
 		}
 	end
-	
+
 	function ESP:Destroy()
 		for _, data in pairs(espTargets) do
 			if data.box then data.box:Destroy() end
@@ -3755,7 +3756,7 @@ local script = G2L["97"];
 		end
 		espTargets = {}
 	end
-	
+
 	local function startESP()
 		connection = RunService.RenderStepped:Connect(function()
 			if tick() - lastUpdated > 0.5 then
@@ -3788,7 +3789,7 @@ local script = G2L["97"];
 			end
 		end)
 	end
-	
+
 	-- Cleanup on character death
 	local function onCharacterAdded(char)
 		local hum = char:WaitForChild("Humanoid")
@@ -3802,20 +3803,20 @@ local script = G2L["97"];
 	end
 	if localPlayer.Character then onCharacterAdded(localPlayer.Character) end
 	localPlayer.CharacterAdded:Connect(onCharacterAdded)
-	
+
 	-- GUI controls
 	local espGui = Instance.new("ScreenGui")
 	espGui.Name = "ESPSettingsGui"
 	espGui.Parent = localPlayer:WaitForChild("PlayerGui")
 	espGui.Enabled = false
-	
+
 	local frame = Instance.new("Frame")
 	frame.Size = UDim2.new(0, 200, 0, 150)
 	frame.Position = UDim2.new(0, 10, 0, 10)
 	frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 	frame.BackgroundTransparency = 0.3
 	frame.Parent = espGui
-	
+
 	local usernameToggle = Instance.new("TextButton")
 	usernameToggle.Size = UDim2.new(0, 180, 0, 30)
 	usernameToggle.Position = UDim2.new(0, 10, 0, 10)
@@ -3823,7 +3824,7 @@ local script = G2L["97"];
 	usernameToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 	usernameToggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	usernameToggle.Parent = frame
-	
+
 	local distanceToggle = Instance.new("TextButton")
 	distanceToggle.Size = UDim2.new(0, 180, 0, 30)
 	distanceToggle.Position = UDim2.new(0, 10, 0, 50)
@@ -3831,17 +3832,17 @@ local script = G2L["97"];
 	distanceToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
 	distanceToggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	distanceToggle.Parent = frame
-	
+
 	usernameToggle.MouseButton1Click:Connect(function()
 		ESP.settings.showUsername = not ESP.settings.showUsername
 		usernameToggle.Text = ESP.settings.showUsername and "Username: ON" or "Username: OFF"
 	end)
-	
+
 	distanceToggle.MouseButton1Click:Connect(function()
 		ESP.settings.showDistance = not ESP.settings.showDistance
 		distanceToggle.Text = ESP.settings.showDistance and "Distance: ON" or "Distance: OFF"
 	end)
-	
+
 	button.MouseButton1Click:Connect(function()
 		ESP.settings.enabled = not ESP.settings.enabled
 		if ESP.settings.enabled then
@@ -3859,48 +3860,48 @@ end;
 task.spawn(C_97);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FakeLagButton.FakeLagScript
 local function C_9b()
-local script = G2L["9b"];
+	local script = G2L["9b"];
 	local Players = game:GetService("Players")
 	local RunService = game:GetService("RunService")
 	local player = Players.LocalPlayer
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local btn = script.Parent
-	
+
 	local toggled = false
 	local oldGravity = workspace.Gravity
 	local renderConnection
 	local mainLoop
-	
+
 	btn.MouseButton1Up:Connect(function()
 		toggled = not toggled
-	
+
 		if toggled then
 			buttonmodule.ColorOn(btn)
 			workspace.Gravity = 100
-	
+
 			mainLoop = task.spawn(function()
 				while toggled do
 					local character = player.Character
 					local hum = character and character:FindFirstChild("Humanoid")
 					local humrootpart = character and character:FindFirstChild("HumanoidRootPart")
-	
+
 					if hum and humrootpart then
 						local lastPos = humrootpart.Position
-	
+
 						task.wait(math.random(0.4, 0.9))
-	
+
 						humrootpart.Anchored = not humrootpart.Anchored
-	
+
 						if math.random() < 0.05 then
 							task.wait(0.4)
 							humrootpart.CFrame = CFrame.new(lastPos)
 						end
-	
+
 						-- Disconnect old connection if any
 						if renderConnection then
 							renderConnection:Disconnect()
 						end
-	
+
 						renderConnection = RunService.RenderStepped:Connect(function()
 							local state = hum:GetState()
 							if state == Enum.HumanoidStateType.Jumping or state == Enum.HumanoidStateType.Freefall then
@@ -3910,52 +3911,52 @@ local script = G2L["9b"];
 							end
 						end)
 					end
-	
+
 					task.wait(math.random(0.1, 0.3))
 				end
 			end)
 		else
 			buttonmodule.ColorOff(btn)
 			toggled = false
-	
+
 			if renderConnection then
 				renderConnection:Disconnect()
 				renderConnection = nil
 			end
-	
+
 			if mainLoop then
 				task.cancel(mainLoop)
 				mainLoop = nil
 			end
-	
+
 			local character = player.Character
 			local humrootpart = character and character:FindFirstChild("HumanoidRootPart")
 			if humrootpart then
 				humrootpart.Anchored = false
 			end
-	
+
 			workspace.Gravity = oldGravity
 		end
 	end)
-	
+
 end;
 task.spawn(C_9b);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FieldOfViewButton.FOVscript
 local function C_9e()
-local script = G2L["9e"];
+	local script = G2L["9e"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
-	
+
 	local toggle = false
-	
+
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
-	
-	
+
+
 	btn.MouseButton1Up:Connect(function()
 		textboxmodule.IntSetProperty(workspace.Camera, "FieldOfView")
 	end)
@@ -3963,19 +3964,19 @@ end;
 task.spawn(C_9e);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.AntiFlingButton.AntiFlingScript
 local function C_a1()
-local script = G2L["a1"];
+	local script = G2L["a1"];
 	local plr = game.Players.LocalPlayer
 	local button = script.Parent
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
-	
+
 	-- Toggle state
 	local toggleAntiFling = false
-	
+
 	-- High density anti-fling physical properties
 	local antiFlingProperties = PhysicalProperties.new(1000, 0.3, 0.5)
 	-- Roblox's default for Plastic
 	local defaultProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
-	
+
 	-- Function to apply properties to all character parts
 	local function applyPhysicalProperties(char, props)
 		for _, part in ipairs(char:GetDescendants()) do
@@ -3984,16 +3985,16 @@ local script = G2L["a1"];
 			end
 		end
 	end
-	
+
 	-- Enable/Disable Anti-Fling
 	local function enableAntiFling(char)
 		applyPhysicalProperties(char, antiFlingProperties)
 	end
-	
+
 	local function disableAntiFling(char)
 		applyPhysicalProperties(char, defaultProperties)
 	end
-	
+
 	-- Function to handle current character
 	local function applyToCurrentCharacter()
 		local char = plr.Character
@@ -4005,35 +4006,35 @@ local script = G2L["a1"];
 			end
 		end
 	end
-	
+
 	-- Connect to respawn to reapply anti-fling if needed
 	plr.CharacterAdded:Connect(function(char)
 		char:WaitForChild("HumanoidRootPart")
 		applyToCurrentCharacter()
 	end)
-	
+
 	-- Button click toggles anti-fling
 	button.MouseButton1Up:Connect(function()
 		toggleAntiFling = not toggleAntiFling
 		button.BorderSizePixel = toggleAntiFling and 2 or 0
 		applyToCurrentCharacter()
 	end)
-	
+
 	-- Initial application (in case the character already exists)
 	if plr.Character then
 		plr.Character:WaitForChild("HumanoidRootPart")
 		applyToCurrentCharacter()
 	end
-	
+
 end;
 task.spawn(C_a1);
 -- StarterGui.VEXGUI.Main.Drag
 local function C_af()
-local script = G2L["af"];
+	local script = G2L["af"];
 	local UserInputService = game:GetService('UserInputService')
-	
+
 	local frame = script.Parent
-	
+
 	local leadFrame = Instance.new('Frame') do
 		leadFrame.AnchorPoint = frame.AnchorPoint
 		leadFrame.Position = frame.Position
@@ -4042,80 +4043,80 @@ local script = G2L["af"];
 		leadFrame.Visible = false
 		leadFrame.Parent = frame.Parent
 	end
-	
+
 	local screenGui = frame:FindFirstAncestorOfClass('ScreenGui')
-	
+
 	local inputChanged = nil
 	local inputEnded = nil
-	
+
 	local function getBoundsRelations(guiObject : GuiObject)
 		local bounds = screenGui.AbsoluteSize
 		local topLeft = screenGui.IgnoreGuiInset and guiObject.AbsolutePosition + Vector2.new(0, 36) or guiObject.AbsolutePosition
 		local bottomRight = topLeft + guiObject.AbsoluteSize
-	
+
 		local boundRelations = {
 			Top = topLeft.Y < 0 and math.abs(topLeft.Y) or nil,
 			Left = topLeft.X < 0 and math.abs(topLeft.X) or nil,
 			Right = bottomRight.X > bounds.X and math.abs(bottomRight.X - bounds.X) or nil,
 			Bottom = bottomRight.Y > bounds.Y and math.abs(bottomRight.Y - bounds.Y) or nil,
 		}
-	
+
 		return (not boundRelations.Top
 			and not boundRelations.Bottom
 			and not boundRelations.Left
 			and not boundRelations.Right), boundRelations
 	end
-	
+
 	frame.InputBegan:Connect(function(inputObject : InputObject)
 		if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
-	
+
 			local lastMousePosition = UserInputService:GetMouseLocation()
 			local goalPosition = frame.Position
-	
+
 			inputChanged = UserInputService.InputChanged:Connect(function(input : InputObject, event : boolean)
 				if input.UserInputType == Enum.UserInputType.MouseMovement then
 					local currentMousePosition = UserInputService:GetMouseLocation()
 					local mouseDelta = currentMousePosition - lastMousePosition
-	
+
 					goalPosition += UDim2.fromOffset(mouseDelta.X, mouseDelta.Y)
-	
+
 					leadFrame.Position = goalPosition
-	
+
 					local isInBounds, relations = getBoundsRelations(leadFrame)
-	
+
 					if not isInBounds then
 						local x = (relations.Left or 0) - (relations.Right or 0)
 						local y = (relations.Top or 0) - (relations.Bottom or 0)
-	
+
 						goalPosition += UDim2.fromOffset(x, y)
 					end
-	
+
 					frame.Position = goalPosition
 					lastMousePosition = currentMousePosition
 				end
 			end)
-	
+
 			inputEnded = frame.InputEnded:Connect(function(input : InputObject)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					inputChanged:Disconnect()
 					inputChanged = nil
-	
+
 					inputEnded:Disconnect()
 					inputEnded = nil
 				end
 			end)
 		end
 	end)
-	
+
 	frame.Destroying:Once(function()
-	
+
 		leadFrame = leadFrame:Destroy()
-	
+
 		if inputChanged  then
 			inputChanged:Disconnect()
 			inputChanged = nil
 		end
-	
+
 		if inputEnded then
 			inputEnded:Disconnect()
 			inputEnded = nil
@@ -4125,26 +4126,31 @@ end;
 task.spawn(C_af);
 -- StarterGui.VEXGUI.Main.OpenAndClose
 local function C_b0()
-local script = G2L["b0"];
+	local script = G2L["b0"];
 	local ts = game:GetService("TweenService")
-	
+
 	local closeButton = script.Parent.Parent.Main:WaitForChild("Close")
 	local main = script.Parent.Parent:FindFirstChild("Main")
 	local frame = script.Parent:WaitForChild("VexFrame")
 	local tabs = frame:WaitForChild("Tabs")
 	local buttons = tabs.VexButtons.ScrollingFrame
-	
+
 	-- Sound
 	local sound = Instance.new("Sound", workspace)
 	sound.SoundId = "rbxassetid://1843027392"
 	sound:Play()
-	
+
 	-- Toggle open/close state
 	local closed = false
 	closeButton.MouseButton1Up:Connect(function()
 		if closed == false then
 			for _, child in pairs(tabs:GetChildren()) do
 				if child:IsA("Frame") then
+					child.Visible = false
+				end
+			end
+			for _, child in pairs(tabs:GetChildren()) do
+				if child:IsA("ScrollingFrame") then
 					child.Visible = false
 				end
 			end
@@ -4155,33 +4161,33 @@ local script = G2L["b0"];
 		end
 		closed = not closed
 	end)
-	
+
 	-- Button logic for TextButtons and buttons in ScrollingFrame
 	local function setupButtonLogic(button)
 		if button:IsA("TextButton") then
 			button.MouseButton1Up:Connect(function()
 				local frameName = button.Name:gsub("Button", "") -- Remove 'Button' suffix to get frame name
-	
+
 				-- Hide all frames first
 				for _, tab in pairs(tabs:GetChildren()) do
 					if tab:IsA("Frame") then
 						tab.Visible = false
 					end
 				end
-	
+
 				-- Hide ScrollingFrame only if it's not the one clicked
 				for _, scrollFrame in pairs(tabs:GetChildren()) do
 					if scrollFrame:IsA("ScrollingFrame") and scrollFrame ~= buttons then
 						scrollFrame.Visible = false
 					end
 				end
-	
+
 				-- Show the corresponding target frame based on the button clicked
 				local targetFrame = tabs:FindFirstChild(frameName)
 				if targetFrame then
 					targetFrame.Visible = true
 				end
-	
+
 				-- Show the specific scrolling frame if the target frame is inside it
 				if targetFrame and targetFrame:IsA("ScrollingFrame") then
 					targetFrame.Visible = true
@@ -4189,40 +4195,40 @@ local script = G2L["b0"];
 			end)
 		end
 	end
-	
+
 	-- Set up button logic for the buttons in ScrollingFrame
 	for _, button in pairs(buttons:GetChildren()) do
 		setupButtonLogic(button)
 	end
-	
+
 	-- Set up button logic for any future buttons added to the ScrollingFrame
 	buttons.ChildAdded:Connect(function(child)
 		setupButtonLogic(child)
 	end)
-	
+
 end;
 task.spawn(C_b0);
 -- StarterGui.VEXGUI.Logo.LocalScript
 local function C_b3()
-local script = G2L["b3"];
+	local script = G2L["b3"];
 	local imageLabel = game.Players.LocalPlayer.PlayerGui.VEXGUI:WaitForChild("Logo") -- Assuming the image is the parent
 	local aspectRatio = 1 -- 500 / 500 = 1
 	local ts = game:GetService("TweenService")
-	
+
 	local ti = TweenInfo.new(3.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.In)
-	
-	
+
+
 	-- Create the UIAspectRatioConstraint
 	local aspectConstraint = Instance.new("UIAspectRatioConstraint")
 	aspectConstraint.AspectRatio = aspectRatio
 	aspectConstraint.Parent = imageLabel
-	
+
 	-- Set anchor point to center
 	imageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-	
+
 	-- Set size and center position
 	imageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-	
+
 	if imageLabel then
 		imageLabel.Visible = true
 		imageLabel.Size = UDim2.new(0, 0, 0, 0)
@@ -4232,11 +4238,11 @@ end;
 task.spawn(C_b3);
 -- StarterGui.VEXGUI.ChatLog.Drag
 local function C_bb()
-local script = G2L["bb"];
+	local script = G2L["bb"];
 	local UserInputService = game:GetService('UserInputService')
-	
+
 	local frame = script.Parent
-	
+
 	local leadFrame = Instance.new('Frame') do
 		leadFrame.AnchorPoint = frame.AnchorPoint
 		leadFrame.Position = frame.Position
@@ -4245,80 +4251,80 @@ local script = G2L["bb"];
 		leadFrame.Visible = false
 		leadFrame.Parent = frame.Parent
 	end
-	
+
 	local screenGui = frame:FindFirstAncestorOfClass('ScreenGui')
-	
+
 	local inputChanged = nil
 	local inputEnded = nil
-	
+
 	local function getBoundsRelations(guiObject : GuiObject)
 		local bounds = screenGui.AbsoluteSize
 		local topLeft = screenGui.IgnoreGuiInset and guiObject.AbsolutePosition + Vector2.new(0, 36) or guiObject.AbsolutePosition
 		local bottomRight = topLeft + guiObject.AbsoluteSize
-	
+
 		local boundRelations = {
 			Top = topLeft.Y < 0 and math.abs(topLeft.Y) or nil,
 			Left = topLeft.X < 0 and math.abs(topLeft.X) or nil,
 			Right = bottomRight.X > bounds.X and math.abs(bottomRight.X - bounds.X) or nil,
 			Bottom = bottomRight.Y > bounds.Y and math.abs(bottomRight.Y - bounds.Y) or nil,
 		}
-	
+
 		return (not boundRelations.Top
 			and not boundRelations.Bottom
 			and not boundRelations.Left
 			and not boundRelations.Right), boundRelations
 	end
-	
+
 	frame.InputBegan:Connect(function(inputObject : InputObject)
 		if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
-	
+
 			local lastMousePosition = UserInputService:GetMouseLocation()
 			local goalPosition = frame.Position
-	
+
 			inputChanged = UserInputService.InputChanged:Connect(function(input : InputObject, event : boolean)
 				if input.UserInputType == Enum.UserInputType.MouseMovement then
 					local currentMousePosition = UserInputService:GetMouseLocation()
 					local mouseDelta = currentMousePosition - lastMousePosition
-	
+
 					goalPosition += UDim2.fromOffset(mouseDelta.X, mouseDelta.Y)
-	
+
 					leadFrame.Position = goalPosition
-	
+
 					local isInBounds, relations = getBoundsRelations(leadFrame)
-	
+
 					if not isInBounds then
 						local x = (relations.Left or 0) - (relations.Right or 0)
 						local y = (relations.Top or 0) - (relations.Bottom or 0)
-	
+
 						goalPosition += UDim2.fromOffset(x, y)
 					end
-	
+
 					frame.Position = goalPosition
 					lastMousePosition = currentMousePosition
 				end
 			end)
-	
+
 			inputEnded = frame.InputEnded:Connect(function(input : InputObject)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					inputChanged:Disconnect()
 					inputChanged = nil
-	
+
 					inputEnded:Disconnect()
 					inputEnded = nil
 				end
 			end)
 		end
 	end)
-	
+
 	frame.Destroying:Once(function()
-	
+
 		leadFrame = leadFrame:Destroy()
-	
+
 		if inputChanged  then
 			inputChanged:Disconnect()
 			inputChanged = nil
 		end
-	
+
 		if inputEnded then
 			inputEnded:Disconnect()
 			inputEnded = nil
@@ -4328,22 +4334,22 @@ end;
 task.spawn(C_bb);
 -- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame.ChatLogger
 local function C_bd()
-local script = G2L["bd"];
+	local script = G2L["bd"];
 	local Players = game:GetService("Players")
 	local TextChatService = game:GetService("TextChatService")
-	
+
 	local localPlayer = Players.LocalPlayer
 	local playerGui = localPlayer:WaitForChild("PlayerGui")
-	
+
 	if playerGui:FindFirstChild("ChatLogGui") then
 		playerGui:FindFirstChild("ChatLogGui"):Destroy()
 	end
-	
+
 	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = "ChatLogGui"
 	screenGui.ResetOnSpawn = false
 	screenGui.Parent = playerGui
-	
+
 	local scrollingFrame = Instance.new("ScrollingFrame")
 	scrollingFrame.Name = "ChatLog"
 	scrollingFrame.Size = UDim2.new(1, 0, 12.785, 0)
@@ -4354,19 +4360,19 @@ local script = G2L["bd"];
 	scrollingFrame.BorderSizePixel = 0
 	scrollingFrame.ScrollBarThickness = 6
 	scrollingFrame.Parent = script.Parent.Parent
-	
+
 	local layout = Instance.new("UIListLayout")
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.Padding = UDim.new(0, 4)
 	layout.Parent = scrollingFrame
-	
+
 	local function isCommandMessage(message)
 		local firstChar = string.sub(message, 1, 1)
 		return firstChar == ":" or firstChar == ";" or firstChar == "/" or firstChar == "." or firstChar == "!" or firstChar == "?"
 	end
-	
+
 	local runservice = game:GetService("RunService")
-	
+
 	local function createTooltip(text, messageLabel)
 		local tooltip = Instance.new("TextLabel")
 		tooltip.Size = UDim2.new(0, 300, 0, 40)
@@ -4378,16 +4384,16 @@ local script = G2L["bd"];
 		tooltip.Text = text
 		tooltip.Font = Enum.Font.SourceSans
 		tooltip.Parent = screenGui
-	
+
 		runservice.RenderStepped:Connect(function()
 			tooltip.Position = UDim2.new(0, localPlayer:GetMouse().X + 10, 0, localPlayer:GetMouse().Y + 10)
 		end)
-	
+
 		messageLabel.MouseLeave:Connect(function()
 			tooltip:Destroy()
 		end)
 	end
-	
+
 	local function addChatMessage(speakerName, messageText)
 		local messageLabel = Instance.new("TextLabel")
 		messageLabel.Size = UDim2.new(1, -10, 0, 20)
@@ -4401,20 +4407,20 @@ local script = G2L["bd"];
 		messageLabel.Text = "<b>" .. speakerName .. "</b>: " .. messageText
 		messageLabel.TextColor3 = isCommandMessage(messageText) and Color3.fromRGB(255, 85, 85) or Color3.fromRGB(255, 255, 255)
 		messageLabel.Parent = scrollingFrame
-	
+
 		if messageText:len() > 40 then
 			messageLabel.MouseEnter:Connect(function()
 				createTooltip(messageText, messageLabel)
 			end)
 		end
-	
+
 		task.wait()
 		scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y)
 		scrollingFrame.CanvasPosition = Vector2.new(0, scrollingFrame.CanvasSize.Y.Offset)
 	end
-	
+
 	local loggedMessageIds = {}
-	
+
 	TextChatService.OnIncomingMessage = function(message)
 		if message.TextSource then
 			if not loggedMessageIds[message.MessageId] then
@@ -4428,7 +4434,7 @@ local script = G2L["bd"];
 			end
 		end
 	end
-	
+
 end;
 task.spawn(C_bd);
 
