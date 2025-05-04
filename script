@@ -4470,26 +4470,19 @@ task.spawn(C_bd);
 -- StarterGui.VEXGUI.ReExecute
 local function C_c2()
 	local script = G2L["c2"];
-	local GUI = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local deathtext = GUI:WaitForChild("DeathText")
-
-	local function onCharacterAdded(character)
-		local humanoid = character:WaitForChild("Humanoid")
-		humanoid.Died:Connect(function()
-			deathtext.Visible = true
-
+	local GUI = script.Parent
+	local function onCharacterAdded(char)
+		local hum = char:WaitForChild("Humanoid")
+		hum.Died:Connect(function()
+			local deathText = GUI:WaitForChild("DeathText")
+			deathText.Visible = true
 			wait(3)
-			deathtext.Text = "Wait.."
-			wait(7)
-
-			deathtext.Text = "Successful"
-			game.Debris:AddItem(deathtext, 1)
-
+			deathText.Text = "Wait.."
+			wait(5)
 			local newGUI = GUI:Clone()
 			newGUI.Parent = GUI.Parent
-
-			GUI:Destroy() -- destroy after cloning to re-execute script
+			GUI:Destroy()
 		end)
 	end
 
