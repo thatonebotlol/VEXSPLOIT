@@ -7,7 +7,7 @@
  Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
 ]=]
 
--- Instances: 192 | Scripts: 37 | Modules: 3 | Tags: 0
+-- Instances: 194 | Scripts: 38 | Modules: 3 | Tags: 0
 local G2L = {};
 
 -- StarterGui.VEXGUI
@@ -670,7 +670,6 @@ G2L["3a"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.f
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Spectate.TextBox
 G2L["3b"] = Instance.new("TextBox", G2L["36"]);
-G2L["3b"]["CursorPosition"] = -1;
 G2L["3b"]["PlaceholderColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["3b"]["BorderSizePixel"] = 0;
 G2L["3b"]["TextWrapped"] = true;
@@ -786,7 +785,6 @@ G2L["47"]["Position"] = UDim2.new(0.38326, 0, 0.07343, 0);
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Teleport.TextBox
 G2L["48"] = Instance.new("TextBox", G2L["42"]);
-G2L["48"]["CursorPosition"] = -1;
 G2L["48"]["PlaceholderColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["48"]["BorderSizePixel"] = 0;
 G2L["48"]["TextWrapped"] = true;
@@ -1973,6 +1971,29 @@ G2L["c0"]["Name"] = [[MessageSent]];
 G2L["c0"]["Position"] = UDim2.new(0.86067, 0, 0.24149, 0);
 
 
+-- StarterGui.VEXGUI.ReExecute
+G2L["c1"] = Instance.new("LocalScript", G2L["1"]);
+G2L["c1"]["Name"] = [[ReExecute]];
+
+
+-- StarterGui.VEXGUI.DeathText
+G2L["c2"] = Instance.new("TextLabel", G2L["1"]);
+G2L["c2"]["TextWrapped"] = true;
+G2L["c2"]["BorderSizePixel"] = 0;
+G2L["c2"]["TextSize"] = 14;
+G2L["c2"]["TextScaled"] = true;
+G2L["c2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["c2"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["c2"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["c2"]["BackgroundTransparency"] = 1;
+G2L["c2"]["Size"] = UDim2.new(0.69845, 0, 0.25668, 0);
+G2L["c2"]["Visible"] = false;
+G2L["c2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["c2"]["Text"] = [[PLEASE STAND BY AS WE RE-EXECUTE]];
+G2L["c2"]["Name"] = [[DeathText]];
+G2L["c2"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
+
+
 -- Require G2L wrapper
 local G2L_REQUIRE = require;
 local G2L_MODULES = {};
@@ -2126,6 +2147,9 @@ task.spawn(C_a);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Home.ChangeTheme.ThemeScript
 local function C_1d()
 local script = G2L["1d"];
+	local HttpService = game:GetService("HttpService")
+	local FILE_NAME = "theme_color.json"
+	
 	local Colors = script.Parent.Colors
 	local Frame = script.Parent.Parent.Parent.Parent.Parent.VexFrame
 	local Main = Frame.Parent
@@ -2140,82 +2164,87 @@ local script = G2L["1d"];
 		)
 	end
 	
+	-- Saves the color to a local file
+	local function saveColor(color)
+		local data = {
+			R = color.R,
+			G = color.G,
+			B = color.B
+		}
+		writefile(FILE_NAME, HttpService:JSONEncode(data))
+	end
+	
+	-- Loads the color from the local file, or returns nil
+	local function loadColor()
+		if isfile(FILE_NAME) then
+			local data = HttpService:JSONDecode(readfile(FILE_NAME))
+			return Color3.new(data.R, data.G, data.B)
+		end
+		return nil
+	end
+	
+	-- Applies the theme color to all target elements
+	local function applyColorTheme(color)
+		local darkerColor = darkenColor(color, 0.3)
+		local darkerColor2 = darkenColor(color, 0.3)
+	
+		Frame.BackgroundColor3 = color
+		Main.BackgroundColor3 = color
+	
+		for _, button in pairs(script.Parent.Parent.Parent.Parent.Tabs.VexButtons.ScrollingFrame:GetChildren()) do
+			if button:IsA("TextButton") then
+				button.BackgroundColor3 = darkerColor
+			end
+		end
+	
+		for _, button2 in pairs(script.Parent.Parent.Parent.General:GetChildren()) do
+			if button2:IsA("TextButton") then
+				button2.BackgroundColor3 = darkerColor2
+			end
+		end
+	
+		for _, textbox in pairs(script.Parent.Parent.Parent.Parent.TextBoxs:GetChildren()) do
+			if textbox:IsA("Frame") then
+				textbox.BackgroundColor3 = color
+			end
+		end
+	
+		script.Parent.Parent.Parent.Parent.Parent.Parent.ChatLog.BackgroundColor3 = color
+		script.Parent.Parent.Parent.Teleport.ImageLabel.BackgroundColor3 = darkerColor2
+	end
+	
 	-- Handle color buttons
 	for _, v in pairs(Colors:GetChildren()) do
 		if v:IsA("TextButton") then
 			v.MouseButton1Up:Connect(function()
 				local originalColor = v.BackgroundColor3
-				local darkerColor = darkenColor(originalColor, 0.3)
-				local darkerColor2 = darkenColor(originalColor, 0.3)
-	
-				Frame.BackgroundColor3 = originalColor
-				Main.BackgroundColor3 = originalColor
-	
-				for _, button in pairs(script.Parent.Parent.Parent.Parent.Tabs.VexButtons.ScrollingFrame:GetChildren()) do
-					if button:IsA("TextButton") then
-						button.BackgroundColor3 = darkerColor
-					end
-				end
-	
-				for _, button2 in pairs(script.Parent.Parent.Parent.General:GetChildren()) do
-					if button2:IsA("TextButton") then
-						button2.BackgroundColor3 = darkerColor2
-					end
-				end
-	
-				for _, textbox in pairs(script.Parent.Parent.Parent.Parent.TextBoxs:GetChildren()) do
-					if textbox:IsA("Frame") then
-						textbox.BackgroundColor3 = originalColor
-					end
-				end
-				
-				script.Parent.Parent.Parent.Parent.Parent.Parent.ChatLog.BackgroundColor3 = originalColor
-				
-				script.Parent.Parent.Parent.Teleport.ImageLabel.BackgroundColor3 = darkerColor2
+				applyColorTheme(originalColor)
+				saveColor(originalColor)
 			end)
 		end
 	end
 	
 	-- Handle custom RGB input
 	textbox.FocusLost:Connect(function()
-		local text = textbox.Text:gsub("[()%[%]{}]", "") -- remove any parentheses, brackets, or braces
+		local text = textbox.Text:gsub("[()%[%]{}]", "") -- remove any brackets
 		local r, g, b = text:match("^(%d+),%s*(%d+),%s*(%d+)$")
 		r, g, b = tonumber(r), tonumber(g), tonumber(b)
 	
 		if r and g and b and r <= 255 and g <= 255 and b <= 255 then
 			local color = Color3.fromRGB(r, g, b)
-			local darkerColor = darkenColor(color, 0.3)
-			local darkerColor2 = darkenColor(color, 0.3)
-	
-			for _, button in pairs(script.Parent.Parent.Parent.Parent.Tabs.VexButtons.ScrollingFrame:GetChildren()) do
-				if button:IsA("TextButton") then
-					button.BackgroundColor3 = darkerColor
-				end
-			end
-	
-			for _, button2 in pairs(script.Parent.Parent.Parent.General:GetChildren()) do
-				if button2:IsA("TextButton") then
-					button2.BackgroundColor3 = darkerColor2
-				end
-			end
-	
-			Frame.BackgroundColor3 = color
-			Main.BackgroundColor3 = color
-	
-			for _, textbox in pairs(script.Parent.Parent.Parent.Parent.TextBoxs:GetChildren()) do
-				if textbox:IsA("Frame") then
-					textbox.BackgroundColor3 = color
-				end
-			end
-			
-			script.Parent.Parent.Parent.Parent.Parent.Parent.ChatLog.BackgroundColor3 = color
-			script.Parent.Parent.Parent.Teleport.ImageLabel.BackgroundColor3 = darkerColor2
-	
+			applyColorTheme(color)
+			saveColor(color)
 			textbox.Text = string.format("%d,%d,%d is your theme color", r, g, b)
 		else
 			warn("Invalid RGB input. Please enter in the format: 255,0,0")
 		end
 	end)
+	
+	-- Load saved color on startup
+	local savedColor = loadColor()
+	if savedColor then
+		applyColorTheme(savedColor)
+	end
 	
 end;
 task.spawn(C_1d);
@@ -2390,19 +2419,19 @@ local script = G2L["39"];
 			cam.CFrame = player.Character.HumanoidRootPart.CFrame
 		end
 	end)
-	
+
 end;
 task.spawn(C_39);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Teleport.teleportenter.TeleportScript
 local function C_45()
-local script = G2L["45"];
+	local script = G2L["45"];
 	local button = script.Parent
 	local textbox = button.Parent.TextBox
 	local image = script.Parent.Parent.ImageLabel
 	local player = game.Players.LocalPlayer
 	local TextChatService = game:GetService("TextChatService")
 	local Players = game:GetService("Players")
-	
+
 	-- System message with TELEPORT tag
 	local function sendSystemMessage(msg)
 		local prefix = "<b><font color='#9A33A4'>[TELEPORT]</font></b>"
@@ -4437,5 +4466,30 @@ local function C_bd()
 
 end;
 task.spawn(C_bd);
+-- StarterGui.VEXGUI.ReExecute
+local function C_c1()
+	local script = G2L["c1"];
+	local GUI = script.Parent
+	local deathtext = script.Parent.DeathText
+
+	local plr = game:GetService("Players").LocalPlayer
+
+
+	local function onCharacterAdded(character)
+		local humanoid = character:WaitForChild("Humanoid")
+		humanoid.Died:Connect(function()
+			deathtext.Visible = true
+			GUI:Clone().Parent = GUI.Parent
+		end)
+	end
+
+	if plr.Character then
+		onCharacterAdded(plr.Character)
+	end
+
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+end;
+task.spawn(C_c1);
 
 return G2L["1"], require;
