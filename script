@@ -2523,98 +2523,134 @@ task.spawn(C_45);
 local function C_54()
 	local script = G2L["54"];
 	local plr = game.Players.LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
-
-	local humrootpart = char:WaitForChild("HumanoidRootPart")
 	local button = script.Parent
-	local toggle = false
-
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 	local NotificationModule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
-	local spinSpeed = 10000 -- Be careful with high values
+	local toggle = false
+	local spinSpeed = 10000
 	local spinningCoroutine = nil
+	local touchConnections = {}
 
-	-- Fling logic
+	-- FLING FUNCTION
 	local function onPartTouched(otherPart)
-		if not toggle then return end -- Only fling if toggle is on
+		if not toggle then return end
 
-		local otherChar = otherPart.Parent
-		if otherChar:IsA("Model") and otherChar:FindFirstChild("Humanoid") and otherChar ~= char then
+		local char = plr.Character
+		if not char then return end
+
+		local humrootpart = char:FindFirstChild("HumanoidRootPart")
+		if not humrootpart then return end
+
+		local otherChar = otherPart:FindFirstAncestorOfClass("Model")
+		if otherChar and otherChar ~= char and otherChar:FindFirstChild("Humanoid") then
 			local otherHumRoot = otherChar:FindFirstChild("HumanoidRootPart")
 			if otherHumRoot then
-				-- Ensure the local player is not the one being flung
-				if otherHumRoot.Parent ~= char then
-					local direction = (otherHumRoot.Position - humrootpart.Position).Unit
-					otherHumRoot.Velocity = direction * 10000
-				end
+				local direction = (otherHumRoot.Position - humrootpart.Position).Unit
+				otherHumRoot.Velocity = direction * 10000
 			end
 		end
 	end
 
-	-- R6 and R15 support
+	-- GET BODY PARTS
 	local function getBodyParts(character)
 		local bodyParts = {}
+		local names = {}
+
 		if character:FindFirstChild("Torso") then
-			for _, name in pairs({"Head", "Torso", "LeftLeg", "RightLeg", "LeftArm", "RightArm"}) do
-				local part = character:FindFirstChild(name)
-				if part then table.insert(bodyParts, part) end
-			end
+			names = {"Head", "Torso", "LeftLeg", "RightLeg", "LeftArm", "RightArm"}
 		elseif character:FindFirstChild("UpperTorso") then
-			for _, name in pairs({
+			names = {
 				"LeftFoot", "LeftHand", "LeftLowerArm", "LeftLowerLeg",
 				"LeftUpperArm", "LeftUpperLeg", "UpperTorso",
 				"RightFoot", "RightHand", "RightLowerArm", "RightLowerLeg",
 				"RightUpperArm", "RightUpperLeg"
-				}) do
-				local part = character:FindFirstChild(name)
-				if part then table.insert(bodyParts, part) end
+			}
+		end
+
+		for _, name in ipairs(names) do
+			local part = character:FindFirstChild(name)
+			if part then
+				table.insert(bodyParts, part)
 			end
 		end
+
 		return bodyParts
 	end
 
-	-- Connect touch fling
-	local bodyParts = getBodyParts(char)
-	for _, part in pairs(bodyParts) do
-		part.Touched:Connect(onPartTouched)
-	end
-
-	-- Spin logic
-	local function spinCharacter()
-		while toggle do
-			if humrootpart then
-				humrootpart.AssemblyAngularVelocity = Vector3.new(0, spinSpeed, 0)
-			end
+	-- SPIN LOOP
+	local function spinCharacter(humrootpart)
+		while toggle and humrootpart and humrootpart.Parent do
+			humrootpart.AssemblyAngularVelocity = Vector3.new(0, spinSpeed, 0)
 			task.wait(0.1)
 		end
-		-- Fully stop rotation
+
 		if humrootpart then
 			humrootpart.AssemblyAngularVelocity = Vector3.zero
-			humrootpart.RotVelocity = Vector3.zero -- Prevent leftover rotation
+			humrootpart.RotVelocity = Vector3.zero
 		end
 	end
 
-	-- Button toggle
-	button.MouseButton1Up:Connect(function()
-		toggle = not toggle
+	-- APPLY TO CHARACTER
+	local function setupCharacter(character)
+		-- Disconnect previous
+		for _, conn in pairs(touchConnections) do
+			conn:Disconnect()
+		end
+		touchConnections = {}
+
+		local humrootpart = character:WaitForChild("HumanoidRootPart")
+		local bodyParts = getBodyParts(character)
+
+		for _, part in ipairs(bodyParts) do
+			local conn = part.Touched:Connect(onPartTouched)
+			table.insert(touchConnections, conn)
+		end
 
 		if toggle then
 			humrootpart.CanCollide = true
-			spinningCoroutine = coroutine.create(spinCharacter)
-			humrootpart.CFrame = humrootpart.CFrame * CFrame.new(0,0.5,0)
+			humrootpart.CFrame = humrootpart.CFrame * CFrame.new(0, 0.5, 0)
+			spinningCoroutine = coroutine.create(function()
+				spinCharacter(humrootpart)
+			end)
 			coroutine.resume(spinningCoroutine)
-			buttonmodule.ColorOn(script.Parent)
+		end
+	end
 
-			NotificationModule.Notification("Fling", "DONT USE SHIFTLOCK OR SIT!!!", 3) -- Title, Text, Duration
+	-- BUTTON TOGGLE
+	button.MouseButton1Up:Connect(function()
+		toggle = not toggle
 
+		local char = plr.Character
+		if not char then return end
+
+		local humrootpart = char:FindFirstChild("HumanoidRootPart")
+		if not humrootpart then return end
+
+		if toggle then
+			humrootpart.CanCollide = true
+			humrootpart.CFrame = humrootpart.CFrame * CFrame.new(0, 0.5, 0)
+			spinningCoroutine = coroutine.create(function()
+				spinCharacter(humrootpart)
+			end)
+			coroutine.resume(spinningCoroutine)
+			buttonmodule.ColorOn(button)
+			NotificationModule.Notification("Fling", "DONT USE SHIFTLOCK OR SIT!!!", 3)
 		else
 			humrootpart.CanCollide = false
 			humrootpart.AssemblyAngularVelocity = Vector3.zero
-			humrootpart.RotVelocity = Vector3.zero -- ← this stops unwanted spin/momentum
-			buttonmodule.ColorOff(script.Parent)
+			humrootpart.RotVelocity = Vector3.zero
+			buttonmodule.ColorOff(button)
 		end
 	end)
+
+	-- INITIAL SETUP
+	if plr.Character then
+		setupCharacter(plr.Character)
+	end
+
+	-- ON RESPAWN
+	plr.CharacterAdded:Connect(setupCharacter)
 
 end;
 task.spawn(C_54);
@@ -2628,18 +2664,16 @@ local function C_58()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
+	local character = plr.Character or plr.CharacterAdded:Wait()
+	local humrootpart = character:WaitForChild("HumanoidRootPart")
 
-	-- Function to get the character and ensure it has HumanoidRootPart
-	local function getCharacter()
-		local char = plr.Character or plr.CharacterAdded:Wait()
-		while not char:FindFirstChild("HumanoidRootPart") do
-			char.ChildAdded:Wait()
-		end
-		return char
-	end
-
-	local humrootpart = getCharacter():WaitForChild("HumanoidRootPart")
 	local seizureCoroutine = nil
+
+	-- Update reference when character resets
+	plr.CharacterAdded:Connect(function(newChar)
+		character = newChar
+		humrootpart = newChar:WaitForChild("HumanoidRootPart")
+	end)
 
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
@@ -2649,30 +2683,28 @@ local function C_58()
 
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
-					-- Random jitter
 					local jitter = Vector3.new(
 						math.random(-1, 1),
 						math.random(-1, 1),
 						math.random(-1, 1)
 					) * 0.2
 
-					-- Random rotation
 					local rotation = CFrame.Angles(
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15)),
 						math.rad(math.random(-15, 15))
 					)
 
-					-- Apply movement
-					humrootpart.CFrame = humrootpart.CFrame + jitter
-					humrootpart.CFrame = humrootpart.CFrame * rotation
+					if humrootpart then
+						humrootpart.CFrame = humrootpart.CFrame + jitter
+						humrootpart.CFrame = humrootpart.CFrame * rotation
+					end
 
 					task.wait(0.05)
 				end
 			end)
 
 			coroutine.resume(seizureCoroutine)
-
 		else
 			buttonmodule.ColorOff(button)
 		end
@@ -2692,12 +2724,34 @@ local function C_5b()
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()  -- Ensure the character is loaded
 
-	local humrootpart = char:FindFirstChild("HumanoidRootPart")
+	-- Function to safely get HumanoidRootPart
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		local humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
 
 	button.MouseButton1Up:Connect(function()
+		local humrootpart = getHumanoidRootPart()
+
 		-- Ensure HumanoidRootPart exists before toggling
 		if humrootpart then
 			humrootpart.Anchored = not humrootpart.Anchored
+		else
+			print("HumanoidRootPart not found!")
+			return
 		end
 
 		-- Handle the toggle logic for the button color and notification
@@ -2717,6 +2771,7 @@ local function C_5e()
 	local script = G2L["5e"];
 	local player = game.Players.LocalPlayer
 
+	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
 	local function getCharacter()
 		local char = player.Character or player.CharacterAdded:Wait()
 		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
@@ -2727,8 +2782,6 @@ local function C_5e()
 
 	local button = script.Parent
 	local toggle = false
-	local allowedName = "Map"
-
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
 	button.MouseButton1Up:Connect(function()
@@ -2742,35 +2795,29 @@ local function C_5e()
 			buttonmodule.ColorOff(script.Parent)
 		end
 
+		-- Get the updated character
 		local character = getCharacter()
 
+		-- Ensure we are excluding the player's HumanoidRootPart from transparency changes
 		for _, v in pairs(game.Workspace:GetDescendants()) do
-			if v:IsA("Model") then
+			if v:IsA("Model") and v.Name ~= player.Name then  -- Exclude player's model
 				for _, part in pairs(v:GetChildren()) do
 					if part:IsA("BasePart") then
+						-- Adjust transparency of models in the workspace
 						part.Transparency = toggle and 0.5 or 0
-						-- Set the transparency of the player's HumanoidRootPart
-						if character:FindFirstChild("HumanoidRootPart") then
-							character.HumanoidRootPart.Transparency = 1
-						end
 					end
 				end
-			elseif v:IsA("BasePart") then
+			elseif v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then  -- Exclude HumanoidRootPart
+				-- Adjust transparency of parts in the workspace
 				v.Transparency = toggle and 0.5 or 0
-				for _, model in pairs(game.Workspace:GetDescendants()) do
-					if model:IsA("Model") then
-						for _, v2 in pairs(model:GetChildren()) do
-							if v2.Name == "HumanoidRootPart" then
-								v2.Transparency = 1
-							end
-						end
-					end
-				end
-				-- Set the transparency of the player's HumanoidRootPart
-				if character:FindFirstChild("HumanoidRootPart") then
-					character.HumanoidRootPart.Transparency = 1
-				end
 			end
+		end
+
+		-- Handle the transparency of the player's HumanoidRootPart separately if needed
+		local humRootPart = character:FindFirstChild("HumanoidRootPart")
+		if humRootPart then
+			-- Don't modify the HumanoidRootPart transparency
+			humRootPart.Transparency = 1  -- Set transparency as needed, or skip this step if not necessary
 		end
 	end)
 
@@ -2783,8 +2830,16 @@ local function C_61()
 	local character = player.Character or player.CharacterAdded:Wait()
 
 	-- Wait for necessary parts
-	local humanoid = character:WaitForChild("Humanoid")
-	local humRootPart = character:WaitForChild("HumanoidRootPart")
+	local function getHumanoid()
+		return character:WaitForChild("Humanoid")
+	end
+
+	local function getHumanoidRootPart()
+		return character:WaitForChild("HumanoidRootPart")
+	end
+
+	local humanoid = getHumanoid()
+	local humRootPart = getHumanoidRootPart()
 
 	local toggle = false
 
@@ -2795,8 +2850,24 @@ local function C_61()
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
 	btn.MouseButton1Up:Connect(function()
-		humanoid.UseJumpPower = true
-		textboxmodule.IntSetProperty(humanoid, "JumpPower")
+		-- Toggle the effect of jump power
+		toggle = not toggle
+
+		if toggle then
+			humanoid.UseJumpPower = true
+			textboxmodule.IntSetProperty(humanoid, "JumpPower")
+			buttonmodule.ColorOn(btn)
+		else
+			humanoid.UseJumpPower = false
+			buttonmodule.ColorOff(btn)
+		end
+	end)
+
+	-- Handle character respawn (in case character resets)
+	player.CharacterAdded:Connect(function(newCharacter)
+		character = newCharacter
+		humanoid = getHumanoid()
+		humRootPart = getHumanoidRootPart()
 	end)
 
 end;
@@ -2806,6 +2877,7 @@ local function C_64()
 	local script = G2L["64"];
 	local player = game.Players.LocalPlayer
 
+	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
 	local function getCharacter()
 		local char = player.Character or player.CharacterAdded:Wait()
 		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
@@ -2814,7 +2886,6 @@ local function C_64()
 		return char
 	end
 
-	local character = getCharacter()
 	local toggle = false
 
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
@@ -2823,10 +2894,22 @@ local function C_64()
 	local btn = script.Parent
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
-	btn.MouseButton1Up:Connect(function()
+	-- Function to handle button click and update walk speed
+	local function handleButtonClick()
+		local character = getCharacter()  -- Always get the current character
 		local humanoid = character:WaitForChild("Humanoid")
 
+		-- Call the module function to set walk speed
 		textboxmodule.IntSetProperty(humanoid, "WalkSpeed")
+	end
+
+	btn.MouseButton1Up:Connect(function()
+		handleButtonClick()
+	end)
+
+	-- Listen for respawn event to update character and ensure functionality
+	player.CharacterAdded:Connect(function()
+		-- You might need to reset the state or rebind certain properties here if needed
 	end)
 
 end;
@@ -2855,6 +2938,16 @@ local function C_67()
 			end
 		end
 	end
+
+	-- Function to re-apply state after the character respawns
+	local function resetVisibilityOnRespawn()
+		local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+		character:WaitForChild("HumanoidRootPart") -- Ensures the character has respawned
+		setDecalsAndTexturesVisibility(not toggleState) -- reapply the visibility state
+	end
+
+	-- Listen for player respawn to reset the visibility correctly
+	game.Players.LocalPlayer.CharacterAdded:Connect(resetVisibilityOnRespawn)
 
 	Button.MouseButton1Click:Connect(function()
 		toggleState = not toggleState
@@ -2903,6 +2996,17 @@ local function C_6a()
 		end
 	end)
 
+	-- Reconnect when the character respawns
+	player.CharacterAdded:Connect(function(newCharacter)
+		-- Update the character reference
+		character = newCharacter
+
+		-- If toggle is on, reconnect the jump connection
+		if toggle then
+			jumpConnection = userInputService.InputBegan:Connect(onJumpRequest)
+		end
+	end)
+
 end;
 task.spawn(C_6a);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SwimInAirButton.SwimInAirScript
@@ -2919,7 +3023,7 @@ local function C_6d()
 
 	local toggled = false
 	local updateConnection
-	local waterSize = Vector3.new(4,7,10)
+	local waterSize = Vector3.new(4, 7, 10)
 	local waterLifetime = 1.5 -- seconds
 	local activeWaterCFrames = {}
 
@@ -2931,9 +3035,14 @@ local function C_6d()
 		activeWaterCFrames = {}
 	end
 
+	-- Update character reference when the player resets
+	player.CharacterAdded:Connect(function()
+		local character = player.Character or player.CharacterAdded:Wait()
+		local hrp = character:WaitForChild("HumanoidRootPart")
+	end)
+
 	button.MouseButton1Click:Connect(function()
 		toggled = not toggled
-
 
 		if toggled then
 			updateConnection = RunService.RenderStepped:Connect(function()
@@ -2942,7 +3051,6 @@ local function C_6d()
 				buttonmodule.ColorOn(script.Parent)
 				game.Workspace.Terrain.WaterReflectance = 0
 				game.Workspace.Terrain.WaterTransparency = 1
-
 
 				if hrp then
 					local cframe = hrp.CFrame
@@ -2981,6 +3089,7 @@ local function C_6d()
 			notification.Notification("AirSwim", "sorry about how it looks :(", 3)
 		end
 	end)
+
 end;
 task.spawn(C_6d);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.GravityButton.GravityScript
@@ -3007,19 +3116,18 @@ task.spawn(C_70);
 local function C_73()
 	local script = G2L["73"];
 	local plr = game:GetService("Players").LocalPlayer
+	local currentCharacter = plr.Character or plr.CharacterAdded:Wait()
 
-	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
-	local function getCharacter()
-		local char = plr.Character or plr.CharacterAdded:Wait()
-		while not char:FindFirstChild("Humanoid") do
-			char.ChildAdded:Wait()
-		end
-		return char
-	end
+	-- Always get updated character after a reset
+	plr.CharacterAdded:Connect(function(char)
+		currentCharacter = char
+	end)
 
 	script.Parent.MouseButton1Up:Connect(function()
-		local hum = getCharacter():WaitForChild("Humanoid")
-		hum.Sit = not hum.Sit
+		local hum = currentCharacter:FindFirstChild("Humanoid")
+		if hum then
+			hum.Sit = not hum.Sit
+		end
 	end)
 
 end;
@@ -3034,6 +3142,7 @@ local function C_76()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
+	local RunService = game:GetService("RunService")
 
 	-- Function to get the character and ensure it has Humanoid and HumanoidRootPart
 	local function getCharacter()
@@ -3044,40 +3153,65 @@ local function C_76()
 		return char
 	end
 
-	local char = getCharacter()
-
-	button.MouseButton1Up:Connect(function()
+	local function onCharacterAdded()
+		local char = getCharacter()
 		local hum = char:FindFirstChild("Humanoid")
 		local humrootpart = char:FindFirstChild("HumanoidRootPart")
-		if toggle == false then
-			buttonmodule.ColorOn(button)
 
-			if hum and humrootpart then
-				-- Create a BodyVelocity object to apply an upward force
-				local bodyVelocity = Instance.new("BodyVelocity")
-				bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000) -- High force to ensure movement
-				bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Apply upward velocity
-				bodyVelocity.Parent = humrootpart
+		-- Button click event
+		button.MouseButton1Up:Connect(function()
+			if toggle == false then
+				buttonmodule.ColorOn(button)
 
-				-- Wait for the player to reach 5 studs above their starting position
-				local initialHeight = humrootpart.Position.Y
-				while humrootpart.Position.Y - initialHeight < 5 do
-					wait(0.1)
+				if hum and humrootpart then
+					-- Create a BodyVelocity object to apply an upward force
+					local bodyVelocity = Instance.new("BodyVelocity")
+					bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000) -- High force to ensure movement
+					bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Apply upward velocity
+					bodyVelocity.Parent = humrootpart
+
+					-- Wait for the player to reach 5 studs above their starting position
+					local initialHeight = humrootpart.Position.Y
+					local reachedHeight = false
+					local heartbeatConnection
+
+					heartbeatConnection = RunService.Heartbeat:Connect(function()
+						if humrootpart.Position.Y - initialHeight >= 5 then
+							reachedHeight = true
+						end
+					end)
+
+					-- Wait until the height is reached
+					while not reachedHeight do
+						wait(0.1)
+					end
+
+					-- Once the player reaches the target height, stop them by enabling PlatformStand
+					hum.PlatformStand = true
+
+					-- Remove the BodyVelocity to stop any further motion
+					bodyVelocity:Destroy()
+					heartbeatConnection:Disconnect() -- Stop the heartbeat connection
 				end
-
-				-- Once the player reaches the target height, stop them by enabling PlatformStand
-				hum.PlatformStand = true
-
-				-- Remove the BodyVelocity to stop any further motion
-				bodyVelocity:Destroy()
+			else
+				-- If toggled off, disable PlatformStand
+				if hum then
+					hum.PlatformStand = false
+				end
+				buttonmodule.ColorOff(button)
 			end
-		else
-			hum.PlatformStand = false
-			buttonmodule.ColorOff(button)
-		end
 
-		toggle = not toggle
-	end)
+			toggle = not toggle
+		end)
+	end
+
+	-- Connect to CharacterAdded to handle respawn
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+	-- Initialize when the script first runs
+	if plr.Character then
+		onCharacterAdded()
+	end
 
 end;
 task.spawn(C_76);
@@ -3091,12 +3225,17 @@ local function C_79()
 	local notifmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
 
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded:Wait()
-	local humrootpart = char:WaitForChild("HumanoidRootPart")
-
+	local humrootpart
 	local spinConnection
+	local helicopteraudio
 
 	-- Function to handle button click and toggle the spin effect
+	local function initCharacter()
+		-- Ensure the character and HumanoidRootPart are loaded
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		humrootpart = char:WaitForChild("HumanoidRootPart")
+	end
+
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
 
@@ -3120,7 +3259,7 @@ local function C_79()
 			end)
 
 			-- Add helicopter sound effect
-			local helicopteraudio = Instance.new("Sound", humrootpart)
+			helicopteraudio = Instance.new("Sound", humrootpart)
 			helicopteraudio.SoundId = "rbxassetid://686885384"
 			helicopteraudio.Looped = true
 			helicopteraudio:Play()
@@ -3130,9 +3269,9 @@ local function C_79()
 			buttonmodule.ColorOff(button)
 
 			-- Destroy the sound when toggled off
-			local helicopteraudio = humrootpart:FindFirstChild("helicopteraudio")
 			if helicopteraudio then
 				helicopteraudio:Destroy()
+				helicopteraudio = nil
 			end
 
 			-- Disconnect spin connection and reset Anchored state
@@ -3147,9 +3286,22 @@ local function C_79()
 
 	-- Reattach the connection if the character respawns
 	plr.CharacterAdded:Connect(function()
-		char = plr.Character or plr.CharacterAdded:Wait()
-		humrootpart = char:WaitForChild("HumanoidRootPart")
+		-- Cleanup any previous connections and effects
+		if spinConnection then
+			spinConnection:Disconnect()
+			spinConnection = nil
+		end
+		if helicopteraudio then
+			helicopteraudio:Destroy()
+			helicopteraudio = nil
+		end
+
+		-- Re-initialize HumanoidRootPart after respawn
+		initCharacter()
 	end)
+
+	-- Initialize HumanoidRootPart for the first time
+	initCharacter()
 
 end;
 task.spawn(C_79);
@@ -3164,7 +3316,7 @@ local function C_7c()
 
 	local plr = game:GetService("Players").LocalPlayer
 
-	-- Ensure the character is properly loaded
+	-- Function to get the character and ensure it's loaded
 	local function getCharacter()
 		local char = plr.Character or plr.CharacterAdded:Wait()
 		while not char:FindFirstChild("Humanoid") or not char:FindFirstChild("HumanoidRootPart") do
@@ -3173,7 +3325,13 @@ local function C_7c()
 		return char
 	end
 
+	-- Initial character setup
 	local char = getCharacter()
+
+	-- Function to handle character respawn
+	plr.CharacterAdded:Connect(function()
+		char = getCharacter()  -- Update character reference
+	end)
 
 	button.MouseButton1Up:Connect(function()
 		local hum = char:WaitForChild("Humanoid")
@@ -3215,21 +3373,42 @@ local function C_7f()
 		return char
 	end
 
-	local char = getCharacter()
+	local function resetCharacterReferences()
+		-- Wait until character is fully loaded
+		local char = getCharacter()
+		local hum = char:WaitForChild("Humanoid")
+		local humrootpart = char:WaitForChild("HumanoidRootPart")
+		return hum, humrootpart
+	end
 
+	-- Seizure coroutine variable
 	local seizureCoroutine = nil
+
+	-- Function to stop seizure effect if toggle is off
+	local function stopSeizure()
+		if seizureCoroutine then
+			-- Stop the coroutine
+			coroutine.close(seizureCoroutine)
+			seizureCoroutine = nil
+		end
+	end
+
+	-- Initial character references
+	local hum, humrootpart = resetCharacterReferences()
 
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
 
-		local hum = char:WaitForChild("Humanoid")
-		local humrootpart = char:WaitForChild("HumanoidRootPart")
+		-- If the character references are invalid, reinitialize them
+		if not hum or not humrootpart then
+			hum, humrootpart = resetCharacterReferences()
+		end
 
 		if toggle then
 			buttonmodule.ColorOn(button)
 			hum.PlatformStand = true
 
-			-- Create and resume the seizure coroutine
+			-- Create and start the seizure coroutine
 			seizureCoroutine = coroutine.create(function()
 				while toggle do
 					-- Random jitter
@@ -3246,20 +3425,29 @@ local function C_7f()
 						math.rad(math.random(-15, 15))
 					)
 
-					-- Apply movement
+					-- Apply jitter and rotation to HumanoidRootPart
 					humrootpart.CFrame = humrootpart.CFrame + jitter
 					humrootpart.CFrame = humrootpart.CFrame * rotation
 
+					-- Small delay for jittering effect
 					task.wait(0.05)
 				end
 			end)
 
+			-- Resume the coroutine to start jittering
 			coroutine.resume(seizureCoroutine)
-
 		else
+			-- When toggled off, stop the seizure effect and reset PlatformStand
+			stopSeizure()
 			buttonmodule.ColorOff(button)
 			hum.PlatformStand = false
 		end
+	end)
+
+	-- Handle character respawn to ensure proper setup
+	plr.CharacterAdded:Connect(function()
+		-- Reinitialize character references upon respawn
+		hum, humrootpart = resetCharacterReferences()
 	end)
 
 end;
@@ -3267,7 +3455,6 @@ task.spawn(C_7f);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.NoclipButton.NoclipScript
 local function C_82()
 	local script = G2L["82"];
-	-- Noclip script
 	local textButton = script.Parent
 	local player = game.Players.LocalPlayer
 
@@ -3280,33 +3467,46 @@ local function C_82()
 		return char
 	end
 
-	local character = getCharacter()
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
 	local isNoclipping = false
 	local previousCollisionState = {}
+
+	-- Function to save and disable collisions
+	local function enableNoclip()
+		for _, part in pairs(character:GetDescendants()) do
+			if part:IsA("BasePart") then
+				previousCollisionState[part] = part.CanCollide
+				part.CanCollide = false
+			end
+		end
+	end
+
+	-- Function to restore collisions
+	local function disableNoclip()
+		for part, state in pairs(previousCollisionState) do
+			if part:IsA("BasePart") then
+				part.CanCollide = state
+			end
+		end
+		previousCollisionState = {}  -- Reset the stored states
+	end
+
+	-- Update character on respawn
+	local character = getCharacter()
+	player.CharacterAdded:Connect(function()
+		character = getCharacter()  -- Update character reference
+	end)
 
 	textButton.MouseButton1Click:Connect(function()
 		isNoclipping = not isNoclipping
 
 		if isNoclipping then
 			buttonmodule.ColorOn(textButton)
-			-- Save the previous collision states and disable collision
-			for _, part in pairs(character:GetChildren()) do
-				if part:IsA("BasePart") then
-					previousCollisionState[part] = part.CanCollide
-					part.CanCollide = false
-				end
-			end
+			enableNoclip()
 		else
 			buttonmodule.ColorOff(textButton)
-			-- Restore the previous collision states
-			for part, state in pairs(previousCollisionState) do
-				if part:IsA("BasePart") then
-					part.CanCollide = state
-				end
-			end
-			previousCollisionState = {}  -- Reset the stored states
+			disableNoclip()
 		end
 	end)
 
@@ -3315,145 +3515,118 @@ task.spawn(C_82);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.FlyButton.FlyScript
 local function C_85()
 	local script = G2L["85"];
-	function Fly()
-		local plr = game.Players.LocalPlayer
-		local mouse = plr:GetMouse()
-		local localplayer = plr
+	local player = game.Players.LocalPlayer
+	local button = script.Parent
+	local debounce = false
+	local mouse = player:GetMouse()
 
+	local flyConnection = {}
+
+	local function Fly()
 		if workspace:FindFirstChild("Core") then
 			workspace.Core:Destroy()
 		end
 
-		local Core = Instance.new("Part")
-		Core.CanCollide = false
-		Core.Name = "Core"
-		Core.Size = Vector3.new(0.05, 0.05, 0.05)
+		local character = player.Character or player.CharacterAdded:Wait()
+		local humanoid = character:WaitForChild("Humanoid")
+		local torsoPart = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
 
-		spawn(function()
-			Core.Parent = workspace
-			local Weld = Instance.new("Weld", Core)
-			Weld.Part0 = Core
+		local core = Instance.new("Part")
+		core.Size = Vector3.new(0.05, 0.05, 0.05)
+		core.CanCollide = false
+		core.Anchored = false
+		core.Name = "Core"
+		core.Transparency = 1
+		core.CFrame = torsoPart.CFrame
+		core.Parent = workspace
 
-			-- Dynamically check if the player is R6 or R15
-			local torsoPart = localplayer.Character:FindFirstChild("UpperTorso") or localplayer.Character:FindFirstChild("Torso")
-			Weld.Part1 = torsoPart
-			Weld.C0 = CFrame.new(0, 0, 0)
-		end)
+		local weld = Instance.new("Weld")
+		weld.Part0 = core
+		weld.Part1 = torsoPart
+		weld.C0 = CFrame.new()
+		weld.Parent = core
 
-		workspace:WaitForChild("Core")
+		local bp = Instance.new("BodyPosition")
+		bp.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+		bp.Position = core.Position
+		bp.Name = "FlyBP"
+		bp.Parent = core
 
-		local torso = workspace.Core
+		local bg = Instance.new("BodyGyro")
+		bg.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+		bg.CFrame = core.CFrame
+		bg.P = 10000
+		bg.Parent = core
+
 		local flying = true
 		local speed = 10
-		local keys = {a = false, d = false, w = false, s = false}
-		local e1, e2
+		local keys = {w = false, a = false, s = false, d = false}
 
-		local function start()
-			local pos = Instance.new("BodyPosition", torso)
-			local gyro = Instance.new("BodyGyro", torso)
-			pos.Name = "EPIXPOS"
-			pos.maxForce = Vector3.new(math.huge, math.huge, math.huge)
-			pos.position = torso.Position
-			gyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-			gyro.cframe = torso.CFrame
-
-			repeat
-				wait()
-				localplayer.Character.Humanoid.PlatformStand = true
-				local new = gyro.cframe - gyro.cframe.p + pos.position
-
-				if not keys.w and not keys.s and not keys.a and not keys.d then
-					speed = 5
+		local function onInputBegan(input)
+			if input.UserInputType == Enum.UserInputType.Keyboard then
+				local key = input.KeyCode.Name:lower()
+				if keys[key] ~= nil then
+					keys[key] = true
+				elseif key == "x" then
+					flying = not flying
+					if not flying then
+						core:Destroy()
+						humanoid.PlatformStand = false
+						for _, conn in ipairs(flyConnection) do
+							conn:Disconnect()
+						end
+						debounce = false
+					end
 				end
-
-				if keys.w then
-					new = new + workspace.CurrentCamera.CFrame.LookVector * speed
-					speed = speed + 0
-				end
-
-				if keys.s then
-					new = new - workspace.CurrentCamera.CFrame.LookVector * speed
-					speed = speed + 0
-				end
-
-				if keys.d then
-					new = new * CFrame.new(speed, 0, 0)
-					speed = speed + 0
-				end
-
-				if keys.a then
-					new = new * CFrame.new(-speed, 0, 0)
-					speed = speed + 0
-				end
-
-				if speed > 10 then
-					speed = 5
-				end
-
-				pos.position = new.p
-
-				if keys.w then
-					gyro.cframe = workspace.CurrentCamera.CFrame * CFrame.Angles(-math.rad(speed * 0), 0, 0)
-				elseif keys.s then
-					gyro.cframe = workspace.CurrentCamera.CFrame * CFrame.Angles(math.rad(speed * 0), 0, 0)
-				else
-					gyro.cframe = workspace.CurrentCamera.CFrame
-				end
-			until flying == false
-
-			if gyro then gyro:Destroy() end
-			if pos then pos:Destroy() end
-			flying = false
-			localplayer.Character.Humanoid.PlatformStand = false
-			speed = 10
+			end
 		end
 
-		e1 = mouse.KeyDown:Connect(function(key)
-			if not torso or not torso.Parent then 
-				flying = false 
-				e1:Disconnect() 
-				e2:Disconnect() 
-				return 
-			end
-
-			if key == "w" then
-				keys.w = true
-			elseif key == "s" then
-				keys.s = true
-			elseif key == "a" then
-				keys.a = true
-			elseif key == "d" then
-				keys.d = true
-			elseif key == "x" then
-				if flying == true then
-					flying = false
-				else
-					flying = true
-					start()
+		local function onInputEnded(input)
+			if input.UserInputType == Enum.UserInputType.Keyboard then
+				local key = input.KeyCode.Name:lower()
+				if keys[key] ~= nil then
+					keys[key] = false
 				end
 			end
-		end)
+		end
 
-		e2 = mouse.KeyUp:Connect(function(key)
-			if key == "w" then
-				keys.w = false
-			elseif key == "s" then
-				keys.s = false
-			elseif key == "a" then
-				keys.a = false
-			elseif key == "d" then
-				keys.d = false
+		-- Input connections
+		table.insert(flyConnection, game:GetService("UserInputService").InputBegan:Connect(onInputBegan))
+		table.insert(flyConnection, game:GetService("UserInputService").InputEnded:Connect(onInputEnded))
+
+		-- Main loop
+		task.spawn(function()
+			humanoid.PlatformStand = true
+			while flying and core and core.Parent do
+				local camCF = workspace.CurrentCamera.CFrame
+				local moveVec = Vector3.zero
+				if keys.w then moveVec = moveVec + camCF.LookVector end
+				if keys.s then moveVec = moveVec - camCF.LookVector end
+				if keys.a then moveVec = moveVec - camCF.RightVector end
+				if keys.d then moveVec = moveVec + camCF.RightVector end
+
+				moveVec = moveVec.Unit * speed
+				if moveVec.Magnitude == moveVec.Magnitude then -- check for NaN
+					bp.Position = core.Position + moveVec
+				end
+
+				bg.CFrame = camCF
+				task.wait(0.01)
 			end
 		end)
-
-		start()
 	end
-	local debounce = false
-	script.Parent.MouseButton1Up:Connect(function()
-		if debounce == false then
-			Fly()
+
+	-- Click to enable flying
+	button.MouseButton1Up:Connect(function()
+		if not debounce then
 			debounce = true
+			Fly()
 		end
+	end)
+
+	-- Safety: auto reset debounce when player respawns
+	player.CharacterAdded:Connect(function()
+		debounce = false
 	end)
 
 end;
@@ -3687,13 +3860,9 @@ local function C_91()
 
 	local module = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
-	-- Set initial color
-	module.ColorOff(button)
-
-	-- Toggle the teleport mode on button click
+	-- Toggle Teleport Mode
 	button.MouseButton1Click:Connect(function()
 		toggle = not toggle
-
 		if toggle then
 			module.ColorOn(button)
 		else
@@ -3701,12 +3870,14 @@ local function C_91()
 		end
 	end)
 
-	-- Listen for mouse click to teleport while toggle is active
+	-- Teleport Logic
 	mouse.Button1Down:Connect(function()
 		if toggle then
+			local char = player.Character or player.CharacterAdded:Wait()
+			local hrp = char:WaitForChild("HumanoidRootPart")
 			local pos = mouse.Hit and mouse.Hit.Position
-			if pos and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-				player.Character.HumanoidRootPart.CFrame = CFrame.new(pos + Vector3.new(0, 1, 0))
+			if pos then
+				hrp.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
 			end
 		end
 	end)
@@ -3726,6 +3897,11 @@ local function C_94()
 
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
+	-- Update character on respawn
+	player.CharacterAdded:Connect(function(char)
+		character = char
+	end)
+
 	-- Toggle system for enabling and disabling dash
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
@@ -3739,15 +3915,12 @@ local function C_94()
 
 	-- Dash function
 	local function dash()
-		if toggle then
-			local camera = game.Workspace.CurrentCamera
+		if toggle and character and character:FindFirstChild("HumanoidRootPart") then
+			local camera = workspace.CurrentCamera
 			local dashDirection = camera.CFrame.LookVector
 			local dashPosition = character.HumanoidRootPart.Position + dashDirection * dashDistance
 
-			-- Ensure HumanoidRootPart exists before setting CFrame
-			if character:FindFirstChild("HumanoidRootPart") then
-				character:SetPrimaryPartCFrame(CFrame.new(dashPosition))
-			end
+			character:SetPrimaryPartCFrame(CFrame.new(dashPosition))
 		end
 	end
 
@@ -4004,6 +4177,12 @@ local function C_9b()
 	local renderConnection
 	local mainLoop
 
+	-- Store the current character reference and update on reset
+	local character = player.Character or player.CharacterAdded:Wait()
+	player.CharacterAdded:Connect(function(char)
+		character = char
+	end)
+
 	btn.MouseButton1Up:Connect(function()
 		toggled = not toggled
 
@@ -4013,32 +4192,29 @@ local function C_9b()
 
 			mainLoop = task.spawn(function()
 				while toggled do
-					local character = player.Character
-					local hum = character and character:FindFirstChild("Humanoid")
-					local humrootpart = character and character:FindFirstChild("HumanoidRootPart")
+					local char = character
+					local hum = char and char:FindFirstChild("Humanoid")
+					local hrp = char and char:FindFirstChild("HumanoidRootPart")
 
-					if hum and humrootpart then
-						local lastPos = humrootpart.Position
+					if hum and hrp then
+						local lastPos = hrp.Position
 
 						task.wait(math.random(0.4, 0.9))
-
-						humrootpart.Anchored = not humrootpart.Anchored
+						hrp.Anchored = not hrp.Anchored
 
 						if math.random() < 0.05 then
 							task.wait(0.4)
-							humrootpart.CFrame = CFrame.new(lastPos)
+							hrp.CFrame = CFrame.new(lastPos)
 						end
 
-						-- Disconnect old connection if any
 						if renderConnection then
 							renderConnection:Disconnect()
 						end
 
 						renderConnection = RunService.RenderStepped:Connect(function()
-							local state = hum:GetState()
-							if state == Enum.HumanoidStateType.Jumping or state == Enum.HumanoidStateType.Freefall then
+							if hum:GetState() == Enum.HumanoidStateType.Jumping or hum:GetState() == Enum.HumanoidStateType.Freefall then
 								if math.random() < 0.6 then
-									humrootpart.Anchored = not humrootpart.Anchored
+									hrp.Anchored = not hrp.Anchored
 								end
 							end
 						end)
@@ -4049,7 +4225,6 @@ local function C_9b()
 			end)
 		else
 			buttonmodule.ColorOff(btn)
-			toggled = false
 
 			if renderConnection then
 				renderConnection:Disconnect()
@@ -4061,10 +4236,10 @@ local function C_9b()
 				mainLoop = nil
 			end
 
-			local character = player.Character
-			local humrootpart = character and character:FindFirstChild("HumanoidRootPart")
-			if humrootpart then
-				humrootpart.Anchored = false
+			local char = character
+			local hrp = char and char:FindFirstChild("HumanoidRootPart")
+			if hrp then
+				hrp.Anchored = false
 			end
 
 			workspace.Gravity = oldGravity
@@ -4077,9 +4252,6 @@ task.spawn(C_9b);
 local function C_9e()
 	local script = G2L["9e"];
 	local player = game.Players.LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
-
-	local toggle = false
 
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
@@ -4088,9 +4260,9 @@ local function C_9e()
 	local textbox = script.Parent.Parent.Parent.Parent.TextBoxs.TextBoxFrame.TextBox
 
 	btn.MouseButton1Up:Connect(function()
-		-- Ensure the Camera exists before trying to modify its properties
-		if workspace:FindFirstChild("Camera") then
-			textboxmodule.IntSetProperty(workspace.Camera, "FieldOfView")
+		local camera = workspace.CurrentCamera
+		if camera then
+			textboxmodule.IntSetProperty(camera, "FieldOfView")
 		end
 	end)
 
@@ -4129,38 +4301,28 @@ local function C_a1()
 		applyPhysicalProperties(char, defaultProperties)
 	end
 
-	-- Function to handle current character
-	local function applyToCurrentCharacter()
-		local char = plr.Character
-		if char then
-			-- Wait for the HumanoidRootPart to be available
-			local humanoidRootPart = char:WaitForChild("HumanoidRootPart")
-			if toggleAntiFling then
-				enableAntiFling(char)
-			else
-				disableAntiFling(char)
-			end
-		end
-	end
-
-	-- Connect to respawn to reapply anti-fling if needed
-	plr.CharacterAdded:Connect(function(char)
-		char:WaitForChild("HumanoidRootPart")
-		applyToCurrentCharacter()
-	end)
-
 	-- Button click toggles anti-fling
 	button.MouseButton1Up:Connect(function()
 		toggleAntiFling = not toggleAntiFling
 		button.BorderSizePixel = toggleAntiFling and 2 or 0
-		applyToCurrentCharacter()
+
+		local char = plr.Character or plr.CharacterAdded:Wait()
+		char:WaitForChild("HumanoidRootPart")
+
+		if toggleAntiFling then
+			enableAntiFling(char)
+		else
+			disableAntiFling(char)
+		end
 	end)
 
-	-- Initial application (in case the character already exists)
-	if plr.Character then
-		plr.Character:WaitForChild("HumanoidRootPart")
-		applyToCurrentCharacter()
-	end
+	-- Reapply on respawn
+	plr.CharacterAdded:Connect(function(char)
+		char:WaitForChild("HumanoidRootPart")
+		if toggleAntiFling then
+			enableAntiFling(char)
+		end
+	end)
 
 end;
 task.spawn(C_a1);
