@@ -1992,7 +1992,9 @@ G2L["c1"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
 
 -- StarterGui.VEXGUI.ReExecute
 G2L["c2"] = Instance.new("LocalScript", G2L["1"]);
+G2L["c2"]["Enabled"] = false;
 G2L["c2"]["Name"] = [[ReExecute]];
+G2L["c2"]["Disabled"] = true;
 
 
 -- Require G2L wrapper
@@ -2522,7 +2524,7 @@ local function C_54()
 	local script = G2L["54"];
 	local plr = game.Players.LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	local hum = char:WaitForChild("Humanoid")
+
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
 	local button = script.Parent
 	local toggle = false
@@ -2628,7 +2630,7 @@ local function C_58()
 
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	local hum = char:WaitForChild("Humanoid")
+
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
 
 	local seizureCoroutine = nil
@@ -2754,7 +2756,7 @@ local function C_61()
 	local script = G2L["61"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
+
 
 	local toggle = false
 
@@ -2766,6 +2768,7 @@ local function C_61()
 
 
 	btn.MouseButton1Up:Connect(function()
+		local humanoid = character:FindFirstChild("Humanoid")
 		humanoid.UseJumpPower = true
 		textboxmodule.IntSetProperty(humanoid, "JumpPower")
 	end)
@@ -2776,8 +2779,6 @@ local function C_64()
 	local script = G2L["64"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
-
 	local toggle = false
 
 	local textboxmodule = require(script.Parent.Parent.Parent.Parent.TextBoxModule)
@@ -2788,6 +2789,8 @@ local function C_64()
 
 
 	btn.MouseButton1Up:Connect(function()
+		local humanoid = character:WaitForChild("Humanoid")
+
 		textboxmodule.IntSetProperty(humanoid, "WalkSpeed")
 	end)
 end;
@@ -2835,7 +2838,6 @@ local function C_6a()
 	local script = G2L["6a"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
 	local userInputService = game:GetService("UserInputService")
 	local toggle = false
 	local jumpConnection -- Variable to store the connection
@@ -2947,7 +2949,6 @@ local function C_70()
 	local script = G2L["70"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
 
 	local toggle = false
 
@@ -2966,9 +2967,9 @@ task.spawn(C_70);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.SitButton.SitScript
 local function C_73()
 	local script = G2L["73"];
-	local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
 
 	script.Parent.MouseButton1Up:Connect(function()
+		local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
 		hum.Sit = not hum.Sit
 	end)
 end;
@@ -3032,7 +3033,6 @@ local function C_79()
 
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	local hum = char:WaitForChild("Humanoid")
 	local humrootpart = char:WaitForChild("HumanoidRootPart")
 
 	local spinConnection
@@ -3093,11 +3093,9 @@ local function C_7c()
 
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	local hum = char:WaitForChild("Humanoid")
-	local humrootpart = char:WaitForChild("HumanoidRootPart")
 
 	button.MouseButton1Up:Connect(function()
-
+		local hum = char:WaitForChild("Humanoid")
 		if toggle == false then
 			if hum then
 				buttonmodule.ColorOn(button)
@@ -3127,13 +3125,14 @@ local function C_7f()
 
 	local plr = game:GetService("Players").LocalPlayer
 	local char = plr.Character or plr.CharacterAdded:Wait()
-	local hum = char:WaitForChild("Humanoid")
-	local humrootpart = char:WaitForChild("HumanoidRootPart")
 
 	local seizureCoroutine = nil
 
 	button.MouseButton1Up:Connect(function()
 		toggle = not toggle
+
+		local hum = char:WaitForChild("Humanoid")
+		local humrootpart = char:WaitForChild("HumanoidRootPart")
 
 		if toggle then
 			buttonmodule.ColorOn(button)
@@ -3621,7 +3620,6 @@ local function C_94()
 	local button = script.Parent
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
 	local toggle = false
 	local dashDistance = 10
 
@@ -3976,7 +3974,6 @@ local function C_9e()
 	local script = G2L["9e"];
 	local player = game.Players.LocalPlayer
 	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
 
 	local toggle = false
 
@@ -4467,32 +4464,5 @@ local function C_bd()
 
 end;
 task.spawn(C_bd);
--- StarterGui.VEXGUI.ReExecute
-local function C_c2()
-	local script = G2L["c2"];
-	local plr = game:GetService("Players").LocalPlayer
-	local GUI = script.Parent
-	local function onCharacterAdded(char)
-		local hum = char:WaitForChild("Humanoid")
-		hum.Died:Connect(function()
-			local deathText = GUI:WaitForChild("DeathText")
-			deathText.Visible = true
-			wait(3)
-			deathText.Text = "Wait.."
-			wait(5)
-			local newGUI = GUI:Clone()
-			newGUI.Parent = GUI.Parent
-			GUI:Destroy()
-		end)
-	end
-
-	if plr.Character then
-		onCharacterAdded(plr.Character)
-	end
-
-	plr.CharacterAdded:Connect(onCharacterAdded)
-
-end;
-task.spawn(C_c2);
 
 return G2L["1"], require;
