@@ -6150,16 +6150,14 @@ local function C_fd()
 			local gameName = Games[i]
 
 
-			NotificationModule.GuiNotification("Game Detected", "Welcome to " .. gameName .. "!")
+			NotificationModule.GuiNotification("Game Detected", "Welcome to " .. gameName .. "!", 3)
 
 
 			local currentGameLabel = script.Parent.Tabs.VexButtons.ScrollingFrame:FindFirstChild("CurrentGame")
 
-			if currentGameLabel then
-				currentGameLabel.Visible = true
-				currentGameLabel.Name = gameName
-				currentGameLabel.Text = gameName
-			end
+			currentGameLabel.Visible = true
+			currentGameLabel.Name = gameName
+			currentGameLabel.Text = gameName
 
 
 			local boolValue = GameBoolValues:FindFirstChild(gameName)
