@@ -5190,7 +5190,7 @@ local function C_a6()
 					currentTrack = animator:LoadAnimation(anim)
 					currentTrack:Play()
 					currentTrack:AdjustSpeed(isR15(character) and 0.7 or 0.65)
-					currentTrack.TimePosition = 0.
+					currentTrack.TimePosition = 0.5
 
 					task.wait(0.3) -- slightly less than 2s to account for startup delay
 					if currentTrack then
