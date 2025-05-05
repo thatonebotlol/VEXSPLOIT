@@ -6139,34 +6139,53 @@ local function C_fd()
 	local player = Players.LocalPlayer
 	local PlayerGui = player:WaitForChild("PlayerGui")
 
-	local GameBoolValues = script.Parent.Parent.Values.Games
+	-- Adjust to match the location of your values folder
+	local GameBoolValues = script.Parent.Parent:WaitForChild("Values"):WaitForChild("Games")
 	local NotificationModule = require(script.Parent:WaitForChild("NotificationModule"))
+
+	local currentGameLabel = script.Parent.Tabs.VexButtons.ScrollingFrame:FindFirstChild("CurrentGame")
 
 	local Games = {"Kohaú", "United States Military Academy"}
 	local Ids = {"4375619868", "1212001367"}
 
+	print("Checking for game match...")
+
 	for i, id in ipairs(Ids) do
 		if tostring(game.PlaceId) == id then
 			local gameName = Games[i]
+			print("Matched game:", gameName)
 
-
+			-- Show notification
 			NotificationModule.GuiNotification("Game Detected", "Welcome to " .. gameName .. "!", 3)
 
-
-			local currentGameLabel = script.Parent.Tabs.VexButtons.ScrollingFrame:FindFirstChild("CurrentGame")
-
-			currentGameLabel.Visible = true
-			currentGameLabel.Name = gameName
-			currentGameLabel.Text = gameName
-
-
+			-- Try to find the BoolValue
 			local boolValue = GameBoolValues:FindFirstChild(gameName)
 			if boolValue and boolValue:IsA("BoolValue") then
+				print("Found BoolValue for:", gameName)
+
 				boolValue.Value = true
+
+				-- Update current game label
+				if currentGameLabel then
+					print("Updating CurrentGame label")
+					currentGameLabel.Visible = true
+					currentGameLabel.Name = gameName
+					currentGameLabel.Text = gameName
+				else
+					warn("CurrentGame label not found")
+				end
+			else
+				warn("BoolValue not found or not a BoolValue:", gameName)
 			end
 
 			break
 		end
+	end
+
+	-- Print all BoolValues for debug
+	print("Bool values in Games folder:")
+	for _, v in pairs(GameBoolValues:GetChildren()) do
+		print("-", v.Name, v.ClassName)
 	end
 
 end;
