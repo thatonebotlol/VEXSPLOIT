@@ -5088,13 +5088,16 @@ local function C_a5()
 			end)
 		end)
 
+
 		local camCF = camera.CFrame
 		local charCF = originalCharacter.HumanoidRootPart.CFrame
+
+		local oldCF = charCF
 
 		originalCharacter:MoveTo(Vector3.new(0, math.pi * 1000000, 0))
 
 		camera.CameraType = Enum.CameraType.Scriptable
-		wait(0.2)
+		wait(5)
 		camera.CameraType = Enum.CameraType.Custom
 
 		player.Character = invisibleCharacter
@@ -5110,6 +5113,7 @@ local function C_a5()
 			end)
 		end
 
+		charCF = oldCF
 		isInvisible = true
 
 	end
