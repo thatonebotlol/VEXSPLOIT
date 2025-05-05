@@ -6120,29 +6120,17 @@ task.spawn(C_e0);
 local function C_ec()
 	local script = G2L["ec"];
 	local btn = script.Parent
-	local animid = "rbxassetid://11444932008"
 
 	btn.MouseButton1Up:Connect(function()
-		local player = game:GetService("Players").LocalPlayer
-		local character = player.Character or player.CharacterAdded:Wait()
-		local hum = character:FindFirstChild("Humanoid")
+		local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+		local animator = hum:FindFirstChild("Animator")
 
-		if hum then
-			local animator = hum:FindFirstChildOfClass("Animator")
-			if animator then
-				local anim = Instance.new("Animation")
-				anim.AnimationId = animid
+		local anim = Instance.new("Animation")
+		anim.AnimationId = "rbxassetid://11444932008"
+		local track = animator:LoadAnimation(anim)
 
-				local track = animator:LoadAnimation(anim)
-				track:Play()
-			else
-				warn("Animator not found in Humanoid.")
-			end
-		else
-			warn("Humanoid not found in character.")
-		end
+		track:Play()
 	end)
-
 end;
 task.spawn(C_ec);
 -- StarterGui.VEXGUI.Main.VexFrame.GameDetector
