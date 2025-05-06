@@ -6220,6 +6220,24 @@ local function C_f0()
 				v:Destroy()
 			end
 		end
+
+		for i, v in pairs(workspace.programmed_holder.Zones.PromptPurchase:GetChildren()) do
+			if v:IsA("BasePart") then
+				v:Destroy()
+			end
+		end
+
+		for i, v in pairs(workspace.programmed_holder.Zones.UnderwaterDining:GetChildren()) do
+			if v:IsA("BasePart") then
+				v:Destroy()
+			end
+		end
+
+		for i, v in pairs(workspace.programmed_holder.Cooking.HibachiTables:GetDescendants()) do
+			if v.Name == "EmployeeArea" then
+				v:Destroy()
+			end
+		end
 	end)
 
 end;
