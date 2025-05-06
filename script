@@ -6183,7 +6183,14 @@ local function C_f0()
 	local btn = script.Parent
 	local value = script.Parent.Parent.Parent.Parent.Parent.Values.Games["Kohaú"]
 
+	local notificationmodule = require(script.Parent.Parent.Parent.Parent.NotificationModule)
+
 	btn.MouseButton1Up:Connect(function()
+		-- Destroy all Barriers in the Workspace
+
+		notificationmodule.GuiNotification("Success", "Barriers Destroyed. 🥳", 3)
+		notificationmodule.Notification("Be Careful!", "This is very bannable!", 3)
+
 		for i, v in pairs(workspace:GetDescendants()) do
 			if v.Name == "Barrier" and v:IsA("BasePart") then
 				v:Destroy()
@@ -6200,14 +6207,21 @@ local function C_f0()
 
 		workspace.programmed_holder.Zones.CounterDoors.Part:Destroy()
 
+
 		for i, v in pairs(workspace.Map.Parts:GetChildren()) do
-			if v.Transparency == 1 then
+			if v:IsA("BasePart") and v.Transparency == 1 then
 				v:Destroy()
 			end
+		end
 
-			-- Tried to destroy barriers
+
+		for i, v in pairs(workspace.programmed_holder.Zones.Counter:GetChildren()) do
+			if v:IsA("BasePart") then
+				v:Destroy()
+			end
 		end
 	end)
+
 end;
 task.spawn(C_f0);
 -- StarterGui.VEXGUI.Main.VexFrame.GameDetector
