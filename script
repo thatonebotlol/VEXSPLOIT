@@ -6383,31 +6383,46 @@ local function C_f7()
 	local script = G2L["f7"];
 	local btn = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+
+	local char = plr.Character or plr.CharacterAdded:Wait()
+	local humrootpart
 
 	local function getHumanoidRootPart()
 		return char:FindFirstChild("HumanoidRootPart")
 	end
 
-	local function onCharacterAdded()
-		char = plr.Character or plr.CharacterAdded:Wait()
-
-		-- Wait for HumanoidRootPart to load on respawn
+	local function onCharacterAdded(newChar)
+		char = newChar
 		humrootpart = getHumanoidRootPart()
+
 		while not humrootpart do
-			humrootpart = getHumanoidRootPart()
 			wait(0.1)
+			humrootpart = getHumanoidRootPart()
 		end
 	end
 
-	-- Listen for respawn event and rebind HumanoidRootPart
+	-- Run on current character
+	onCharacterAdded(char)
+
+	-- Update on respawn
 	plr.CharacterAdded:Connect(onCharacterAdded)
 
-
+	-- Button teleport
 	btn.MouseButton1Up:Connect(function()
-		humrootpart.CFrame = workspace.programmed_holder.Eruptions.EruptionTeleport.CFrame * CFrame.new(0, 2, 0)
+		if humrootpart and workspace:FindFirstChild("programmed_holder") then
+			local teleportPart = workspace.programmed_holder:FindFirstChild("Eruptions")
+				and workspace.programmed_holder.Eruptions:FindFirstChild("EruptionTeleport")
 
+			if teleportPart then
+				humrootpart.CFrame = teleportPart.CFrame * CFrame.new(0, 2, 0)
+			else
+				warn("Teleport part not found.")
+			end
+		else
+			warn("HumanoidRootPart not ready or target path invalid.")
+		end
 	end)
+
 end;
 task.spawn(C_f7);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.OrderArea.OrderAreaScript
@@ -6415,31 +6430,49 @@ local function C_f9()
 	local script = G2L["f9"];
 	local btn = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+	local char = plr.Character or plr.CharacterAdded:Wait()
+	local humrootpart
 
 	local function getHumanoidRootPart()
 		return char:FindFirstChild("HumanoidRootPart")
 	end
 
-	local function onCharacterAdded()
-		char = plr.Character or plr.CharacterAdded:Wait()
-
-		-- Wait for HumanoidRootPart to load on respawn
-		humrootpart = getHumanoidRootPart()
-		while not humrootpart do
+	local function onCharacterAdded(newChar)
+		char = newChar
+		repeat
 			humrootpart = getHumanoidRootPart()
 			wait(0.1)
-		end
+		until humrootpart
 	end
 
-	-- Listen for respawn event and rebind HumanoidRootPart
+	-- Initial character setup
+	onCharacterAdded(char)
 	plr.CharacterAdded:Connect(onCharacterAdded)
 
-
 	btn.MouseButton1Up:Connect(function()
-		humrootpart.CFrame = workspace.programmed_holder.Boards.Other.TrainingTimes.Title * CFrame.new(0, 2, -15)
+		if not humrootpart then
+			warn("HumanoidRootPart not available.")
+			return
+		end
 
+		-- SAFER alternative to GetChildren()[43]
+		local plantsFolder = workspace:FindFirstChild("Map")
+			and workspace.Map:FindFirstChild("Nature")
+			and workspace.Map.Nature:FindFirstChild("Plants")
+
+		if plantsFolder then
+			for _, obj in ipairs(plantsFolder:GetDescendants()) do
+				if obj:IsA("BasePart") and obj.Name == "[SEASONAL]Leaves" then
+					humrootpart.CFrame = obj.CFrame * CFrame.new(0, 2, 15)
+					return
+				end
+			end
+			warn("[SEASONAL]Leaves part not found.")
+		else
+			warn("Plants folder not found.")
+		end
 	end)
+
 end;
 task.spawn(C_f9);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.restaurant.ResturauntScript
@@ -6447,30 +6480,41 @@ local function C_fb()
 	local script = G2L["fb"];
 	local btn = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+
+	local char = plr.Character or plr.CharacterAdded:Wait()
+	local humrootpart
 
 	local function getHumanoidRootPart()
 		return char:FindFirstChild("HumanoidRootPart")
 	end
 
-	local function onCharacterAdded()
-		char = plr.Character or plr.CharacterAdded:Wait()
+	local function onCharacterAdded(newChar)
+		char = newChar
+		humrootpart = getHumanoidRootPart()
 
 		-- Wait for HumanoidRootPart to load on respawn
-		humrootpart = getHumanoidRootPart()
 		while not humrootpart do
 			humrootpart = getHumanoidRootPart()
 			wait(0.1)
 		end
 	end
 
-	-- Listen for respawn event and rebind HumanoidRootPart
+	-- Initial check
+	onCharacterAdded(char)
+
+	-- Handle respawn
 	plr.CharacterAdded:Connect(onCharacterAdded)
 
-
+	-- Teleport button
 	btn.MouseButton1Up:Connect(function()
-		humrootpart.CFrame = workspace.Map.Decoration.Signs.TaiyakiSign.CFrame * CFrame.new(0, -8, 0)
+		if humrootpart and workspace:FindFirstChild("Map") then
+			local sign = workspace.Map:FindFirstChild("Decoration") and workspace.Map.Decoration:FindFirstChild("Signs") and workspace.Map.Decoration.Signs:FindFirstChild("TaiyakiSign")
+			if sign then
+				humrootpart.CFrame = sign.CFrame * CFrame.new(0, -8, 0)
+			end
+		end
 	end)
+
 end;
 task.spawn(C_fb);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.UnderwaterDining.UnderwaterDiningScript
@@ -6478,31 +6522,53 @@ local function C_fd()
 	local script = G2L["fd"];
 	local btn = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+	local char = plr.Character or plr.CharacterAdded:Wait()
+
+	local humrootpart
 
 	local function getHumanoidRootPart()
 		return char:FindFirstChild("HumanoidRootPart")
 	end
 
-	local function onCharacterAdded()
-		char = plr.Character or plr.CharacterAdded:Wait()
-
-		-- Wait for HumanoidRootPart to load on respawn
+	local function onCharacterAdded(newChar)
+		char = newChar
 		humrootpart = getHumanoidRootPart()
 		while not humrootpart do
-			humrootpart = getHumanoidRootPart()
 			wait(0.1)
+			humrootpart = getHumanoidRootPart()
 		end
 	end
 
-	-- Listen for respawn event and rebind HumanoidRootPart
+	-- Initial character setup
+	onCharacterAdded(char)
+
+	-- Update when character respawns
 	plr.CharacterAdded:Connect(onCharacterAdded)
 
-
 	btn.MouseButton1Up:Connect(function()
-		humrootpart.CFrame  = workspace.Map.Nature.Rocks:GetChildren()[3]["[SEASONAL]Ground"].CFrame * CFrame.new(0, 5, 0)
+		if not humrootpart then return end
 
+		local fishTanks = workspace:FindFirstChild("Map")
+			and workspace.Map:FindFirstChild("Decoration")
+			and workspace.Map.Decoration:FindFirstChild("FishTanks")
+
+		if fishTanks then
+			local targetModel = fishTanks:GetChildren()[2]
+			if targetModel and targetModel:FindFirstChild("Bubbles") then
+				local part = targetModel.Bubbles
+				if part:IsA("BasePart") then
+					humrootpart.CFrame = part.CFrame * CFrame.new(0, 2, -10)
+				else
+					warn("Bubbles is not a BasePart.")
+				end
+			else
+				warn("2nd child or Bubbles not found.")
+			end
+		else
+			warn("FishTanks folder not found.")
+		end
 	end)
+
 end;
 task.spawn(C_fd);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.CaveDining.CaveDiningScript
@@ -6510,31 +6576,52 @@ local function C_ff()
 	local script = G2L["ff"];
 	local btn = script.Parent
 	local plr = game:GetService("Players").LocalPlayer
-	local char = plr.Character or plr.CharacterAdded
+	local char = plr.Character or plr.CharacterAdded:Wait()
+
+	local humrootpart
 
 	local function getHumanoidRootPart()
 		return char:FindFirstChild("HumanoidRootPart")
 	end
 
-	local function onCharacterAdded()
-		char = plr.Character or plr.CharacterAdded:Wait()
-
-		-- Wait for HumanoidRootPart to load on respawn
+	local function onCharacterAdded(newChar)
+		char = newChar
 		humrootpart = getHumanoidRootPart()
 		while not humrootpart do
-			humrootpart = getHumanoidRootPart()
 			wait(0.1)
+			humrootpart = getHumanoidRootPart()
 		end
 	end
 
-	-- Listen for respawn event and rebind HumanoidRootPart
+	-- Initial call
+	onCharacterAdded(char)
+
+	-- Handle respawn
 	plr.CharacterAdded:Connect(onCharacterAdded)
 
-
 	btn.MouseButton1Up:Connect(function()
-		humrootpart.CFrame = workspace.Map.Decoration.FishTanks:GetChildren()[2].Bubbles.CFrame * CFrame.new(0, 2, -10)
+		if not humrootpart then return end
 
+		local rocks = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Nature")
+			and workspace.Map.Nature:FindFirstChild("Rocks")
+
+		if rocks then
+			local targetContainer = rocks:GetChildren()[3]
+			if targetContainer and targetContainer:FindFirstChild("[SEASONAL]Ground") then
+				local ground = targetContainer["[SEASONAL]Ground"]
+				if ground:IsA("BasePart") then
+					humrootpart.CFrame = ground.CFrame * CFrame.new(0, 5, 0)
+				else
+					warn("[SEASONAL]Ground is not a BasePart.")
+				end
+			else
+				warn("Could not find [SEASONAL]Ground in the 3rd child of Rocks.")
+			end
+		else
+			warn("Rocks folder not found.")
+		end
 	end)
+
 end;
 task.spawn(C_ff);
 -- StarterGui.VEXGUI.Main.VexFrame.GameDetector
