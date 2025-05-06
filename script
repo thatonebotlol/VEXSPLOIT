@@ -7,7 +7,7 @@
  Y888P  ~Y8888P' Y888888P      888888D      Y88888P ~Y8888P' YP   YP  CONVERTER 
 ]=]
 
--- Instances: 290 | Scripts: 58 | Modules: 3 | Tags: 0
+-- Instances: 303 | Scripts: 63 | Modules: 3 | Tags: 0
 local G2L = {};
 
 -- StarterGui.VEXGUI
@@ -2489,321 +2489,362 @@ G2L["f2"] = Instance.new("UIStroke", G2L["ef"]);
 
 
 
--- StarterGui.VEXGUI.Main.VexFrame.ButtonModule
-G2L["f3"] = Instance.new("ModuleScript", G2L["5"]);
-G2L["f3"]["Name"] = [[ButtonModule]];
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu
+G2L["f3"] = Instance.new("Frame", G2L["e9"]);
+G2L["f3"]["BorderSizePixel"] = 0;
+G2L["f3"]["BackgroundColor3"] = Color3.fromRGB(255, 173, 56);
+G2L["f3"]["Size"] = UDim2.new(0, 59, 0, 158);
+G2L["f3"]["Position"] = UDim2.new(1, 0, 0, 0);
+G2L["f3"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["f3"]["Name"] = [[TPmenu]];
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxModule
-G2L["f4"] = Instance.new("ModuleScript", G2L["5"]);
-G2L["f4"]["Name"] = [[TextBoxModule]];
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.UIGradient
+G2L["f4"] = Instance.new("UIGradient", G2L["f3"]);
+G2L["f4"]["Rotation"] = 90;
+G2L["f4"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(233, 233, 233)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(149, 149, 149))};
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs
-G2L["f5"] = Instance.new("Folder", G2L["5"]);
-G2L["f5"]["Name"] = [[TextBoxs]];
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.TextLabel
+G2L["f5"] = Instance.new("TextLabel", G2L["f3"]);
+G2L["f5"]["TextWrapped"] = true;
+G2L["f5"]["SizeConstraint"] = Enum.SizeConstraint.RelativeXX;
+G2L["f5"]["BorderSizePixel"] = 0;
+G2L["f5"]["TextSize"] = 14;
+G2L["f5"]["TextScaled"] = true;
+G2L["f5"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["f5"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["f5"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["f5"]["BackgroundTransparency"] = 1;
+G2L["f5"]["Size"] = UDim2.new(1.01696, 0, 0.32587, 0);
+G2L["f5"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["f5"]["Text"] = [[Teleport]];
+G2L["f5"]["Position"] = UDim2.new(-0.01696, 0, 0, 0);
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame
-G2L["f6"] = Instance.new("Frame", G2L["f5"]);
-G2L["f6"]["Visible"] = false;
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.Start
+G2L["f6"] = Instance.new("TextButton", G2L["f3"]);
 G2L["f6"]["BorderSizePixel"] = 0;
-G2L["f6"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f6"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["f6"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
-G2L["f6"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
+G2L["f6"]["TextSize"] = 14;
+G2L["f6"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["f6"]["BackgroundColor3"] = Color3.fromRGB(131, 81, 21);
+G2L["f6"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["f6"]["Size"] = UDim2.new(0.81271, 0, 0.1, 0);
 G2L["f6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f6"]["Name"] = [[TextBoxFrame]];
-G2L["f6"]["BackgroundTransparency"] = 0.6;
+G2L["f6"]["Text"] = [[Spawn]];
+G2L["f6"]["Name"] = [[Start]];
+G2L["f6"]["Position"] = UDim2.new(0.08474, 0, 0.1519, 0);
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame.TypeBelow
-G2L["f7"] = Instance.new("TextLabel", G2L["f6"]);
-G2L["f7"]["TextWrapped"] = true;
-G2L["f7"]["BorderSizePixel"] = 0;
-G2L["f7"]["TextSize"] = 14;
-G2L["f7"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["f7"]["TextScaled"] = true;
-G2L["f7"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["f7"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["f7"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["f7"]["BackgroundTransparency"] = 1;
-G2L["f7"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
-G2L["f7"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f7"]["Text"] = [[Type Below]];
-G2L["f7"]["Name"] = [[TypeBelow]];
-G2L["f7"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.Start.SpawnScript
+G2L["f7"] = Instance.new("LocalScript", G2L["f6"]);
+G2L["f7"]["Name"] = [[SpawnScript]];
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame.TextBox
-G2L["f8"] = Instance.new("TextBox", G2L["f6"]);
-G2L["f8"]["BorderSizePixel"] = 0;
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.OrderArea
+G2L["f8"] = Instance.new("TextButton", G2L["f3"]);
 G2L["f8"]["TextWrapped"] = true;
+G2L["f8"]["BorderSizePixel"] = 0;
 G2L["f8"]["TextSize"] = 14;
-G2L["f8"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["f8"]["TextScaled"] = true;
-G2L["f8"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
+G2L["f8"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["f8"]["BackgroundColor3"] = Color3.fromRGB(131, 81, 21);
 G2L["f8"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["f8"]["PlaceholderText"] = [[(Click off or press enter to close.)]];
-G2L["f8"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
-G2L["f8"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
+G2L["f8"]["Size"] = UDim2.new(0.8127, 0, 0.1, 0);
 G2L["f8"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f8"]["Text"] = [[]];
-G2L["f8"]["BackgroundTransparency"] = 0.2;
+G2L["f8"]["Text"] = [[Order Area]];
+G2L["f8"]["Name"] = [[OrderArea]];
+G2L["f8"]["Position"] = UDim2.new(0.08472, 0, 0.25316, 0);
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame
-G2L["f9"] = Instance.new("Frame", G2L["f5"]);
-G2L["f9"]["Visible"] = false;
-G2L["f9"]["BorderSizePixel"] = 0;
-G2L["f9"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f9"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["f9"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
-G2L["f9"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
-G2L["f9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["f9"]["Name"] = [[IntTextBoxFrame]];
-G2L["f9"]["BackgroundTransparency"] = 0.6;
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.OrderArea.OrderAreaScript
+G2L["f9"] = Instance.new("LocalScript", G2L["f8"]);
+G2L["f9"]["Name"] = [[OrderAreaScript]];
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.TypeBelow
-G2L["fa"] = Instance.new("TextLabel", G2L["f9"]);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.restaurant
+G2L["fa"] = Instance.new("TextButton", G2L["f3"]);
 G2L["fa"]["TextWrapped"] = true;
 G2L["fa"]["BorderSizePixel"] = 0;
 G2L["fa"]["TextSize"] = 14;
-G2L["fa"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["fa"]["TextScaled"] = true;
-G2L["fa"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fa"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
 G2L["fa"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fa"]["BackgroundTransparency"] = 1;
-G2L["fa"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
+G2L["fa"]["BackgroundColor3"] = Color3.fromRGB(131, 81, 21);
+G2L["fa"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["fa"]["Size"] = UDim2.new(-0.81269, 0, 0.10418, 0);
 G2L["fa"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fa"]["Text"] = [[Type Below]];
-G2L["fa"]["Name"] = [[TypeBelow]];
-G2L["fa"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
+G2L["fa"]["Text"] = [[restaurant]];
+G2L["fa"]["Name"] = [[restaurant]];
+G2L["fa"]["Position"] = UDim2.new(0.89743, 0, 0.36076, 0);
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.TextBox
-G2L["fb"] = Instance.new("TextBox", G2L["f9"]);
-G2L["fb"]["PlaceholderColor3"] = Color3.fromRGB(141, 141, 141);
-G2L["fb"]["BorderSizePixel"] = 0;
-G2L["fb"]["TextWrapped"] = true;
-G2L["fb"]["TextSize"] = 14;
-G2L["fb"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fb"]["TextScaled"] = true;
-G2L["fb"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
-G2L["fb"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["fb"]["PlaceholderText"] = [[Text]];
-G2L["fb"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
-G2L["fb"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
-G2L["fb"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fb"]["Text"] = [[]];
-G2L["fb"]["BackgroundTransparency"] = 0.2;
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.restaurant.ResturauntScript
+G2L["fb"] = Instance.new("LocalScript", G2L["fa"]);
+G2L["fb"]["Name"] = [[ResturauntScript]];
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.Close
-G2L["fc"] = Instance.new("TextButton", G2L["f9"]);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.UnderwaterDining
+G2L["fc"] = Instance.new("TextButton", G2L["f3"]);
 G2L["fc"]["TextWrapped"] = true;
 G2L["fc"]["BorderSizePixel"] = 0;
-G2L["fc"]["TextSize"] = 25;
+G2L["fc"]["TextSize"] = 14;
+G2L["fc"]["TextScaled"] = true;
 G2L["fc"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fc"]["BackgroundColor3"] = Color3.fromRGB(85, 6, 6);
+G2L["fc"]["BackgroundColor3"] = Color3.fromRGB(131, 81, 21);
 G2L["fc"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["fc"]["Size"] = UDim2.new(0.06979, 0, 0.11504, 0);
+G2L["fc"]["Size"] = UDim2.new(-0.81269, 0, 0.10418, 0);
 G2L["fc"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fc"]["Text"] = [[X]];
-G2L["fc"]["Name"] = [[Close]];
-G2L["fc"]["Position"] = UDim2.new(0.93021, 0, 0, 0);
+G2L["fc"]["Text"] = [[Underwater]];
+G2L["fc"]["Name"] = [[UnderwaterDining]];
+G2L["fc"]["Position"] = UDim2.new(0.89743, 0, 0.63924, 0);
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TargetTextBoxFrame
-G2L["fd"] = Instance.new("Frame", G2L["f5"]);
-G2L["fd"]["Visible"] = false;
-G2L["fd"]["BorderSizePixel"] = 0;
-G2L["fd"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fd"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["fd"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
-G2L["fd"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
-G2L["fd"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fd"]["Name"] = [[TargetTextBoxFrame]];
-G2L["fd"]["BackgroundTransparency"] = 0.6;
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.UnderwaterDining.UnderwaterDiningScript
+G2L["fd"] = Instance.new("LocalScript", G2L["fc"]);
+G2L["fd"]["Name"] = [[UnderwaterDiningScript]];
 
 
--- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TargetTextBoxFrame.TypeBelow
-G2L["fe"] = Instance.new("TextLabel", G2L["fd"]);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.CaveDining
+G2L["fe"] = Instance.new("TextButton", G2L["f3"]);
 G2L["fe"]["TextWrapped"] = true;
 G2L["fe"]["BorderSizePixel"] = 0;
 G2L["fe"]["TextSize"] = 14;
-G2L["fe"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["fe"]["TextScaled"] = true;
-G2L["fe"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fe"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
 G2L["fe"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["fe"]["BackgroundTransparency"] = 1;
-G2L["fe"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
+G2L["fe"]["BackgroundColor3"] = Color3.fromRGB(131, 81, 21);
+G2L["fe"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["fe"]["Size"] = UDim2.new(-0.81269, 0, 0.10418, 0);
 G2L["fe"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["fe"]["Text"] = [[Target Name]];
-G2L["fe"]["Name"] = [[TypeBelow]];
-G2L["fe"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
+G2L["fe"]["Text"] = [[Cave]];
+G2L["fe"]["Name"] = [[CaveDining]];
+G2L["fe"]["Position"] = UDim2.new(0.89743, 0, 0.75949, 0);
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.CaveDining.CaveDiningScript
+G2L["ff"] = Instance.new("LocalScript", G2L["fe"]);
+G2L["ff"]["Name"] = [[CaveDiningScript]];
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.ButtonModule
+G2L["100"] = Instance.new("ModuleScript", G2L["5"]);
+G2L["100"]["Name"] = [[ButtonModule]];
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxModule
+G2L["101"] = Instance.new("ModuleScript", G2L["5"]);
+G2L["101"]["Name"] = [[TextBoxModule]];
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs
+G2L["102"] = Instance.new("Folder", G2L["5"]);
+G2L["102"]["Name"] = [[TextBoxs]];
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame
+G2L["103"] = Instance.new("Frame", G2L["102"]);
+G2L["103"]["Visible"] = false;
+G2L["103"]["BorderSizePixel"] = 0;
+G2L["103"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["103"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+G2L["103"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
+G2L["103"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
+G2L["103"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["103"]["Name"] = [[TextBoxFrame]];
+G2L["103"]["BackgroundTransparency"] = 0.6;
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame.TypeBelow
+G2L["104"] = Instance.new("TextLabel", G2L["103"]);
+G2L["104"]["TextWrapped"] = true;
+G2L["104"]["BorderSizePixel"] = 0;
+G2L["104"]["TextSize"] = 14;
+G2L["104"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["104"]["TextScaled"] = true;
+G2L["104"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["104"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["104"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["104"]["BackgroundTransparency"] = 1;
+G2L["104"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
+G2L["104"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["104"]["Text"] = [[Type Below]];
+G2L["104"]["Name"] = [[TypeBelow]];
+G2L["104"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TextBoxFrame.TextBox
+G2L["105"] = Instance.new("TextBox", G2L["103"]);
+G2L["105"]["BorderSizePixel"] = 0;
+G2L["105"]["TextWrapped"] = true;
+G2L["105"]["TextSize"] = 14;
+G2L["105"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["105"]["TextScaled"] = true;
+G2L["105"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
+G2L["105"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["105"]["PlaceholderText"] = [[(Click off or press enter to close.)]];
+G2L["105"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
+G2L["105"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
+G2L["105"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["105"]["Text"] = [[]];
+G2L["105"]["BackgroundTransparency"] = 0.2;
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame
+G2L["106"] = Instance.new("Frame", G2L["102"]);
+G2L["106"]["Visible"] = false;
+G2L["106"]["BorderSizePixel"] = 0;
+G2L["106"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["106"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+G2L["106"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
+G2L["106"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
+G2L["106"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["106"]["Name"] = [[IntTextBoxFrame]];
+G2L["106"]["BackgroundTransparency"] = 0.6;
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.TypeBelow
+G2L["107"] = Instance.new("TextLabel", G2L["106"]);
+G2L["107"]["TextWrapped"] = true;
+G2L["107"]["BorderSizePixel"] = 0;
+G2L["107"]["TextSize"] = 14;
+G2L["107"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["107"]["TextScaled"] = true;
+G2L["107"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["107"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["107"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["107"]["BackgroundTransparency"] = 1;
+G2L["107"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
+G2L["107"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["107"]["Text"] = [[Type Below]];
+G2L["107"]["Name"] = [[TypeBelow]];
+G2L["107"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.TextBox
+G2L["108"] = Instance.new("TextBox", G2L["106"]);
+G2L["108"]["PlaceholderColor3"] = Color3.fromRGB(141, 141, 141);
+G2L["108"]["BorderSizePixel"] = 0;
+G2L["108"]["TextWrapped"] = true;
+G2L["108"]["TextSize"] = 14;
+G2L["108"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["108"]["TextScaled"] = true;
+G2L["108"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
+G2L["108"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["108"]["PlaceholderText"] = [[Text]];
+G2L["108"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
+G2L["108"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
+G2L["108"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["108"]["Text"] = [[]];
+G2L["108"]["BackgroundTransparency"] = 0.2;
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.IntTextBoxFrame.Close
+G2L["109"] = Instance.new("TextButton", G2L["106"]);
+G2L["109"]["TextWrapped"] = true;
+G2L["109"]["BorderSizePixel"] = 0;
+G2L["109"]["TextSize"] = 25;
+G2L["109"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["109"]["BackgroundColor3"] = Color3.fromRGB(85, 6, 6);
+G2L["109"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["109"]["Size"] = UDim2.new(0.06979, 0, 0.11504, 0);
+G2L["109"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["109"]["Text"] = [[X]];
+G2L["109"]["Name"] = [[Close]];
+G2L["109"]["Position"] = UDim2.new(0.93021, 0, 0, 0);
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TargetTextBoxFrame
+G2L["10a"] = Instance.new("Frame", G2L["102"]);
+G2L["10a"]["Visible"] = false;
+G2L["10a"]["BorderSizePixel"] = 0;
+G2L["10a"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10a"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+G2L["10a"]["Size"] = UDim2.new(0.60993, 0, 0.69053, 0);
+G2L["10a"]["Position"] = UDim2.new(0.49962, 0, 0.45946, 0);
+G2L["10a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10a"]["Name"] = [[TargetTextBoxFrame]];
+G2L["10a"]["BackgroundTransparency"] = 0.6;
+
+
+-- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TargetTextBoxFrame.TypeBelow
+G2L["10b"] = Instance.new("TextLabel", G2L["10a"]);
+G2L["10b"]["TextWrapped"] = true;
+G2L["10b"]["BorderSizePixel"] = 0;
+G2L["10b"]["TextSize"] = 14;
+G2L["10b"]["TextStrokeColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10b"]["TextScaled"] = true;
+G2L["10b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10b"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["10b"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10b"]["BackgroundTransparency"] = 1;
+G2L["10b"]["Size"] = UDim2.new(1, 0, 0.3219, 0);
+G2L["10b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10b"]["Text"] = [[Target Name]];
+G2L["10b"]["Name"] = [[TypeBelow]];
+G2L["10b"]["Position"] = UDim2.new(-0.00175, 0, 0.03202, 0);
 
 
 -- StarterGui.VEXGUI.Main.VexFrame.TextBoxs.TargetTextBoxFrame.TextBox
-G2L["ff"] = Instance.new("TextBox", G2L["fd"]);
-G2L["ff"]["BorderSizePixel"] = 0;
-G2L["ff"]["TextWrapped"] = true;
-G2L["ff"]["TextSize"] = 14;
-G2L["ff"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["ff"]["TextScaled"] = true;
-G2L["ff"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
-G2L["ff"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["ff"]["PlaceholderText"] = [[(Click off or press enter to close.)]];
-G2L["ff"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
-G2L["ff"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
-G2L["ff"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["ff"]["Text"] = [[]];
-G2L["ff"]["BackgroundTransparency"] = 0.2;
+G2L["10c"] = Instance.new("TextBox", G2L["10a"]);
+G2L["10c"]["BorderSizePixel"] = 0;
+G2L["10c"]["TextWrapped"] = true;
+G2L["10c"]["TextSize"] = 14;
+G2L["10c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10c"]["TextScaled"] = true;
+G2L["10c"]["BackgroundColor3"] = Color3.fromRGB(76, 76, 76);
+G2L["10c"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["10c"]["PlaceholderText"] = [[(Click off or press enter to close.)]];
+G2L["10c"]["Size"] = UDim2.new(0.84041, 0, 0.47153, 0);
+G2L["10c"]["Position"] = UDim2.new(0.0784, 0, 0.4109, 0);
+G2L["10c"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10c"]["Text"] = [[]];
+G2L["10c"]["BackgroundTransparency"] = 0.2;
 
 
 -- StarterGui.VEXGUI.Main.VexFrame.NotificationModule
-G2L["100"] = Instance.new("ModuleScript", G2L["5"]);
-G2L["100"]["Name"] = [[NotificationModule]];
+G2L["10d"] = Instance.new("ModuleScript", G2L["5"]);
+G2L["10d"]["Name"] = [[NotificationModule]];
 
 
 -- StarterGui.VEXGUI.Main.VexFrame.GameDetector
-G2L["101"] = Instance.new("LocalScript", G2L["5"]);
-G2L["101"]["Name"] = [[GameDetector]];
+G2L["10e"] = Instance.new("LocalScript", G2L["5"]);
+G2L["10e"]["Name"] = [[GameDetector]];
 
 
 -- StarterGui.VEXGUI.Main.Title
-G2L["102"] = Instance.new("TextLabel", G2L["2"]);
-G2L["102"]["TextWrapped"] = true;
-G2L["102"]["BorderSizePixel"] = 0;
-G2L["102"]["TextSize"] = 14;
-G2L["102"]["TextScaled"] = true;
-G2L["102"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["102"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["102"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["102"]["BackgroundTransparency"] = 1;
-G2L["102"]["Size"] = UDim2.new(0.17721, 0, -0.97373, 0);
-G2L["102"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["102"]["Text"] = [[VEXSPLOIT PANEL]];
-G2L["102"]["Name"] = [[Title]];
-G2L["102"]["Position"] = UDim2.new(0.05917, 0, 0.97373, 0);
+G2L["10f"] = Instance.new("TextLabel", G2L["2"]);
+G2L["10f"]["TextWrapped"] = true;
+G2L["10f"]["BorderSizePixel"] = 0;
+G2L["10f"]["TextSize"] = 14;
+G2L["10f"]["TextScaled"] = true;
+G2L["10f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10f"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["10f"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["10f"]["BackgroundTransparency"] = 1;
+G2L["10f"]["Size"] = UDim2.new(0.17721, 0, -0.97373, 0);
+G2L["10f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["10f"]["Text"] = [[VEXSPLOIT PANEL]];
+G2L["10f"]["Name"] = [[Title]];
+G2L["10f"]["Position"] = UDim2.new(0.05917, 0, 0.97373, 0);
 
 
 -- StarterGui.VEXGUI.Main.Drag
-G2L["103"] = Instance.new("LocalScript", G2L["2"]);
-G2L["103"]["Name"] = [[Drag]];
+G2L["110"] = Instance.new("LocalScript", G2L["2"]);
+G2L["110"]["Name"] = [[Drag]];
 
 
 -- StarterGui.VEXGUI.Main.OpenAndClose
-G2L["104"] = Instance.new("LocalScript", G2L["2"]);
-G2L["104"]["Name"] = [[OpenAndClose]];
+G2L["111"] = Instance.new("LocalScript", G2L["2"]);
+G2L["111"]["Name"] = [[OpenAndClose]];
 
 
 -- StarterGui.VEXGUI.Main.UIGradient
-G2L["105"] = Instance.new("UIGradient", G2L["2"]);
-G2L["105"]["Rotation"] = 90;
-G2L["105"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(181, 181, 181)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(39, 33, 43))};
+G2L["112"] = Instance.new("UIGradient", G2L["2"]);
+G2L["112"]["Rotation"] = 90;
+G2L["112"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(181, 181, 181)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(39, 33, 43))};
 
 
 -- StarterGui.VEXGUI.Main.FPS
-G2L["106"] = Instance.new("TextLabel", G2L["2"]);
-G2L["106"]["TextWrapped"] = true;
-G2L["106"]["BorderSizePixel"] = 0;
-G2L["106"]["TextSize"] = 14;
-G2L["106"]["TextScaled"] = true;
-G2L["106"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["106"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["106"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["106"]["BackgroundTransparency"] = 1;
-G2L["106"]["Size"] = UDim2.new(0.10535, 0, 0.97373, 0);
-G2L["106"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["106"]["Text"] = [[FPS:]];
-G2L["106"]["Name"] = [[FPS]];
-G2L["106"]["Position"] = UDim2.new(0.89465, 0, 0, 0);
-
-
--- StarterGui.VEXGUI.Main.FPS.LocalScript
-G2L["107"] = Instance.new("LocalScript", G2L["106"]);
-
-
-
--- StarterGui.VEXGUI.Main.Values
-G2L["108"] = Instance.new("Folder", G2L["2"]);
-G2L["108"]["Name"] = [[Values]];
-
-
--- StarterGui.VEXGUI.Main.Values.Games
-G2L["109"] = Instance.new("Folder", G2L["108"]);
-G2L["109"]["Name"] = [[Games]];
-
-
--- StarterGui.VEXGUI.Main.Values.Games.Kohaú
-G2L["10a"] = Instance.new("BoolValue", G2L["109"]);
-G2L["10a"]["Name"] = [[Kohaú]];
-
-
--- StarterGui.VEXGUI.Logo
-G2L["10b"] = Instance.new("ImageLabel", G2L["1"]);
-G2L["10b"]["BorderSizePixel"] = 0;
-G2L["10b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
--- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["10b"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["10b"]["Image"] = [[rbxassetid://101713159491693]];
-G2L["10b"]["Size"] = UDim2.new(0.318, 1, 0.77702, 1);
-G2L["10b"]["Visible"] = false;
-G2L["10b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["10b"]["BackgroundTransparency"] = 1;
-G2L["10b"]["Name"] = [[Logo]];
-G2L["10b"]["Position"] = UDim2.new(0.47964, 0, 0.49877, 0);
-
-
--- StarterGui.VEXGUI.Logo.LocalScript
-G2L["10c"] = Instance.new("LocalScript", G2L["10b"]);
-
-
-
--- StarterGui.VEXGUI.Logo.UICorner
-G2L["10d"] = Instance.new("UICorner", G2L["10b"]);
-G2L["10d"]["CornerRadius"] = UDim.new(10, 10);
-
-
--- StarterGui.VEXGUI.ChatLog
-G2L["10e"] = Instance.new("Frame", G2L["1"]);
-G2L["10e"]["Visible"] = false;
-G2L["10e"]["BorderSizePixel"] = 0;
-G2L["10e"]["BackgroundColor3"] = Color3.fromRGB(156, 58, 236);
-G2L["10e"]["Size"] = UDim2.new(0.29085, 0, 0.0324, 0);
-G2L["10e"]["Position"] = UDim2.new(0.69828, 0, 0.3319, 0);
-G2L["10e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["10e"]["Name"] = [[ChatLog]];
-G2L["10e"]["BackgroundTransparency"] = 0.3;
-
-
--- StarterGui.VEXGUI.ChatLog.UIGradient
-G2L["10f"] = Instance.new("UIGradient", G2L["10e"]);
-G2L["10f"]["Rotation"] = 90;
-G2L["10f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(181, 181, 181)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))};
-
-
--- StarterGui.VEXGUI.ChatLog.Text
-G2L["110"] = Instance.new("Folder", G2L["10e"]);
-G2L["110"]["Name"] = [[Text]];
-
-
--- StarterGui.VEXGUI.ChatLog.Text.Chats
-G2L["111"] = Instance.new("Folder", G2L["110"]);
-G2L["111"]["Name"] = [[Chats]];
-
-
--- StarterGui.VEXGUI.ChatLog.Text.Other
-G2L["112"] = Instance.new("Folder", G2L["110"]);
-G2L["112"]["Name"] = [[Other]];
-
-
--- StarterGui.VEXGUI.ChatLog.Text.Other.Title
-G2L["113"] = Instance.new("TextLabel", G2L["112"]);
+G2L["113"] = Instance.new("TextLabel", G2L["2"]);
 G2L["113"]["TextWrapped"] = true;
 G2L["113"]["BorderSizePixel"] = 0;
 G2L["113"]["TextSize"] = 14;
@@ -2812,180 +2853,275 @@ G2L["113"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["113"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
 G2L["113"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["113"]["BackgroundTransparency"] = 1;
-G2L["113"]["Size"] = UDim2.new(1.00001, 0, 0.89565, 0);
+G2L["113"]["Size"] = UDim2.new(0.10535, 0, 0.97373, 0);
 G2L["113"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["113"]["Text"] = [[Chatlogs]];
-G2L["113"]["Name"] = [[Title]];
-G2L["113"]["Position"] = UDim2.new(-0, 0, 0.05351, 0);
+G2L["113"]["Text"] = [[FPS:]];
+G2L["113"]["Name"] = [[FPS]];
+G2L["113"]["Position"] = UDim2.new(0.89465, 0, 0, 0);
 
 
--- StarterGui.VEXGUI.ChatLog.Drag
-G2L["114"] = Instance.new("LocalScript", G2L["10e"]);
-G2L["114"]["Name"] = [[Drag]];
+-- StarterGui.VEXGUI.Main.FPS.LocalScript
+G2L["114"] = Instance.new("LocalScript", G2L["113"]);
 
 
--- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame
-G2L["115"] = Instance.new("ScrollingFrame", G2L["10e"]);
-G2L["115"]["Active"] = true;
-G2L["115"]["BorderSizePixel"] = 0;
-G2L["115"]["BackgroundColor3"] = Color3.fromRGB(49, 49, 49);
-G2L["115"]["Name"] = [[ScrollingMainFrame]];
-G2L["115"]["Size"] = UDim2.new(1.00001, 0, 12.78472, 0);
-G2L["115"]["ScrollBarImageColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["115"]["Position"] = UDim2.new(-0, 0, 1, 0);
-G2L["115"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["115"]["ScrollBarThickness"] = 14;
-G2L["115"]["BackgroundTransparency"] = 0.5;
+
+-- StarterGui.VEXGUI.Main.Values
+G2L["115"] = Instance.new("Folder", G2L["2"]);
+G2L["115"]["Name"] = [[Values]];
 
 
--- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame.ChatLogger
-G2L["116"] = Instance.new("LocalScript", G2L["115"]);
-G2L["116"]["Name"] = [[ChatLogger]];
+-- StarterGui.VEXGUI.Main.Values.Games
+G2L["116"] = Instance.new("Folder", G2L["115"]);
+G2L["116"]["Name"] = [[Games]];
 
 
--- StarterGui.VEXGUI.ChatLog.Template
-G2L["117"] = Instance.new("Folder", G2L["10e"]);
-G2L["117"]["Name"] = [[Template]];
+-- StarterGui.VEXGUI.Main.Values.Games.Kohaú
+G2L["117"] = Instance.new("BoolValue", G2L["116"]);
+G2L["117"]["Name"] = [[Kohaú]];
 
 
--- StarterGui.VEXGUI.ChatLog.Template.UserSent
-G2L["118"] = Instance.new("TextLabel", G2L["117"]);
-G2L["118"]["TextWrapped"] = true;
+-- StarterGui.VEXGUI.Logo
+G2L["118"] = Instance.new("ImageLabel", G2L["1"]);
 G2L["118"]["BorderSizePixel"] = 0;
-G2L["118"]["TextSize"] = 14;
-G2L["118"]["TextScaled"] = true;
 G2L["118"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["118"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["118"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["118"]["BackgroundTransparency"] = 1;
-G2L["118"]["Size"] = UDim2.new(0.24324, 0, 1.09074, 0);
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["118"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+G2L["118"]["Image"] = [[rbxassetid://101713159491693]];
+G2L["118"]["Size"] = UDim2.new(0.318, 1, 0.77702, 1);
 G2L["118"]["Visible"] = false;
 G2L["118"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["118"]["Text"] = [[User:]];
-G2L["118"]["Name"] = [[UserSent]];
-G2L["118"]["Position"] = UDim2.new(-0.00001, 0, 1.15995, 0);
+G2L["118"]["BackgroundTransparency"] = 1;
+G2L["118"]["Name"] = [[Logo]];
+G2L["118"]["Position"] = UDim2.new(0.47964, 0, 0.49877, 0);
 
 
--- StarterGui.VEXGUI.ChatLog.Template.UserSent.MessageSent
-G2L["119"] = Instance.new("TextLabel", G2L["118"]);
-G2L["119"]["TextWrapped"] = true;
-G2L["119"]["BorderSizePixel"] = 0;
-G2L["119"]["TextSize"] = 14;
-G2L["119"]["TextScaled"] = true;
-G2L["119"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["119"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-G2L["119"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["119"]["BackgroundTransparency"] = 1;
-G2L["119"]["Size"] = UDim2.new(3.2506, 0, 1.80398, 0);
-G2L["119"]["Visible"] = false;
-G2L["119"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["119"]["Text"] = [[Message]];
-G2L["119"]["Name"] = [[MessageSent]];
-G2L["119"]["Position"] = UDim2.new(0.86067, 0, 0.24149, 0);
+-- StarterGui.VEXGUI.Logo.LocalScript
+G2L["119"] = Instance.new("LocalScript", G2L["118"]);
 
 
--- StarterGui.VEXGUI.DeathText
-G2L["11a"] = Instance.new("TextLabel", G2L["1"]);
-G2L["11a"]["TextWrapped"] = true;
-G2L["11a"]["BorderSizePixel"] = 0;
-G2L["11a"]["TextSize"] = 14;
-G2L["11a"]["TextScaled"] = true;
-G2L["11a"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["11a"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["11a"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
-G2L["11a"]["BackgroundTransparency"] = 1;
-G2L["11a"]["Size"] = UDim2.new(0.69845, 0, 0.25668, 0);
-G2L["11a"]["Visible"] = false;
-G2L["11a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["11a"]["Text"] = [[PLEASE STAND BY AS WE RE-EXECUTE]];
-G2L["11a"]["Name"] = [[DeathText]];
-G2L["11a"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
+
+-- StarterGui.VEXGUI.Logo.UICorner
+G2L["11a"] = Instance.new("UICorner", G2L["118"]);
+G2L["11a"]["CornerRadius"] = UDim.new(10, 10);
 
 
--- StarterGui.VEXGUI.ReExecute
-G2L["11b"] = Instance.new("LocalScript", G2L["1"]);
-G2L["11b"]["Enabled"] = false;
-G2L["11b"]["Name"] = [[ReExecute]];
-G2L["11b"]["Disabled"] = true;
+-- StarterGui.VEXGUI.ChatLog
+G2L["11b"] = Instance.new("Frame", G2L["1"]);
+G2L["11b"]["Visible"] = false;
+G2L["11b"]["BorderSizePixel"] = 0;
+G2L["11b"]["BackgroundColor3"] = Color3.fromRGB(156, 58, 236);
+G2L["11b"]["Size"] = UDim2.new(0.29085, 0, 0.0324, 0);
+G2L["11b"]["Position"] = UDim2.new(0.69828, 0, 0.3319, 0);
+G2L["11b"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["11b"]["Name"] = [[ChatLog]];
+G2L["11b"]["BackgroundTransparency"] = 0.3;
 
 
--- StarterGui.VEXGUI.NotificationTop
-G2L["11c"] = Instance.new("Frame", G2L["1"]);
-G2L["11c"]["Visible"] = false;
-G2L["11c"]["BorderSizePixel"] = 0;
-G2L["11c"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16);
-G2L["11c"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
-G2L["11c"]["Size"] = UDim2.new(0.39058, 0, 0.10605, 0);
-G2L["11c"]["Position"] = UDim2.new(0.45245, 0, 0.05295, 0);
-G2L["11c"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["11c"]["Name"] = [[NotificationTop]];
-G2L["11c"]["BackgroundTransparency"] = 0.25;
+-- StarterGui.VEXGUI.ChatLog.UIGradient
+G2L["11c"] = Instance.new("UIGradient", G2L["11b"]);
+G2L["11c"]["Rotation"] = 90;
+G2L["11c"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(181, 181, 181)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0))};
 
 
--- StarterGui.VEXGUI.NotificationTop.UICorner
-G2L["11d"] = Instance.new("UICorner", G2L["11c"]);
-G2L["11d"]["CornerRadius"] = UDim.new(0.05, 8);
+-- StarterGui.VEXGUI.ChatLog.Text
+G2L["11d"] = Instance.new("Folder", G2L["11b"]);
+G2L["11d"]["Name"] = [[Text]];
 
 
--- StarterGui.VEXGUI.NotificationTop.Text
-G2L["11e"] = Instance.new("Folder", G2L["11c"]);
-G2L["11e"]["Name"] = [[Text]];
+-- StarterGui.VEXGUI.ChatLog.Text.Chats
+G2L["11e"] = Instance.new("Folder", G2L["11d"]);
+G2L["11e"]["Name"] = [[Chats]];
 
 
--- StarterGui.VEXGUI.NotificationTop.Text.Title
-G2L["11f"] = Instance.new("TextLabel", G2L["11e"]);
-G2L["11f"]["TextWrapped"] = true;
-G2L["11f"]["BorderSizePixel"] = 0;
-G2L["11f"]["TextSize"] = 14;
-G2L["11f"]["TextScaled"] = true;
-G2L["11f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["11f"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["11f"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["11f"]["BackgroundTransparency"] = 1;
-G2L["11f"]["Size"] = UDim2.new(1, 0, 0.41369, 0);
-G2L["11f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["11f"]["Text"] = [[Title]];
-G2L["11f"]["Name"] = [[Title]];
-G2L["11f"]["Position"] = UDim2.new(-0, 0, 0, 0);
+-- StarterGui.VEXGUI.ChatLog.Text.Other
+G2L["11f"] = Instance.new("Folder", G2L["11d"]);
+G2L["11f"]["Name"] = [[Other]];
 
 
--- StarterGui.VEXGUI.NotificationTop.Text.Text
-G2L["120"] = Instance.new("TextLabel", G2L["11e"]);
+-- StarterGui.VEXGUI.ChatLog.Text.Other.Title
+G2L["120"] = Instance.new("TextLabel", G2L["11f"]);
 G2L["120"]["TextWrapped"] = true;
 G2L["120"]["BorderSizePixel"] = 0;
 G2L["120"]["TextSize"] = 14;
 G2L["120"]["TextScaled"] = true;
 G2L["120"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["120"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["120"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
 G2L["120"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
 G2L["120"]["BackgroundTransparency"] = 1;
-G2L["120"]["Size"] = UDim2.new(0.99628, 0, 0.44237, 0);
+G2L["120"]["Size"] = UDim2.new(1.00001, 0, 0.89565, 0);
 G2L["120"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["120"]["Text"] = [[Text goes here.]];
-G2L["120"]["Name"] = [[Text]];
-G2L["120"]["Position"] = UDim2.new(0.00372, 0, 0.41369, 0);
+G2L["120"]["Text"] = [[Chatlogs]];
+G2L["120"]["Name"] = [[Title]];
+G2L["120"]["Position"] = UDim2.new(-0, 0, 0.05351, 0);
+
+
+-- StarterGui.VEXGUI.ChatLog.Drag
+G2L["121"] = Instance.new("LocalScript", G2L["11b"]);
+G2L["121"]["Name"] = [[Drag]];
+
+
+-- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame
+G2L["122"] = Instance.new("ScrollingFrame", G2L["11b"]);
+G2L["122"]["Active"] = true;
+G2L["122"]["BorderSizePixel"] = 0;
+G2L["122"]["BackgroundColor3"] = Color3.fromRGB(49, 49, 49);
+G2L["122"]["Name"] = [[ScrollingMainFrame]];
+G2L["122"]["Size"] = UDim2.new(1.00001, 0, 12.78472, 0);
+G2L["122"]["ScrollBarImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["122"]["Position"] = UDim2.new(-0, 0, 1, 0);
+G2L["122"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["122"]["ScrollBarThickness"] = 14;
+G2L["122"]["BackgroundTransparency"] = 0.5;
+
+
+-- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame.ChatLogger
+G2L["123"] = Instance.new("LocalScript", G2L["122"]);
+G2L["123"]["Name"] = [[ChatLogger]];
+
+
+-- StarterGui.VEXGUI.ChatLog.Template
+G2L["124"] = Instance.new("Folder", G2L["11b"]);
+G2L["124"]["Name"] = [[Template]];
+
+
+-- StarterGui.VEXGUI.ChatLog.Template.UserSent
+G2L["125"] = Instance.new("TextLabel", G2L["124"]);
+G2L["125"]["TextWrapped"] = true;
+G2L["125"]["BorderSizePixel"] = 0;
+G2L["125"]["TextSize"] = 14;
+G2L["125"]["TextScaled"] = true;
+G2L["125"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["125"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["125"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["125"]["BackgroundTransparency"] = 1;
+G2L["125"]["Size"] = UDim2.new(0.24324, 0, 1.09074, 0);
+G2L["125"]["Visible"] = false;
+G2L["125"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["125"]["Text"] = [[User:]];
+G2L["125"]["Name"] = [[UserSent]];
+G2L["125"]["Position"] = UDim2.new(-0.00001, 0, 1.15995, 0);
+
+
+-- StarterGui.VEXGUI.ChatLog.Template.UserSent.MessageSent
+G2L["126"] = Instance.new("TextLabel", G2L["125"]);
+G2L["126"]["TextWrapped"] = true;
+G2L["126"]["BorderSizePixel"] = 0;
+G2L["126"]["TextSize"] = 14;
+G2L["126"]["TextScaled"] = true;
+G2L["126"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["126"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["126"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["126"]["BackgroundTransparency"] = 1;
+G2L["126"]["Size"] = UDim2.new(3.2506, 0, 1.80398, 0);
+G2L["126"]["Visible"] = false;
+G2L["126"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["126"]["Text"] = [[Message]];
+G2L["126"]["Name"] = [[MessageSent]];
+G2L["126"]["Position"] = UDim2.new(0.86067, 0, 0.24149, 0);
+
+
+-- StarterGui.VEXGUI.DeathText
+G2L["127"] = Instance.new("TextLabel", G2L["1"]);
+G2L["127"]["TextWrapped"] = true;
+G2L["127"]["BorderSizePixel"] = 0;
+G2L["127"]["TextSize"] = 14;
+G2L["127"]["TextScaled"] = true;
+G2L["127"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["127"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["127"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["127"]["BackgroundTransparency"] = 1;
+G2L["127"]["Size"] = UDim2.new(0.69845, 0, 0.25668, 0);
+G2L["127"]["Visible"] = false;
+G2L["127"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["127"]["Text"] = [[PLEASE STAND BY AS WE RE-EXECUTE]];
+G2L["127"]["Name"] = [[DeathText]];
+G2L["127"]["Position"] = UDim2.new(0.15031, 0, 0.33132, 0);
+
+
+-- StarterGui.VEXGUI.ReExecute
+G2L["128"] = Instance.new("LocalScript", G2L["1"]);
+G2L["128"]["Enabled"] = false;
+G2L["128"]["Name"] = [[ReExecute]];
+G2L["128"]["Disabled"] = true;
+
+
+-- StarterGui.VEXGUI.NotificationTop
+G2L["129"] = Instance.new("Frame", G2L["1"]);
+G2L["129"]["Visible"] = false;
+G2L["129"]["BorderSizePixel"] = 0;
+G2L["129"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16);
+G2L["129"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+G2L["129"]["Size"] = UDim2.new(0.39058, 0, 0.10605, 0);
+G2L["129"]["Position"] = UDim2.new(0.45245, 0, 0.05295, 0);
+G2L["129"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["129"]["Name"] = [[NotificationTop]];
+G2L["129"]["BackgroundTransparency"] = 0.25;
+
+
+-- StarterGui.VEXGUI.NotificationTop.UICorner
+G2L["12a"] = Instance.new("UICorner", G2L["129"]);
+G2L["12a"]["CornerRadius"] = UDim.new(0.05, 8);
+
+
+-- StarterGui.VEXGUI.NotificationTop.Text
+G2L["12b"] = Instance.new("Folder", G2L["129"]);
+G2L["12b"]["Name"] = [[Text]];
+
+
+-- StarterGui.VEXGUI.NotificationTop.Text.Title
+G2L["12c"] = Instance.new("TextLabel", G2L["12b"]);
+G2L["12c"]["TextWrapped"] = true;
+G2L["12c"]["BorderSizePixel"] = 0;
+G2L["12c"]["TextSize"] = 14;
+G2L["12c"]["TextScaled"] = true;
+G2L["12c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12c"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["12c"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12c"]["BackgroundTransparency"] = 1;
+G2L["12c"]["Size"] = UDim2.new(1, 0, 0.41369, 0);
+G2L["12c"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["12c"]["Text"] = [[Title]];
+G2L["12c"]["Name"] = [[Title]];
+G2L["12c"]["Position"] = UDim2.new(-0, 0, 0, 0);
+
+
+-- StarterGui.VEXGUI.NotificationTop.Text.Text
+G2L["12d"] = Instance.new("TextLabel", G2L["12b"]);
+G2L["12d"]["TextWrapped"] = true;
+G2L["12d"]["BorderSizePixel"] = 0;
+G2L["12d"]["TextSize"] = 14;
+G2L["12d"]["TextScaled"] = true;
+G2L["12d"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12d"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["12d"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12d"]["BackgroundTransparency"] = 1;
+G2L["12d"]["Size"] = UDim2.new(0.99628, 0, 0.44237, 0);
+G2L["12d"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["12d"]["Text"] = [[Text goes here.]];
+G2L["12d"]["Name"] = [[Text]];
+G2L["12d"]["Position"] = UDim2.new(0.00372, 0, 0.41369, 0);
 
 
 -- StarterGui.VEXGUI.NotificationTop.Text.GUI
-G2L["121"] = Instance.new("TextLabel", G2L["11e"]);
-G2L["121"]["TextWrapped"] = true;
-G2L["121"]["BorderSizePixel"] = 0;
-G2L["121"]["TextSize"] = 14;
-G2L["121"]["TextScaled"] = true;
-G2L["121"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["121"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
-G2L["121"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["121"]["BackgroundTransparency"] = 1;
-G2L["121"]["Size"] = UDim2.new(0.09843, 0, 0.19986, 0);
-G2L["121"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["121"]["Text"] = [[VEXsploit]];
-G2L["121"]["Name"] = [[GUI]];
-G2L["121"]["Position"] = UDim2.new(0.87571, 0, 0.09986, 0);
+G2L["12e"] = Instance.new("TextLabel", G2L["12b"]);
+G2L["12e"]["TextWrapped"] = true;
+G2L["12e"]["BorderSizePixel"] = 0;
+G2L["12e"]["TextSize"] = 14;
+G2L["12e"]["TextScaled"] = true;
+G2L["12e"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12e"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
+G2L["12e"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["12e"]["BackgroundTransparency"] = 1;
+G2L["12e"]["Size"] = UDim2.new(0.09843, 0, 0.19986, 0);
+G2L["12e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["12e"]["Text"] = [[VEXsploit]];
+G2L["12e"]["Name"] = [[GUI]];
+G2L["12e"]["Position"] = UDim2.new(0.87571, 0, 0.09986, 0);
 
 
 -- StarterGui.VEXGUI.NotificationTop.Text.GUI.UIGradient
-G2L["122"] = Instance.new("UIGradient", G2L["121"]);
-G2L["122"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(179, 124, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(103, 59, 168))};
+G2L["12f"] = Instance.new("UIGradient", G2L["12e"]);
+G2L["12f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(179, 124, 255)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(103, 59, 168))};
 
 
 -- Require G2L wrapper
@@ -3003,9 +3139,9 @@ local function require(Module:ModuleScript)
 	return G2L_REQUIRE(Module);
 end
 
-G2L_MODULES[G2L["f3"]] = {
+G2L_MODULES[G2L["100"]] = {
 	Closure = function()
-		local script = G2L["f3"];local ButtonModule = {}
+		local script = G2L["100"];local ButtonModule = {}
 
 		function ButtonModule.ColorOn(Button)
 			Button.BorderSizePixel = 2
@@ -3020,9 +3156,9 @@ G2L_MODULES[G2L["f3"]] = {
 
 	end;
 };
-G2L_MODULES[G2L["f4"]] = {
+G2L_MODULES[G2L["101"]] = {
 	Closure = function()
-		local script = G2L["f4"];local TextBoxModule = {}
+		local script = G2L["101"];local TextBoxModule = {}
 		local TextBoxFrame = script.Parent.TextBoxs.TextBoxFrame
 		local TextBox = TextBoxFrame.TextBox
 
@@ -3101,9 +3237,9 @@ G2L_MODULES[G2L["f4"]] = {
 
 	end;
 };
-G2L_MODULES[G2L["100"]] = {
+G2L_MODULES[G2L["10d"]] = {
 	Closure = function()
-		local script = G2L["100"];local NotificationModule = {}
+		local script = G2L["10d"];local NotificationModule = {}
 
 		local guiNotificationFrame = script.Parent.Parent.Parent.NotificationTop
 		local guiTitle = guiNotificationFrame.Text.Title
@@ -6242,9 +6378,168 @@ local function C_f0()
 
 end;
 task.spawn(C_f0);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.Start.SpawnScript
+local function C_f7()
+	local script = G2L["f7"];
+	local btn = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local char = plr.Character or plr.CharacterAdded
+
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+
+	btn.MouseButton1Up:Connect(function()
+		humrootpart.CFrame = workspace.programmed_holder.Eruptions.EruptionTeleport.CFrame * CFrame.new(0, 2, 0)
+
+	end)
+end;
+task.spawn(C_f7);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.OrderArea.OrderAreaScript
+local function C_f9()
+	local script = G2L["f9"];
+	local btn = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local char = plr.Character or plr.CharacterAdded
+
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+
+	btn.MouseButton1Up:Connect(function()
+		humrootpart.CFrame = workspace.programmed_holder.Boards.Other.TrainingTimes.Title * CFrame.new(0, 2, -15)
+
+	end)
+end;
+task.spawn(C_f9);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.restaurant.ResturauntScript
+local function C_fb()
+	local script = G2L["fb"];
+	local btn = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local char = plr.Character or plr.CharacterAdded
+
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+
+	btn.MouseButton1Up:Connect(function()
+		humrootpart.CFrame = workspace.Map.Decoration.Signs.TaiyakiSign.CFrame * CFrame.new(0, -8, 0)
+	end)
+end;
+task.spawn(C_fb);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.UnderwaterDining.UnderwaterDiningScript
+local function C_fd()
+	local script = G2L["fd"];
+	local btn = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local char = plr.Character or plr.CharacterAdded
+
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+
+	btn.MouseButton1Up:Connect(function()
+		humrootpart.CFrame  = workspace.Map.Nature.Rocks:GetChildren()[3]["[SEASONAL]Ground"].CFrame * CFrame.new(0, 5, 0)
+
+	end)
+end;
+task.spawn(C_fd);
+-- StarterGui.VEXGUI.Main.VexFrame.Tabs.Kohaú.TPmenu.CaveDining.CaveDiningScript
+local function C_ff()
+	local script = G2L["ff"];
+	local btn = script.Parent
+	local plr = game:GetService("Players").LocalPlayer
+	local char = plr.Character or plr.CharacterAdded
+
+	local function getHumanoidRootPart()
+		return char:FindFirstChild("HumanoidRootPart")
+	end
+
+	local function onCharacterAdded()
+		char = plr.Character or plr.CharacterAdded:Wait()
+
+		-- Wait for HumanoidRootPart to load on respawn
+		humrootpart = getHumanoidRootPart()
+		while not humrootpart do
+			humrootpart = getHumanoidRootPart()
+			wait(0.1)
+		end
+	end
+
+	-- Listen for respawn event and rebind HumanoidRootPart
+	plr.CharacterAdded:Connect(onCharacterAdded)
+
+
+	btn.MouseButton1Up:Connect(function()
+		humrootpart.CFrame = workspace.Map.Decoration.FishTanks:GetChildren()[2].Bubbles.CFrame * CFrame.new(0, 2, -10)
+
+	end)
+end;
+task.spawn(C_ff);
 -- StarterGui.VEXGUI.Main.VexFrame.GameDetector
-local function C_101()
-	local script = G2L["101"];
+local function C_10e()
+	local script = G2L["10e"];
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
 	local PlayerGui = player:WaitForChild("PlayerGui")
@@ -6347,10 +6642,10 @@ local function C_101()
 
 
 end;
-task.spawn(C_101);
+task.spawn(C_10e);
 -- StarterGui.VEXGUI.Main.Drag
-local function C_103()
-	local script = G2L["103"];
+local function C_110()
+	local script = G2L["110"];
 	local UserInputService = game:GetService('UserInputService')
 
 	local frame = script.Parent
@@ -6443,10 +6738,10 @@ local function C_103()
 		end
 	end)
 end;
-task.spawn(C_103);
+task.spawn(C_110);
 -- StarterGui.VEXGUI.Main.OpenAndClose
-local function C_104()
-	local script = G2L["104"];
+local function C_111()
+	local script = G2L["111"];
 	local ts = game:GetService("TweenService")
 
 	local closeButton = script.Parent.Parent.Main:WaitForChild("Close")
@@ -6527,10 +6822,10 @@ local function C_104()
 	end)
 
 end;
-task.spawn(C_104);
+task.spawn(C_111);
 -- StarterGui.VEXGUI.Main.FPS.LocalScript
-local function C_107()
-	local script = G2L["107"];
+local function C_114()
+	local script = G2L["114"];
 	local RunService = game:GetService("RunService")
 	local player = game.Players.LocalPlayer
 
@@ -6543,10 +6838,10 @@ local function C_107()
 	end)
 
 end;
-task.spawn(C_107);
+task.spawn(C_114);
 -- StarterGui.VEXGUI.Logo.LocalScript
-local function C_10c()
-	local script = G2L["10c"];
+local function C_119()
+	local script = G2L["119"];
 	local imageLabel = game.Players.LocalPlayer.PlayerGui.VEXGUI:WaitForChild("Logo") -- Assuming the image is the parent
 	local aspectRatio = 1 -- 500 / 500 = 1
 	local ts = game:GetService("TweenService")
@@ -6571,10 +6866,10 @@ local function C_10c()
 		ts:Create(imageLabel, ti, {Size = UDim2.new(1, 0, 1, 0)}):Play()
 	end
 end;
-task.spawn(C_10c);
+task.spawn(C_119);
 -- StarterGui.VEXGUI.ChatLog.Drag
-local function C_114()
-	local script = G2L["114"];
+local function C_121()
+	local script = G2L["121"];
 	local UserInputService = game:GetService('UserInputService')
 
 	local frame = script.Parent
@@ -6667,10 +6962,10 @@ local function C_114()
 		end
 	end)
 end;
-task.spawn(C_114);
+task.spawn(C_121);
 -- StarterGui.VEXGUI.ChatLog.ScrollingMainFrame.ChatLogger
-local function C_116()
-	local script = G2L["116"];
+local function C_123()
+	local script = G2L["123"];
 	local Players = game:GetService("Players")
 	local TextChatService = game:GetService("TextChatService")
 
@@ -6772,6 +7067,6 @@ local function C_116()
 	end
 
 end;
-task.spawn(C_116);
+task.spawn(C_123);
 
 return G2L["1"], require;
