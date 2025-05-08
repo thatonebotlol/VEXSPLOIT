@@ -3182,7 +3182,7 @@ G2L["13a"]["BackgroundColor3"] = Color3.fromRGB(68, 20, 84);
 G2L["13a"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Bold, Enum.FontStyle.Normal);
 G2L["13a"]["Size"] = UDim2.new(0.161, 0, 0.1, 0);
 G2L["13a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["13a"]["Text"] = [[ʀαρe]];
+G2L["13a"]["Text"] = [[ʀaρΕ]];
 G2L["13a"]["Name"] = [[Word]];
 G2L["13a"]["Position"] = UDim2.new(0.58902, 0, 0.22237, 0);
 
@@ -8791,6 +8791,7 @@ local function C_164()
 	end
 
 	local runservice = game:GetService("RunService")
+	local mousehover = false
 
 	local function createTooltip(text, messageLabel)
 		local tooltip = Instance.new("TextLabel")
@@ -8806,15 +8807,19 @@ local function C_164()
 
 		runservice.RenderStepped:Connect(function()
 			tooltip.Position = UDim2.new(0, localPlayer:GetMouse().X + 10, 0, localPlayer:GetMouse().Y + 10)
+			print(mousehover)
 		end)
 
 		messageLabel.MouseLeave:Connect(function()
 			tooltip:Destroy()
+			if mousehover == true then
+				mousehover = false
+			end
 		end)
 	end
 
 	local function addChatMessage(speakerName, messageText)
-		local messageLabel = Instance.new("TextLabel")
+		local messageLabel = Instance.new("TextButton") -- Make it clickable
 		messageLabel.Size = UDim2.new(1, -10, 0, 20)
 		messageLabel.BackgroundTransparency = 1
 		messageLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -8825,18 +8830,29 @@ local function C_164()
 		messageLabel.RichText = true
 		messageLabel.Text = "<b>" .. speakerName .. "</b>: " .. messageText
 		messageLabel.TextColor3 = isCommandMessage(messageText) and Color3.fromRGB(255, 85, 85) or Color3.fromRGB(255, 255, 255)
+		messageLabel.AutoButtonColor = false
 		messageLabel.Parent = scrollingFrame
 
+		-- Tooltip on hover (optional)
 		if messageText:len() > 40 then
 			messageLabel.MouseEnter:Connect(function()
 				createTooltip(messageText, messageLabel)
 			end)
 		end
 
+		-- Click to copy
+		messageLabel.MouseButton1Click:Connect(function()
+			local fullMessage = speakerName .. ": " .. messageText
+			setclipboard(fullMessage)
+			require(script.Parent.Parent.Parent.Main.VexFrame.NotificationModule)
+				.GuiNotification("Success", "Copied to clipboard", 1)
+		end)
+
 		task.wait()
 		scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y)
 		scrollingFrame.CanvasPosition = Vector2.new(0, scrollingFrame.CanvasSize.Y.Offset)
 	end
+
 
 	local loggedMessageIds = {}
 
@@ -8849,10 +8865,13 @@ local function C_164()
 					local isWhisper = message.TextChannel and message.TextChannel.Name:match("^RBXWhisper:%d+_%d+$")
 					local prefix = isWhisper and "[PM] " or ""
 					addChatMessage(prefix .. player.Name, message.Text)
+					mousehover = true
 				end
 			end
 		end
 	end
+
+
 
 end;
 task.spawn(C_164);
