@@ -6827,7 +6827,6 @@ local function C_b3()
 
 	local UserInputService = game:GetService("UserInputService")
 
-	-- Toggle Aimbot with right-click (Button2)
 	mouse.Button2Down:Connect(function()
 		AimbotActive = true
 	end)
@@ -6836,7 +6835,16 @@ local function C_b3()
 		AimbotActive = false
 	end)
 
-	-- Function to get the nearest player
+	local function isFriendlyByHighlight(character)
+		local highlight = character:FindFirstChildOfClass("Highlight")
+		if not highlight then return false end
+
+		local color = highlight.OutlineColor or highlight.FillColor
+		local r, g, b = color.R, color.G, color.B
+
+		return (g > r and g > b) or (b > r and b > g) -- green or blue dominant
+	end
+
 	local function getNearestPlayer()
 		local closestPlayer = nil
 		local shortestDistance = math.huge
@@ -6847,11 +6855,14 @@ local function C_b3()
 		local myPosition = myCharacter.HumanoidRootPart.Position
 
 		for _, otherPlayer in ipairs(Players:GetPlayers()) do
-			if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") and otherPlayer.Character:FindFirstChild("Head") then
-				local distance = (myPosition - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
-				if distance < shortestDistance then
-					shortestDistance = distance
-					closestPlayer = otherPlayer
+			local otherChar = otherPlayer.Character
+			if otherPlayer ~= player and otherChar and otherChar:FindFirstChild("HumanoidRootPart") and otherChar:FindFirstChild("Head") then
+				if not isFriendlyByHighlight(otherChar) then
+					local distance = (myPosition - otherChar.HumanoidRootPart.Position).Magnitude
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestPlayer = otherPlayer
+					end
 				end
 			end
 		end
@@ -6859,7 +6870,6 @@ local function C_b3()
 		return closestPlayer
 	end
 
-	-- Update camera to aim at the target's head when Aimbot is active
 	RunService.RenderStepped:Connect(function()
 		if AimbotActive and buttonclicked == true then
 			local target = getNearestPlayer()
@@ -6870,14 +6880,13 @@ local function C_b3()
 		end
 	end)
 
-	-- Toggle button to activate/deactivate Aimbot
 	btn.MouseButton1Up:Connect(function()
 		if buttonclicked == false then
-			btnmodule.ColorOn(btn)  -- Set button color to 'On' state
+			btnmodule.ColorOn(btn)
 			buttonclicked = true
-			notifmodule.GuiNotification("Aimbot", "Hold right-click to activate", 2)
+			notifmodule.GuiNotification("Aimbot", "Hold right click to activate", 2)
 		else
-			btnmodule.ColorOff(btn)  -- Set button color to 'Off' state
+			btnmodule.ColorOff(btn)
 			buttonclicked = false
 		end
 	end)
