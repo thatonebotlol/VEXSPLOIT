@@ -6837,6 +6837,34 @@ local function C_b3()
 	end)
 
 	-- Function to get the nearest player
+	local function isFriendly(character)
+		if not character then return false end
+
+		local function isGreenOrBlue(color)
+			local r, g, b = color.R, color.G, color.B
+			return (g > r and g > b) or (b > r and b > g)
+		end
+
+		-- Check ShirtColor if using BodyColors
+		local bodyColors = character:FindFirstChildOfClass("BodyColors")
+		if bodyColors then
+			if isGreenOrBlue(bodyColors.TorsoColor.Color) then
+				return true
+			end
+		end
+
+		-- Check Shirt or Pants (fallback visual color detection)
+		for _, part in ipairs(character:GetChildren()) do
+			if part:IsA("Part") and part.Name == "Torso" then
+				if isGreenOrBlue(part.Color) then
+					return true
+				end
+			end
+		end
+
+		return false
+	end
+
 	local function getNearestPlayer()
 		local closestPlayer = nil
 		local shortestDistance = math.huge
@@ -6848,16 +6876,19 @@ local function C_b3()
 
 		for _, otherPlayer in ipairs(Players:GetPlayers()) do
 			if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") and otherPlayer.Character:FindFirstChild("Head") then
-				local distance = (myPosition - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
-				if distance < shortestDistance then
-					shortestDistance = distance
-					closestPlayer = otherPlayer
+				if not isFriendly(otherPlayer.Character) then
+					local distance = (myPosition - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestPlayer = otherPlayer
+					end
 				end
 			end
 		end
 
 		return closestPlayer
 	end
+
 
 	-- Update camera to aim at the target's head when Aimbot is active
 	RunService.RenderStepped:Connect(function()
