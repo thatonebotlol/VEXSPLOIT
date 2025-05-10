@@ -6427,56 +6427,58 @@ task.spawn(C_a1);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General.AntiFlingButton.AntiFlingScript
 local function C_a4()
 	local script = G2L["a4"];
-	local plr = game.Players.LocalPlayer
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+
+	local plr = Players.LocalPlayer
 	local button = script.Parent
 	local buttonmodule = require(script.Parent.Parent.Parent.Parent.ButtonModule)
 
 	-- Toggle state
 	local toggleAntiFling = false
+	local antifling
 
-	-- High density anti-fling physical properties
-	local antiFlingProperties = PhysicalProperties.new(1000, 0.3, 0.5)
-	-- Roblox's default for Plastic
-	local defaultProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
-
-	-- Function to apply properties to all character parts
-	local function applyPhysicalProperties(char, props)
-		for _, part in ipairs(char:GetDescendants()) do
-			if part:IsA("BasePart") then
-				part.CustomPhysicalProperties = props
-			end
-		end
-	end
-
-	-- Enable/Disable Anti-Fling
-	local function enableAntiFling(char)
-		applyPhysicalProperties(char, antiFlingProperties)
-	end
-
-	local function disableAntiFling(char)
-		applyPhysicalProperties(char, defaultProperties)
-	end
-
-	-- Button click toggles anti-fling
 	button.MouseButton1Up:Connect(function()
 		toggleAntiFling = not toggleAntiFling
-		button.BorderSizePixel = toggleAntiFling and 2 or 0
-
+		buttonmodule.ColorOn(script.Parent)
 		local char = plr.Character or plr.CharacterAdded:Wait()
 		char:WaitForChild("HumanoidRootPart")
 
 		if toggleAntiFling then
-			enableAntiFling(char)
+			antifling = RunService.Stepped:Connect(function()
+				for _, player in pairs(Players:GetPlayers()) do
+					if player ~= plr and player.Character then
+						for _, v in pairs(player.Character:GetDescendants()) do
+							if v:IsA("BasePart") then
+								v.CanCollide = false
+							end
+						end
+					end
+				end
+			end)
 		else
-			disableAntiFling(char)
+			if antifling then
+				antifling:Disconnect()
+				buttonmodule.ColorOff(script.Parent)
+				antifling = nil
+			end
 		end
 	end)
 
-	-- Reapply on respawn
 	plr.CharacterAdded:Connect(function(char)
 		char:WaitForChild("HumanoidRootPart")
 		if toggleAntiFling then
-			enableAntiFling(char)
+			antifling = RunService.Stepped:Connect(function()
+				for _, player in pairs(Players:GetPlayers()) do
+					if player ~= plr and player.Character then
+						for _, v in pairs(player.Character:GetDescendants()) do
+							if v:IsA("BasePart") then
+								v.CanCollide = false
+							end
+						end
+					end
+				end
+			end)
 		end
 	end)
 
@@ -7075,7 +7077,6 @@ local function C_b6()
 		local Character, HumanoidRootPart = UpdateCharacter()  -- Update to the new character and HumanoidRootPart
 		if not HumanoidRootPart then return end
 
-		-- Iterate over targets and create snaplines
 		for i, TargetPlayer in pairs(game.Players:GetPlayers()) do
 			if TargetPlayer == Player then continue end
 			local IsTeammate = Player.Team ~= nil and TargetPlayer.Team == Player.Team
