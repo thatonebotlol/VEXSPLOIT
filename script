@@ -6827,6 +6827,7 @@ local function C_b3()
 
 	local UserInputService = game:GetService("UserInputService")
 
+	-- Toggle Aimbot with right-click (Button2)
 	mouse.Button2Down:Connect(function()
 		AimbotActive = true
 	end)
@@ -6835,16 +6836,7 @@ local function C_b3()
 		AimbotActive = false
 	end)
 
-	local function isFriendlyByHighlight(character)
-		local highlight = character:FindFirstChildOfClass("Highlight")
-		if not highlight then return false end
-
-		local color = highlight.OutlineColor or highlight.FillColor
-		local r, g, b = color.R, color.G, color.B
-
-		return (g > r and g > b) or (b > r and b > g) -- green or blue dominant
-	end
-
+	-- Function to get the nearest player
 	local function getNearestPlayer()
 		local closestPlayer = nil
 		local shortestDistance = math.huge
@@ -6855,14 +6847,11 @@ local function C_b3()
 		local myPosition = myCharacter.HumanoidRootPart.Position
 
 		for _, otherPlayer in ipairs(Players:GetPlayers()) do
-			local otherChar = otherPlayer.Character
-			if otherPlayer ~= player and otherChar and otherChar:FindFirstChild("HumanoidRootPart") and otherChar:FindFirstChild("Head") then
-				if not isFriendlyByHighlight(otherChar) then
-					local distance = (myPosition - otherChar.HumanoidRootPart.Position).Magnitude
-					if distance < shortestDistance then
-						shortestDistance = distance
-						closestPlayer = otherPlayer
-					end
+			if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") and otherPlayer.Character:FindFirstChild("Head") then
+				local distance = (myPosition - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
+				if distance < shortestDistance then
+					shortestDistance = distance
+					closestPlayer = otherPlayer
 				end
 			end
 		end
@@ -6870,24 +6859,57 @@ local function C_b3()
 		return closestPlayer
 	end
 
+	-- Update camera to aim at the target's head when Aimbot is active
 	RunService.RenderStepped:Connect(function()
 		if AimbotActive and buttonclicked == true then
 			local target = getNearestPlayer()
 			if target and target.Character and target.Character:FindFirstChild("Head") then
 				local headPosition = target.Character.Head.Position
+
+				-- Calculate the direction vector from the camera to the target's head
+				local direction = (headPosition - camera.CFrame.Position).Unit
+
+				-- Set the camera's CFrame to "look" at the target's head (simulate aiming)
 				camera.CFrame = CFrame.new(camera.CFrame.Position, headPosition)
+
+				-- Optionally simulate mouse position (this part is just for aimbot-like behavior)
+				local screenPos = camera:WorldToScreenPoint(headPosition)
+
+				-- Simulate the mouse position
+				mouse.X = screenPos.X
+				mouse.Y = screenPos.Y
 			end
 		end
 	end)
 
+	-- Toggle button to activate/deactivate Aimbot
 	btn.MouseButton1Up:Connect(function()
 		if buttonclicked == false then
-			btnmodule.ColorOn(btn)
+			btnmodule.ColorOn(btn)  -- Set button color to 'On' state
 			buttonclicked = true
-			notifmodule.GuiNotification("Aimbot", "Hold right click to activate", 2)
+			notifmodule.GuiNotification("Aimbot", "Hold right-click to activate", 2)
+
+			-- Force first-person view by locking zoom range
+			camera.CameraType = Enum.CameraType.Custom
+			camera.CameraMinZoom = 0  -- Min zoom (locked to first-person)
+			camera.CameraMaxZoom = 0  -- Max zoom (locked to first-person)
 		else
-			btnmodule.ColorOff(btn)
+			btnmodule.ColorOff(btn)  -- Set button color to 'Off' state
 			buttonclicked = false
+
+			-- Reset to default zoom settings
+			camera.CameraMinZoom = 0.5  -- Default min zoom (adjustable)
+			camera.CameraMaxZoom = 50  -- Default max zoom (adjustable)
+		end
+	end)
+
+	-- Ensure that the camera stays in first-person when aimbot is active
+	RunService.RenderStepped:Connect(function()
+		if AimbotActive and buttonclicked == true then
+			-- Continue forcing the camera in first-person
+			camera.CameraType = Enum.CameraType.Custom
+			camera.CameraMinZoom = 0
+			camera.CameraMaxZoom = 0
 		end
 	end)
 
