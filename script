@@ -6827,21 +6827,16 @@ local function C_b3()
 
 	local UserInputService = game:GetService("UserInputService")
 
+	-- Toggle Aimbot with right-click (Button2)
 	mouse.Button2Down:Connect(function()
 		AimbotActive = true
-		if buttonclicked == true then
-			UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-		end
 	end)
 
 	mouse.Button2Up:Connect(function()
 		AimbotActive = false
-		if buttonclicked == true then
-			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-		end
 	end)
 
-
+	-- Function to get the nearest player
 	local function getNearestPlayer()
 		local closestPlayer = nil
 		local shortestDistance = math.huge
@@ -6864,6 +6859,7 @@ local function C_b3()
 		return closestPlayer
 	end
 
+	-- Update camera to aim at the target's head when Aimbot is active
 	RunService.RenderStepped:Connect(function()
 		if AimbotActive and buttonclicked == true then
 			local target = getNearestPlayer()
@@ -6874,16 +6870,18 @@ local function C_b3()
 		end
 	end)
 
+	-- Toggle button to activate/deactivate Aimbot
 	btn.MouseButton1Up:Connect(function()
 		if buttonclicked == false then
-			btnmodule.ColorOn(btn)
+			btnmodule.ColorOn(btn)  -- Set button color to 'On' state
 			buttonclicked = true
-			notifmodule.GuiNotification("Aimbot", "Hold right click to activate", 2)
+			notifmodule.GuiNotification("Aimbot", "Hold right-click to activate", 2)
 		else
-			btnmodule.ColorOff(btn)
+			btnmodule.ColorOff(btn)  -- Set button color to 'Off' state
 			buttonclicked = false
 		end
 	end)
+
 end;
 task.spawn(C_b3);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Notes.TextBox.NotesSaver
