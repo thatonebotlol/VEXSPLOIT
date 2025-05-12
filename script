@@ -7530,9 +7530,9 @@ local function C_c0()
 
 	-- Toggle freecam on button click
 	button.MouseButton1Click:Connect(function()
-		buttonEnabled = not buttonEnabled  -- Toggle the button state
+		buttonEnabled = not buttonEnabled  
 		if not buttonEnabled and freecamEnabled then
-			disableFreecam()  -- Disable freecam if the button is turned OFF
+			disableFreecam()  
 		end
 	end)
 
@@ -7609,7 +7609,6 @@ local function C_c0()
 			handleFreecamMovement() -- Handle movement and rotation
 		end
 	end)
-
 end;
 task.spawn(C_c0);
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Notes.TextBox.NotesSaver
