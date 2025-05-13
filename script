@@ -938,7 +938,6 @@ G2L["54"]["Position"] = UDim2.new(0.02345, 0, 0.5417, 0);
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.General
 G2L["55"] = Instance.new("ScrollingFrame", G2L["6"]);
-G2L["55"]["Visible"] = false;
 G2L["55"]["Active"] = true;
 G2L["55"]["BorderSizePixel"] = 0;
 G2L["55"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16);
@@ -2407,7 +2406,6 @@ G2L["ed"]["BackgroundTransparency"] = 0.5;
 
 -- StarterGui.VEXGUI.Main.VexFrame.Tabs.Target.EnterTarget
 G2L["ee"] = Instance.new("TextBox", G2L["ed"]);
-G2L["ee"]["CursorPosition"] = -1;
 G2L["ee"]["Name"] = [[EnterTarget]];
 G2L["ee"]["BorderSizePixel"] = 0;
 G2L["ee"]["TextWrapped"] = true;
